@@ -22,7 +22,7 @@ import java.util.ArrayList;
 import java.util.Random;
 
 public class Arkanoid extends JPanel implements MouseInputListener {
-
+//hola
 	
 	private static final long serialVersionUID = 1L;
 
