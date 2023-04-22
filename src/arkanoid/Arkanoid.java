@@ -75,7 +75,7 @@ public class Arkanoid extends JPanel implements MouseInputListener {
 	
 	private int level = 1;
 	
-	private int numLevels = 5 ;
+	private int numLevels = 7 ; //Esta variable al principio era 5 ahora vale 7 ya que de momento vamos a añadir dos niveles más al juego
 	
 	private int lifes = 3;
 	
