@@ -288,7 +288,7 @@ public class Arkanoid extends JPanel implements MouseInputListener {
 				catch (Exception e) {}
 			else fpsOverflow++;
 			nextTime+=WAIT_TIME;
-			// Actualizaci�n de las coordenadas e incrementos de la pelota
+			// Actualización de las coordenadas e incrementos de la pelota
 			int cont = 0;
 			for (Pelota pel : pelotas){
 				pel.move(panelW, panelH);
