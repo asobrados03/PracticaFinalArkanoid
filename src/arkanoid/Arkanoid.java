@@ -235,7 +235,7 @@ public class Arkanoid extends JPanel implements MouseInputListener {
 			gr.setColor(Color.white);
 			Font contador = new Font("Sans Serif",Font.BOLD,13);
 			gr.setFont(contador);
-			gr.drawString("Puntuación: "+puntuacion,(panelW - (gr.getFontMetrics().stringWidth("Score: "+puntuacion))-10),30-(gr.getFontMetrics().getHeight()/2));
+			gr.drawString("Puntuación: "+puntuacion,(panelW - (gr.getFontMetrics().stringWidth("Puntuación: "+puntuacion))-10),30-(gr.getFontMetrics().getHeight()/2));
 			gr.drawString("Nivel: "+level,10,(panelH -10));
 			if(this.ladrillos != null){
 				if(this.ladrillos.size()-Ladrillo.Immortales > 0){
