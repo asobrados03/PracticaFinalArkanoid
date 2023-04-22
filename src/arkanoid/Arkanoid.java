@@ -34,7 +34,7 @@ public class Arkanoid extends JPanel implements MouseInputListener {
 	/** La altura de la ventana principal */
 	public static final int FRAME_H=450;
 	
-	/** El n�mero de im�genes por segundo. Puede aumentarse
+	/** El número de imágenes por segundo. Puede aumentarse
 	 o disminuirse para acelerar o ralentizar, respectivamente,
 	 la velocidad del juego. */
 	public static final int FPS=50;
@@ -107,7 +107,7 @@ public class Arkanoid extends JPanel implements MouseInputListener {
 		Arkanoid panel = null;
 		JFrame frame;
 
-		// Inicializaci�n de la ventana principal
+		// Inicialización de la ventana principal
 		panel=new Arkanoid();
 		frame=new JFrame("Arkanoid");
 		try {
@@ -121,16 +121,16 @@ public class Arkanoid extends JPanel implements MouseInputListener {
 		frame.setSize(FRAME_W,FRAME_H);
 		Dimension screenRes = Toolkit.getDefaultToolkit().getScreenSize();
 		frame.setLocation((screenRes.width-FRAME_W)/2, (screenRes.height-FRAME_H)/2);
-		// El c�digo siguiente se encarga de terminar el
+		// El código siguiente se encarga de terminar el
 		// programa cuando el usuario cierra la ventana
 		frame.addWindowListener(new WindowAdapter() {
 			public void windowClosing(WindowEvent evt) {
 				System.exit(0);
 			}
 		});
-		// Inicializaci�n de los atributos del juego
+		// Inicialización de los atributos del juego
 		panel.raqueta = new Raqueta(FRAME_W/2 - Raqueta.RACKET_W/2,0);
-		// Se registra para capturar eventos de rat�n
+		// Se registra para capturar eventos de ratón
 		panel.addMouseMotionListener(panel);
 		panel.addMouseListener(panel);
 		frame.setVisible(true);	// Muestra la ventana principal
@@ -235,7 +235,7 @@ public class Arkanoid extends JPanel implements MouseInputListener {
 			gr.setColor(Color.white);
 			Font contador = new Font("Sans Serif",Font.BOLD,13);
 			gr.setFont(contador);
-			gr.drawString("Score: "+puntuacion,(panelW - (gr.getFontMetrics().stringWidth("Score: "+puntuacion))-10),30-(gr.getFontMetrics().getHeight()/2));
+			gr.drawString("Puntuación: "+puntuacion,(panelW - (gr.getFontMetrics().stringWidth("Score: "+puntuacion))-10),30-(gr.getFontMetrics().getHeight()/2));
 			gr.drawString("Nivel: "+level,10,(panelH -10));
 			if(this.ladrillos != null){
 				if(this.ladrillos.size()-Ladrillo.Immortales > 0){
@@ -260,7 +260,7 @@ public class Arkanoid extends JPanel implements MouseInputListener {
 					String completado = "Completado!";
 					gr.drawString(completado, this.getWidth()/2-gr.getFontMetrics().stringWidth(completado)/2, 100);
 					int nextLevelY = 110 + gr.getFontMetrics().getHeight();
-					completado = "Pr�ximo nivel";
+					completado = "Próximo nivel";
 					gr.drawString(completado, this.getWidth()/2-gr.getFontMetrics().stringWidth(completado)/2, nextLevelY);
 					nextLevelY += 10 + gr.getFontMetrics().getHeight();
 					completado = ""+timeNextLevel;
