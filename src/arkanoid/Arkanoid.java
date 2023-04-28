@@ -146,7 +146,7 @@ public class Arkanoid extends JPanel implements MouseInputListener {
 	private void crearFicheros() throws IOException {
 		String[] directorios = {"sonidos"};
 		String[][] archivos = new String[][]{
-			{"weak_ball.mp3","click.mp3","fondo1.mp3","fondo2.mp3","fondo3.mp3","fondo4.mp3","fondo5.mp3"}
+			{"weak_ball.mp3","click.mp3","fondo1.mp3","fondo2.mp3","fondo3.mp3","fondo4.mp3","fondo5.mp3", "fondo6.mp3", "fondo7.mp3"}
 		};
 		for(int x = 0; x < directorios.length; x++){
 			File directorio = new File("\\UDP\\Arkanoid" + "\\"+directorios[x]);
