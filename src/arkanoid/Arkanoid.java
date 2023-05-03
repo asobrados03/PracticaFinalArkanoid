@@ -38,7 +38,7 @@ public class Arkanoid extends JPanel implements KeyListener, MouseInputListener 
 	/** El número de imágenes por segundo. Puede aumentarse
 	 o disminuirse para acelerar o ralentizar, respectivamente,
 	 la velocidad del juego. */
-	public static final int FPS=60;
+	public static final int FPS=50;
 
 	/** El tiempo que debe esperarse tras cada cambio de posici�n
 	 de la bola */
