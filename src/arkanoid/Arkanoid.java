@@ -20,8 +20,10 @@ import java.io.InputStream;
 import java.sql.Time;
 import java.util.ArrayList;
 import java.util.Random;
+import java.awt.Robot;
+import java.awt.event.KeyEvent;
 
-public class Arkanoid extends JPanel implements MouseInputListener {
+public class Arkanoid extends JPanel implements KeyListener, MouseInputListener {
 
 	
 	private static final long serialVersionUID = 1L;
@@ -90,6 +92,8 @@ public class Arkanoid extends JPanel implements MouseInputListener {
 	private Random random;
 	
 	private Random randomPremios;
+        
+        private static final int MOVEMENT_SPEED = 5; // velocidad de movimiento con las teclas
 
 	public Arkanoid() {
 		this.fondoVidas = new ImageIcon(this.getClass().getResource("/imagenes/bola_trans.png")).getImage();
@@ -99,9 +103,10 @@ public class Arkanoid extends JPanel implements MouseInputListener {
 	    this.image = new ImageIcon(this.getClass().getResource(img)).getImage();
 	}
 	
-	/** Programa principal. Se encarga de inicializar el juego,
+	/** *  Programa principal.Se encarga de inicializar el juego,
 	 crear la ventana principal y mostrarla. Finalmente invoca a
 	 playGame, que se encarga de mover la pelota.
+     * @param args
 	 */
 	public static void main(String[] args) {
 		Arkanoid panel = null;
@@ -113,7 +118,6 @@ public class Arkanoid extends JPanel implements MouseInputListener {
 		try {
 			panel.crearFicheros();
 		} catch (IOException e1) {
-			e1.printStackTrace();
 		}
 		hideMouse(frame);
 		frame.setResizable(false);
@@ -133,13 +137,13 @@ public class Arkanoid extends JPanel implements MouseInputListener {
 		// Se registra para capturar eventos de ratón
 		panel.addMouseMotionListener(panel);
 		panel.addMouseListener(panel);
+                panel.setFocusable(true);
+                panel.addKeyListener(panel);
+                
 		frame.setVisible(true);	// Muestra la ventana principal
 		try {
 			panel.playGame();
-		} catch (JavaLayerException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
+		} catch (JavaLayerException | IOException e) {
 		}
 	}
 	
@@ -285,7 +289,7 @@ public class Arkanoid extends JPanel implements MouseInputListener {
 			currTime = System.currentTimeMillis();
 			if (currTime<nextTime)
 				try { Thread.sleep(nextTime-currTime); }
-				catch (Exception e) {}
+				catch (InterruptedException e) {}
 			else fpsOverflow++;
 			nextTime+=WAIT_TIME;
 			// Actualización de las coordenadas e incrementos de la pelota
@@ -313,23 +317,13 @@ public class Arkanoid extends JPanel implements MouseInputListener {
 					if(bloq.destruido(pel)){
 						if(bloq.getLifes() == 0){
 							switch (bloq.getPremio()) {
-								case 1:
-									premios.add(new Expansor(bloq.getCoordX() + Ladrillo.BlqWidth/2 - Expansor.PW/2, bloq.getCoordY()));
-									break;
-								case 2:
-									premios.add(new MasPelotas(bloq.getCoordX() + Ladrillo.BlqWidth/2 - MasPelotas.BW/2, bloq.getCoordY()));
-									break;
-								case 3:
-									premios.add(new Reductor(bloq.getCoordX() + Ladrillo.BlqWidth/2 - MasPelotas.BW/2, bloq.getCoordY()));
-									break;
-								case 4:
-									premios.add(new Acelerador(bloq.getCoordX() + Ladrillo.BlqWidth/2 - MasPelotas.BW/2, bloq.getCoordY()));
-									break;
-								case 5:
-									premios.add(new Freno(bloq.getCoordX() + Ladrillo.BlqWidth/2 - MasPelotas.BW/2, bloq.getCoordY()));
-									break;
-								default:
-									break;
+								case 1 -> premios.add(new Expansor(bloq.getCoordX() + Ladrillo.BlqWidth/2 - Expansor.PW/2, bloq.getCoordY()));
+								case 2 -> premios.add(new MasPelotas(bloq.getCoordX() + Ladrillo.BlqWidth/2 - MasPelotas.BW/2, bloq.getCoordY()));
+								case 3 -> premios.add(new Reductor(bloq.getCoordX() + Ladrillo.BlqWidth/2 - MasPelotas.BW/2, bloq.getCoordY()));
+								case 4 -> premios.add(new Acelerador(bloq.getCoordX() + Ladrillo.BlqWidth/2 - MasPelotas.BW/2, bloq.getCoordY()));
+								case 5 -> premios.add(new Freno(bloq.getCoordX() + Ladrillo.BlqWidth/2 - MasPelotas.BW/2, bloq.getCoordY()));
+								default -> {
+                                                        }
 							}
 							ladrillos.remove(contBloq);
 						}
@@ -386,7 +380,7 @@ public class Arkanoid extends JPanel implements MouseInputListener {
 				timeNextLevel = 5-y;
 				repaint();
 				try { Thread.sleep(1000); }
-				catch (Exception e) {}
+				catch (InterruptedException e) {}
 			}
 			this.pelotas.clear();
 			this.pelotas.add(new Pelota(raqueta.getCoordX() + Raqueta.RACKET_W/2 - Pelota.BW/2,raqueta.getCoordY() - Raqueta.RACKET_H));
@@ -398,10 +392,12 @@ public class Arkanoid extends JPanel implements MouseInputListener {
 			repaint();
 		}
 	}
-
+        
+        @Override
         public void mouseDragged(MouseEvent evt){
 	}
 
+        @Override
 	public void mouseMoved(MouseEvent evt){
 		raqueta.setCoordX(evt.getX() - Raqueta.RACKET_W/2);
 		if (raqueta.getCoordX()<0) raqueta.setCoordX(0);
@@ -428,10 +424,7 @@ public class Arkanoid extends JPanel implements MouseInputListener {
 					pel.setDown(false);
 					try {
 						pel.rebota(raqueta.getCoordX(), raqueta.getCoordY(), Raqueta.RACKET_W, Raqueta.RACKET_H, null);
-					} catch (JavaLayerException e) {
-						e.printStackTrace();
-					} catch (IOException e) {
-						e.printStackTrace();
+					} catch (JavaLayerException | IOException e) {
 					}
 				}
 			}
@@ -491,19 +484,53 @@ public class Arkanoid extends JPanel implements MouseInputListener {
 		createCustomCursor(emptyImg, new Point(0, 0), "invisible");
 		frame.setCursor(myCursor);
 	}
+        
+        @Override
+        public void keyTyped(KeyEvent e) {
+            throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        }
+
+        @Override
+        public void keyPressed(KeyEvent e) {
+            int key = e.getKeyCode(); 
+            try {
+                Robot robot = new Robot();
+                switch (key) {
+                    case KeyEvent.VK_D, KeyEvent.VK_RIGHT -> robot.mouseMove((int) (MouseInfo.getPointerInfo().getLocation().getX() + MOVEMENT_SPEED), (int) MouseInfo.getPointerInfo().getLocation().getY());
+                    case KeyEvent.VK_A, KeyEvent.VK_LEFT -> robot.mouseMove((int) (MouseInfo.getPointerInfo().getLocation().getX() - MOVEMENT_SPEED), (int) MouseInfo.getPointerInfo().getLocation().getY());
+                    case KeyEvent.VK_W, KeyEvent.VK_UP -> {
+                        for (Pelota pel : pelotas){
+                            if(pel.getMovX() == 0 && pel.getMovY() == 0){
+                                pel.setMovX(0.0);
+                                pel.setMovY(-3.0);
+                            }
+                        }
+                        if(this.startTime == 0){
+                            this.startTime = System.currentTimeMillis();
+                        }
+                    }
+                    default -> {
+                    }
+                }
+                    Thread.sleep(10); // para evitar sobrecargar la CPU
+            } catch (AWTException | HeadlessException | InterruptedException evt) {
+            }
+        }
+
+        @Override
+        public void keyReleased(KeyEvent e) {
+            throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        }
 	
 	private void generarBloques(){
 		int constBloques[][] = null;
 		switch (level) {
-		case 1:
-			constBloques = new int[][]{
+		case 1 -> constBloques = new int[][]{
 				{0,1,1,1,1,1,1,1,0},
 				{0,1,1,1,1,1,1,1,0},
 				{0,1,1,1,1,1,1,1,0}
 			};
-			break;
-		case 2:
-			constBloques = new int[][]{
+		case 2 -> constBloques = new int[][]{
 				{0,0,0,0,0,0,0,0,0},
 				{0,0,0,0,1,0,0,0,0},
 				{0,0,0,1,1,1,0,0,0},
@@ -513,9 +540,7 @@ public class Arkanoid extends JPanel implements MouseInputListener {
 				{0,0,0,1,1,1,0,0,0},
 				{0,0,0,0,1,0,0,0,0}
 			};
-			break;
-		case 3:
-			constBloques = new int[][]{
+		case 3 -> constBloques = new int[][]{
 				{0,0,0,0,0,0,0,0,0},
 				{0,0,0,0,2,0,0,0,0},
 				{0,0,0,1,2,1,0,0,0},
@@ -525,9 +550,7 @@ public class Arkanoid extends JPanel implements MouseInputListener {
 				{0,0,0,1,2,1,0,0,0},
 				{0,0,0,0,2,0,0,0,0}
 			};
-			break;
-		case 4:
-			constBloques = new int[][]{
+		case 4 -> constBloques = new int[][]{
 				{0,0,0,0,0,0,0,0,0},
 				{0,0,0,0,0,0,0,0,0},
 				{1,2,3,4,-1,4,3,2,1},
@@ -540,9 +563,7 @@ public class Arkanoid extends JPanel implements MouseInputListener {
 				{0,1,2,3,4,3,2,1,0},
 				{1,2,3,4,-1,4,3,2,1}
 			};
-			break;
-		case 5:
-			constBloques = new int[][]{
+		case 5 -> constBloques = new int[][]{
 				{0,0,0,0,0,0,0,0,0},
 				{0,0,0,5,5,5,0,0,0},
 				{0,0,5,1,1,1,5,0,0},
@@ -560,12 +581,11 @@ public class Arkanoid extends JPanel implements MouseInputListener {
 				{0,0,0,5,-1,5,0,0,0},
 				{0,0,0,5,5,5,0,0,0}
 			};
-			break;
-		default:
-			break;
+		default -> {
+                }
 		}
 		if(constBloques != null){
-			this.ladrillos = new ArrayList<Ladrillo>();
+			this.ladrillos = new ArrayList<>();
 			Ladrillo.Immortales = 0;
 			for(int x = 0; x < constBloques.length; x++){
 				for(int y = 0; y < constBloques[x].length; y++){
@@ -588,4 +608,5 @@ public class Arkanoid extends JPanel implements MouseInputListener {
 			}
 		}
 	}
+
 }
