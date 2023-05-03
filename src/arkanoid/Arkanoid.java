@@ -20,7 +20,6 @@ import java.io.InputStream;
 import java.sql.Time;
 import java.util.ArrayList;
 import java.util.Random;
-import java.awt.Robot;
 import java.awt.event.KeyEvent;
 
 public class Arkanoid extends JPanel implements KeyListener, MouseInputListener {
@@ -94,8 +93,6 @@ public class Arkanoid extends JPanel implements KeyListener, MouseInputListener 
 	private Random randomPremios;
         
         private static final int MOVEMENT_SPEED = 5; // velocidad de movimiento con las teclas
-        private boolean moveLeft = false;
-        private boolean moveRight = false;
 
 	public Arkanoid() {
 		this.fondoVidas = new ImageIcon(this.getClass().getResource("/imagenes/bola_trans.png")).getImage();
@@ -491,13 +488,13 @@ public class Arkanoid extends JPanel implements KeyListener, MouseInputListener 
         public void keyPressed(KeyEvent e) {
             int key = e.getKeyCode();
             if (key == KeyEvent.VK_A || key == KeyEvent.VK_LEFT) {
-                raqueta.setCoordX(raqueta.getCoordX() - 5);
+                raqueta.setCoordX(raqueta.getCoordX() - MOVEMENT_SPEED);
                 if (raqueta.getCoordX() < 0) {
                     raqueta.setCoordX(0);
                 }
             }
             if (key == KeyEvent.VK_D || key == KeyEvent.VK_RIGHT) {
-                raqueta.setCoordX(raqueta.getCoordX() + 5);
+                raqueta.setCoordX(raqueta.getCoordX() + MOVEMENT_SPEED);
                 if (raqueta.getCoordX() + Raqueta.RACKET_W >= panelW) {
                     raqueta.setCoordX(panelW - Raqueta.RACKET_W);
                 }
