@@ -94,6 +94,8 @@ public class Arkanoid extends JPanel implements KeyListener, MouseInputListener 
 	private Random randomPremios;
         
         private static final int MOVEMENT_SPEED = 5; // velocidad de movimiento con las teclas
+        private boolean moveLeft = false;
+        private boolean moveRight = false;
 
 	public Arkanoid() {
 		this.fondoVidas = new ImageIcon(this.getClass().getResource("/imagenes/bola_trans.png")).getImage();
@@ -486,40 +488,47 @@ public class Arkanoid extends JPanel implements KeyListener, MouseInputListener 
 	}
         
         @Override
-        public void keyTyped(KeyEvent e) {
-            throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-        }
-
-        @Override
         public void keyPressed(KeyEvent e) {
-            int key = e.getKeyCode(); 
-            try {
-                Robot robot = new Robot();
-                switch (key) {
-                    case KeyEvent.VK_D, KeyEvent.VK_RIGHT -> robot.mouseMove((int) (MouseInfo.getPointerInfo().getLocation().getX() + MOVEMENT_SPEED), (int) MouseInfo.getPointerInfo().getLocation().getY());
-                    case KeyEvent.VK_A, KeyEvent.VK_LEFT -> robot.mouseMove((int) (MouseInfo.getPointerInfo().getLocation().getX() - MOVEMENT_SPEED), (int) MouseInfo.getPointerInfo().getLocation().getY());
-                    case KeyEvent.VK_W, KeyEvent.VK_UP -> {
-                        for (Pelota pel : pelotas){
-                            if(pel.getMovX() == 0 && pel.getMovY() == 0){
-                                pel.setMovX(0.0);
-                                pel.setMovY(-3.0);
-                            }
-                        }
-                        if(this.startTime == 0){
-                            this.startTime = System.currentTimeMillis();
-                        }
-                    }
-                    default -> {
-                    }
+            int key = e.getKeyCode();
+            if (key == KeyEvent.VK_A || key == KeyEvent.VK_LEFT) {
+                raqueta.setCoordX(raqueta.getCoordX() - 5);
+                if (raqueta.getCoordX() < 0) {
+                    raqueta.setCoordX(0);
                 }
-                    Thread.sleep(10); // para evitar sobrecargar la CPU
-            } catch (AWTException | HeadlessException | InterruptedException evt) {
+            }
+            if (key == KeyEvent.VK_D || key == KeyEvent.VK_RIGHT) {
+                raqueta.setCoordX(raqueta.getCoordX() + 5);
+                if (raqueta.getCoordX() + Raqueta.RACKET_W >= panelW) {
+                    raqueta.setCoordX(panelW - Raqueta.RACKET_W);
+                }
+            }
+            if (key == KeyEvent.VK_W || key == KeyEvent.VK_UP) {
+                for (Pelota pel : pelotas){
+                    if(pel.getMovX() == 0 && pel.getMovY() == 0){
+                        pel.setMovX(0.0);
+                        pel.setMovY(-3.0);
+                    }
+		}
+		if(this.startTime == 0){
+                    this.startTime = System.currentTimeMillis();
+		}
+            }
+            for (Pelota pel : pelotas){
+                if(pel.getMovX() == 0 && pel.getMovY() == 0){
+                        pel.setCoordX(raqueta.getCoordX() + Raqueta.RACKET_W/2 - Pelota.BW/2);
+                        if (raqueta.getCoordX()<=0) pel.setCoordX(Raqueta.RACKET_W/2 - Pelota.BW/2);
+                        if (raqueta.getCoordX()+Raqueta.RACKET_W>=panelW) pel.setCoordX(panelW - Raqueta.RACKET_W/2 - Pelota.BW/2);
+                }
             }
         }
+    
+        @Override
+        public void keyReleased(KeyEvent evt) {
+            
+        }
 
         @Override
-        public void keyReleased(KeyEvent e) {
-            throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        public void keyTyped(KeyEvent e) {
         }
 	
 	private void generarBloques(){
