@@ -98,9 +98,9 @@ public class Arkanoid extends JPanel implements KeyListener, MouseInputListener 
         private boolean moveRight = false;
 
 	public Arkanoid() {
-		this.fondoVidas = new ImageIcon(this.getClass().getResource("/imagenes/bola_trans.png")).getImage();
+            this.fondoVidas = new ImageIcon(this.getClass().getResource("/imagenes/red-mc.png")).getImage().getScaledInstance(15, 15, Image.SCALE_DEFAULT);
 	}
-
+        
 	public void setImage(String img) {
 	    this.image = new ImageIcon(this.getClass().getResource(img)).getImage();
 	}
@@ -234,7 +234,6 @@ public class Arkanoid extends JPanel implements KeyListener, MouseInputListener 
 			gr.fillRect(0, raqueta.getCoordY()+Raqueta.RACKET_H, panelW, raqueta.getCoordY()+Raqueta.RACKET_H);
 			gr.fillRect(0, 0, panelW, 30);
 			for(int x = 0; x < lifes; x++){
-				gr.setColor(Color.red);
 				gr.fillOval(10 + (x * (Pelota.BW + 2)),15 - (Pelota.BH / 2),Pelota.BW-1,Pelota.BH-1);
 				gr.drawImage(fondoVidas,10 + (x * (Pelota.BW + 2)),15 - (Pelota.BH / 2),null);
 			}
