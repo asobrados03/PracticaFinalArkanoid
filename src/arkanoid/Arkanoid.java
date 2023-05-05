@@ -20,7 +20,6 @@ import java.io.InputStream;
 import java.sql.Time;
 import java.util.ArrayList;
 import java.util.Random;
-import java.awt.Robot;
 import java.awt.event.KeyEvent;
 
 public class Arkanoid extends JPanel implements KeyListener, MouseInputListener {
@@ -39,7 +38,7 @@ public class Arkanoid extends JPanel implements KeyListener, MouseInputListener 
 	/** El número de imágenes por segundo. Puede aumentarse
 	 o disminuirse para acelerar o ralentizar, respectivamente,
 	 la velocidad del juego. */
-	public static final int FPS=60;
+	public static final int FPS=50;
 
 	/** El tiempo que debe esperarse tras cada cambio de posici�n
 	 de la bola */
@@ -94,8 +93,6 @@ public class Arkanoid extends JPanel implements KeyListener, MouseInputListener 
 	private Random randomPremios;
         
         private static final int MOVEMENT_SPEED = 5; // velocidad de movimiento con las teclas
-        private boolean moveLeft = false;
-        private boolean moveRight = false;
 
 	public Arkanoid() {
             this.fondoVidas = new ImageIcon(this.getClass().getResource("/imagenes/red-mc.png")).getImage().getScaledInstance(15, 15, Image.SCALE_DEFAULT);
@@ -490,13 +487,13 @@ public class Arkanoid extends JPanel implements KeyListener, MouseInputListener 
         public void keyPressed(KeyEvent e) {
             int key = e.getKeyCode();
             if (key == KeyEvent.VK_A || key == KeyEvent.VK_LEFT) {
-                raqueta.setCoordX(raqueta.getCoordX() - 5);
+                raqueta.setCoordX(raqueta.getCoordX() - MOVEMENT_SPEED);
                 if (raqueta.getCoordX() < 0) {
                     raqueta.setCoordX(0);
                 }
             }
             if (key == KeyEvent.VK_D || key == KeyEvent.VK_RIGHT) {
-                raqueta.setCoordX(raqueta.getCoordX() + 5);
+                raqueta.setCoordX(raqueta.getCoordX() + MOVEMENT_SPEED);
                 if (raqueta.getCoordX() + Raqueta.RACKET_W >= panelW) {
                     raqueta.setCoordX(panelW - Raqueta.RACKET_W);
                 }
