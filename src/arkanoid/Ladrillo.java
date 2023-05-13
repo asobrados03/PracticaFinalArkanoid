@@ -107,6 +107,12 @@ public class Ladrillo {
 				case 5:
 					gr.setColor(Color.MAGENTA);
 					break;
+                                case 6:
+					gr.setColor(Color.BLUE);
+					break;
+                                case 7:
+					gr.setColor(Color.RED);
+					break;
 				default:
 					break;
 			}
