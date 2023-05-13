@@ -76,7 +76,7 @@ public class Arkanoid extends JPanel implements KeyListener, MouseInputListener 
 	
 	private int level = 1;
 	
-	private int numLevels = 7 ; //Esta variable al principio era 5 ahora vale 7 ya que de momento vamos a añadir dos niveles más al juego
+	private final int numLevels = 7 ;
 	
 	private int lifes = 3;
 	
@@ -93,6 +93,9 @@ public class Arkanoid extends JPanel implements KeyListener, MouseInputListener 
 	private Random randomPremios;
         
         private static final int MOVEMENT_SPEED = 5; // velocidad de movimiento con las teclas
+        
+        private static boolean moverIzquierda = false;
+        private static boolean moverDerecha = false;
 
 	public Arkanoid() {
             this.fondoVidas = new ImageIcon(this.getClass().getResource("/imagenes/red-mc.png")).getImage().getScaledInstance(15, 15, Image.SCALE_DEFAULT);
@@ -127,6 +130,7 @@ public class Arkanoid extends JPanel implements KeyListener, MouseInputListener 
 		// El código siguiente se encarga de terminar el
 		// programa cuando el usuario cierra la ventana
 		frame.addWindowListener(new WindowAdapter() {
+                        @Override
 			public void windowClosing(WindowEvent evt) {
 				System.exit(0);
 			}
@@ -155,22 +159,21 @@ public class Arkanoid extends JPanel implements KeyListener, MouseInputListener 
 			File directorio = new File("\\UDP\\Arkanoid" + "\\"+directorios[x]);
 			directorio.mkdirs();
 			directorio.setWritable(true);
-			for(int y = 0; y < archivos[x].length; y++){
-				String archivo = directorio.getCanonicalPath() + "\\"+archivos[x][y];
-		
-				File temp = new File(archivo);
-				InputStream is = (InputStream) this.getClass().getResourceAsStream("/"+directorios[x]+"/"+archivos[x][y]);
-				FileOutputStream archivoDestino = new FileOutputStream(temp);
-				byte[] buffer = new byte[512*1024];
-				int nbLectura;
-		
-				while ((nbLectura = is.read(buffer)) != -1)
-				archivoDestino.write(buffer, 0, nbLectura);
-			}
+                    for (String archivo1 : archivos[x]) {
+                        String archivo = directorio.getCanonicalPath() + "\\" + archivo1;
+                        File temp = new File(archivo);
+                        InputStream is = (InputStream) this.getClass().getResourceAsStream("/"+directorios[x]+"/" + archivo1);
+                        FileOutputStream archivoDestino = new FileOutputStream(temp);
+                        byte[] buffer = new byte[512*1024];
+                        int nbLectura;
+                        while ((nbLectura = is.read(buffer)) != -1)
+                            archivoDestino.write(buffer, 0, nbLectura);
+                    }
 		}		
 	}
 
-	@SuppressWarnings("deprecation")
+        @SuppressWarnings("deprecation")
+        @Override
 	public void paint(Graphics gr) {
 		// Borramos el interior de la ventana.
 		Dimension d = getSize();
@@ -283,7 +286,8 @@ public class Arkanoid extends JPanel implements KeyListener, MouseInputListener 
 		fpsOverflow=0;
 		nextTime=System.currentTimeMillis();
 		while (true) {
-			// Espera de un tiempo fijo
+			update();
+                        // Espera de un tiempo fijo
 			currTime = System.currentTimeMillis();
 			if (currTime<nextTime)
 				try { Thread.sleep(nextTime-currTime); }
@@ -483,20 +487,30 @@ public class Arkanoid extends JPanel implements KeyListener, MouseInputListener 
 		frame.setCursor(myCursor);
 	}
         
+        public void moverIzquierda() {
+            raqueta.setCoordX(raqueta.getCoordX() - MOVEMENT_SPEED);
+            if (raqueta.getCoordX() < 0) {
+                raqueta.setCoordX(0);
+            }
+	}
+        
+        public void moverDerecha() {
+            raqueta.setCoordX(raqueta.getCoordX() + MOVEMENT_SPEED);
+            if (raqueta.getCoordX() + Raqueta.RACKET_W >= panelW) {
+                raqueta.setCoordX(panelW - Raqueta.RACKET_W);
+            }
+	}
+        
         @Override
         public void keyPressed(KeyEvent e) {
             int key = e.getKeyCode();
             if (key == KeyEvent.VK_A || key == KeyEvent.VK_LEFT) {
-                raqueta.setCoordX(raqueta.getCoordX() - MOVEMENT_SPEED);
-                if (raqueta.getCoordX() < 0) {
-                    raqueta.setCoordX(0);
-                }
+                moverIzquierda = true;
+                moverDerecha = false;
             }
             if (key == KeyEvent.VK_D || key == KeyEvent.VK_RIGHT) {
-                raqueta.setCoordX(raqueta.getCoordX() + MOVEMENT_SPEED);
-                if (raqueta.getCoordX() + Raqueta.RACKET_W >= panelW) {
-                    raqueta.setCoordX(panelW - Raqueta.RACKET_W);
-                }
+                moverDerecha = true;
+                moverIzquierda = false;
             }
             if (key == KeyEvent.VK_W || key == KeyEvent.VK_UP) {
                 for (Pelota pel : pelotas){
@@ -509,6 +523,31 @@ public class Arkanoid extends JPanel implements KeyListener, MouseInputListener 
                     this.startTime = System.currentTimeMillis();
 		}
             }
+        }
+    
+        @Override
+        public void keyReleased(KeyEvent e) {
+            int key = e.getKeyCode();
+            if (key == KeyEvent.VK_A || key == KeyEvent.VK_LEFT) {
+                moverIzquierda = false;
+            }
+            if (key == KeyEvent.VK_D || key == KeyEvent.VK_RIGHT) {
+                moverDerecha = false;
+            }
+        }
+
+        @Override
+        public void keyTyped(KeyEvent e) {
+            
+        }
+        
+        public void update() {
+            if (moverIzquierda) {
+                moverIzquierda();
+            }
+            if (moverDerecha) {
+                moverDerecha();
+            }
             for (Pelota pel : pelotas){
                 if(pel.getMovX() == 0 && pel.getMovY() == 0){
                         pel.setCoordX(raqueta.getCoordX() + Raqueta.RACKET_W/2 - Pelota.BW/2);
@@ -516,15 +555,6 @@ public class Arkanoid extends JPanel implements KeyListener, MouseInputListener 
                         if (raqueta.getCoordX()+Raqueta.RACKET_W>=panelW) pel.setCoordX(panelW - Raqueta.RACKET_W/2 - Pelota.BW/2);
                 }
             }
-        }
-    
-        @Override
-        public void keyReleased(KeyEvent evt) {
-            
-        }
-
-        @Override
-        public void keyTyped(KeyEvent e) {
         }
 	
 	private void generarBloques(){
@@ -629,9 +659,7 @@ public class Arkanoid extends JPanel implements KeyListener, MouseInputListener 
                                 {0,0,7,0,6,0,7,0,0},
                                 {0,7,0,0,6,0,0,7,0},
                                 {7,7,0,0,6,0,0,7,7},
-                                {0,0,7,7,6,7,7,0,0},
-                                {0,0,0,0,7,0,0,0,0},
-                                {0,0,0,6,6,6,0,0,0}
+                                {0,0,7,7,7,7,7,0,0}
                         };
 		default -> {
                 }
