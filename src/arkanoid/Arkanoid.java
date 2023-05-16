@@ -617,7 +617,6 @@ public class Arkanoid extends JPanel implements KeyListener, MouseInputListener 
 				{0,0,0,5,5,5,0,0,0}
 			};
                 case 6 -> constBloques = new int[][]{
-                                {0,0,0,0,0,0,0,0,0},
                                 {0,0,0,6,6,6,0,0,0},
                                 {0,0,6,1,1,1,6,0,0},
                                 {0,0,6,2,2,2,6,0,0},
@@ -638,7 +637,6 @@ public class Arkanoid extends JPanel implements KeyListener, MouseInputListener 
                                 {0,0,0,6,6,6,0,0,0}
                         };
                 case 7 -> constBloques = new int[][]{
-                                {0,0,0,0,0,0,0,0,0},
                                 {0,0,0,7,7,7,0,0,0},
                                 {0,0,6,1,1,1,6,0,0},
                                 {0,6,1,2,2,2,1,6,0},
@@ -657,9 +655,6 @@ public class Arkanoid extends JPanel implements KeyListener, MouseInputListener 
                                 {6,6,6,6,7,6,6,6,6},
                                 {0,0,0,7,6,7,0,0,0},
                                 {0,0,7,0,6,0,7,0,0},
-                                {0,7,0,0,6,0,0,7,0},
-                                {7,7,0,0,6,0,0,7,7},
-                                {0,0,7,7,7,7,7,0,0}
                         };
 		default -> {
                 }
