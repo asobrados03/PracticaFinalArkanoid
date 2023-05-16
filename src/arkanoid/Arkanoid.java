@@ -190,10 +190,35 @@ public class Arkanoid extends JPanel implements KeyListener, MouseInputListener 
         Dimension d = getSize();
         panelW = d.width;
         panelH = d.height;
-        if (this.level > this.numLevels) {
-            gr.setColor(Color.blue);
-            gr.fillRect(0, 0, panelW, panelH);
+        if ((this.lifes != -1)&&(this.level > this.numLevels)) {
+            this.setImage("/imagenes/fondofinal.png");
+            gr.drawImage(image, 0, 0, null);
             this.setImage("/imagenes/logo.png");
+            gr.drawImage(image, (panelW - image.getWidth(null)) / 2, 50, null);
+            Font alerta = new Font("Sans Serif", Font.BOLD, 30);
+            int heightFinal = 70 + image.getHeight(null) + 20;
+            gr.setFont(alerta);
+            gr.setColor(Color.WHITE);
+            String frases = "Has Ganado";
+            heightFinal += gr.getFontMetrics().getHeight();
+            gr.drawString(frases, this.getWidth() / 2 - gr.getFontMetrics().stringWidth(frases) / 2, heightFinal);
+            heightFinal = panelH - 100;
+            alerta = new Font("Sans Serif", Font.BOLD, 20);
+            gr.setFont(alerta);
+            frases = "Desarrollado Por:";
+            gr.drawString(frases, this.getWidth() / 2 - gr.getFontMetrics().stringWidth(frases) / 2, heightFinal);
+            frases = "Cristian Castillejo";
+            heightFinal += gr.getFontMetrics().getHeight();
+            gr.drawString(frases, this.getWidth() / 2 - gr.getFontMetrics().stringWidth(frases) / 2, heightFinal);
+            frases = "ccastillejo@uniondeprogramadores.com";
+            heightFinal += gr.getFontMetrics().getHeight();
+            alerta = new Font("Sans Serif", Font.BOLD, 10);
+            gr.setFont(alerta);
+            gr.drawString(frases, this.getWidth() / 2 - gr.getFontMetrics().stringWidth(frases) / 2, heightFinal);
+        }if ((this.lifes == -1)&&(this.level <= this.numLevels)) {
+            this.setImage("/imagenes/fondofinal.png");
+            gr.drawImage(image, 0, 0, null);
+            this.setImage("/imagenes/red-bh.png");
             gr.drawImage(image, (panelW - image.getWidth(null)) / 2, 20, null);
             Font alerta = new Font("Sans Serif", Font.BOLD, 30);
             int heightFinal = 20 + image.getHeight(null) + 20;
@@ -215,7 +240,7 @@ public class Arkanoid extends JPanel implements KeyListener, MouseInputListener 
             alerta = new Font("Sans Serif", Font.BOLD, 10);
             gr.setFont(alerta);
             gr.drawString(frases, this.getWidth() / 2 - gr.getFontMetrics().stringWidth(frases) / 2, heightFinal);
-        } else {
+        }if ((this.lifes != -1)&&(this.level <= this.numLevels)){
             raqueta.setCoordY(panelH - Raqueta.RACKET_H * 5);
             if (pelotas.isEmpty()) {
                 pelotas.add(new Pelota(FRAME_W / 2 - Pelota.BW / 2, raqueta.getCoordY() - Raqueta.RACKET_H));
