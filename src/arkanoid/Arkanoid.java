@@ -82,7 +82,7 @@ public class Arkanoid extends JPanel implements KeyListener, MouseInputListener 
 
     private long finalTime = 0;
 
-    private int level = 1;
+    private int level = 0;
 
     private final int numLevels = 7;
 
@@ -95,6 +95,8 @@ public class Arkanoid extends JPanel implements KeyListener, MouseInputListener 
     private Image image = null;
 
     private Image fondoVidas = null;
+    
+    private Image fondoInicio = new ImageIcon(this.getClass().getResource("/imagenes/arkanoid_logo.png")).getImage();
 
     private Random random;
 
@@ -309,6 +311,11 @@ public class Arkanoid extends JPanel implements KeyListener, MouseInputListener 
                     gr.drawString(completado, this.getWidth() / 2 - gr.getFontMetrics().stringWidth(completado) / 2, nextLevelY);
                 }
             }
+        }
+        if(this.level==0){
+            gr.drawImage(fondoInicio, 0, 0, null);
+            //poner musica de fondo para la pantalla de incio
+            //hacer que incremente el nivel del juego cuando se presione la tecla r y se inicie el juego consecuentemente
         }
     }
 
