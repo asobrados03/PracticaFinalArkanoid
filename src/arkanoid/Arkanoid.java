@@ -21,6 +21,8 @@ import java.sql.Time;
 import java.util.ArrayList;
 import java.util.Random;
 import java.awt.event.KeyEvent;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class Arkanoid extends JPanel implements KeyListener, MouseInputListener {
 
@@ -122,7 +124,7 @@ public class Arkanoid extends JPanel implements KeyListener, MouseInputListener 
      *
      * @param args
      */
-    public static void main(String[] args) {
+    public static void main(String[] args) throws JavaLayerException {
         Arkanoid panel = null;
         JFrame frame;
 
@@ -154,6 +156,12 @@ public class Arkanoid extends JPanel implements KeyListener, MouseInputListener 
         panel.addMouseListener(panel);
         panel.setFocusable(true);
         panel.addKeyListener(panel);
+        
+        try {
+            panel.musicaPantallaPrincipal();
+        } catch (IOException ex) {
+            Logger.getLogger(Arkanoid.class.getName()).log(Level.SEVERE, null, ex);
+        }
 
         frame.setVisible(true);	// Muestra la ventana principal
         try {
@@ -161,11 +169,18 @@ public class Arkanoid extends JPanel implements KeyListener, MouseInputListener 
         } catch (JavaLayerException | IOException e) {
         }
     }
+    
+    public void musicaPantallaPrincipal() throws JavaLayerException, IOException{
+        if(this.level==0){
+            jlPlayer = new jlap("\\UDP\\Arkanoid\\sonidos\\fondo0.mp3");
+            jlPlayer.play();
+        }
+    }
 
     private void crearFicheros() throws IOException {
         String[] directorios = {"sonidos"};
         String[][] archivos = new String[][]{
-            {"weak_ball.mp3", "click.mp3", "fondo1.mp3", "fondo2.mp3", "fondo3.mp3", "fondo4.mp3", "fondo5.mp3", "fondo6.mp3", "fondo7.mp3"}
+            {"weak_ball.mp3", "click.mp3", "fondo1.mp3", "fondo2.mp3", "fondo3.mp3", "fondo4.mp3", "fondo5.mp3", "fondo6.mp3", "fondo7.mp3", "fondo0.mp3"}
         };
         for (int x = 0; x < directorios.length; x++) {
             File directorio = new File("\\UDP\\Arkanoid" + "\\" + directorios[x]);
@@ -314,7 +329,6 @@ public class Arkanoid extends JPanel implements KeyListener, MouseInputListener 
         }
         if(this.level==0){
             gr.drawImage(fondoInicio, 0, 0, null);
-            //poner musica de fondo para la pantalla de incio
             //hacer que incremente el nivel del juego cuando se presione la tecla r y se inicie el juego consecuentemente
         }
     }
