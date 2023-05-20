@@ -114,7 +114,9 @@ public class Arkanoid extends JPanel implements KeyListener, MouseInputListener 
     }
 
     public void setImage(String img) {
-        this.image = new ImageIcon(this.getClass().getResource(img)).getImage();
+        if(this.level != 0){
+            this.image = new ImageIcon(this.getClass().getResource(img)).getImage();
+        }
     }
 
     /**
@@ -164,9 +166,11 @@ public class Arkanoid extends JPanel implements KeyListener, MouseInputListener 
         }
 
         frame.setVisible(true);	// Muestra la ventana principal
-        try {
-            panel.playGame();
-        } catch (JavaLayerException | IOException e) {
+        if(panel != null){
+            try {
+                panel.playGame();
+            } catch (JavaLayerException | IOException e) {
+            }
         }
     }
     
@@ -329,138 +333,152 @@ public class Arkanoid extends JPanel implements KeyListener, MouseInputListener 
         }
         if(this.level==0){
             gr.drawImage(fondoInicio, 0, 0, null);
+            String iniciar="Presiona la tecla r ";
+            
+            gr.setColor(Color.LIGHT_GRAY);
+            
+            Font inicio = new Font("Serif", Font.BOLD + Font.ITALIC, 25);
+            gr.setFont(inicio);
+            gr.drawString(iniciar, 35, (panelH - 60));
+            
+            iniciar="para iniciar el juego";
+            gr.setFont(inicio);
+            gr.drawString(iniciar, 35, (panelH - 42));
             //hacer que incremente el nivel del juego cuando se presione la tecla r y se inicie el juego consecuentemente
         }
     }
 
     private void playGame() throws JavaLayerException, IOException {
-        setImage("/imagenes/fondo" + this.level + ".png");
-        jlPlayer = new jlap("\\UDP\\Arkanoid\\sonidos\\fondo" + level + ".mp3");
-        jlPlayer.play();
-        this.generarBloques();
-        long nextTime, currTime;
-        int fpsOverflow;
+        if(this.level != 0){
+            setImage("/imagenes/fondo" + this.level + ".png");
+            jlPlayer = new jlap("\\UDP\\Arkanoid\\sonidos\\fondo" + level + ".mp3");
+            jlPlayer.play();
+            this.generarBloques();
+            long nextTime, currTime;
+            int fpsOverflow;
 
-        fpsOverflow = 0;
-        nextTime = System.currentTimeMillis();
-        while (true) {
-            update();
-            // Espera de un tiempo fijo
-            currTime = System.currentTimeMillis();
-            if (currTime < nextTime)
-				try {
-                Thread.sleep(nextTime - currTime);
-            } catch (InterruptedException e) {
-            } else {
-                fpsOverflow++;
-            }
-            nextTime += WAIT_TIME;
-            // Actualización de las coordenadas e incrementos de la pelota
-            int cont = 0;
-            for (Pelota pel : pelotas) {
-                pel.move(panelW, panelH);
-                if (pel.isDown()) {
-                    if (pel.getCoordY() > (raqueta.getCoordY() + Raqueta.RACKET_H)) {
-                        pelotas.remove(cont);
-                        if (pelotas.isEmpty()) {
-                            this.lifes--;
-                        }
-                        if (lifes >= 0 && pelotas.isEmpty()) {
-                            pelotas.add(new Pelota(raqueta.getCoordX() + Raqueta.RACKET_W / 2 - Pelota.BW / 2, raqueta.getCoordY() - Raqueta.RACKET_H));
-                        }
-                        break;
-                    }
-                    if (((pel.getCoordX() + Pelota.BW) >= raqueta.getCoordX()) && (pel.getCoordX() <= raqueta.getCoordX() + Raqueta.RACKET_W) && ((pel.getCoordY() + Pelota.BH) >= raqueta.getCoordY()) && (pel.getCoordY() < (raqueta.getCoordY() + Raqueta.RACKET_H))) {
-                        pel.setDown(false);
-                        pel.rebota(raqueta.getCoordX(), raqueta.getCoordY(), Raqueta.RACKET_W, Raqueta.RACKET_H, null);
-                    }
+            fpsOverflow = 0;
+            nextTime = System.currentTimeMillis();
+            while (true) {
+                update();
+                // Espera de un tiempo fijo
+                currTime = System.currentTimeMillis();
+                if (currTime < nextTime)
+                                    try {
+                    Thread.sleep(nextTime - currTime);
+                } catch (InterruptedException e) {
+                } else {
+                    fpsOverflow++;
                 }
-                int contBloq = 0;
-                for (Ladrillo bloq : ladrillos) {
-                    if (bloq.destruido(pel)) {
-                        if (bloq.getLifes() == 0) {
-                            switch (bloq.getPremio()) {
-                                case 1 ->
-                                    premios.add(new Expansor(bloq.getCoordX() + Ladrillo.BlqWidth / 2 - Expansor.PW / 2, bloq.getCoordY()));
-                                case 2 ->
-                                    premios.add(new MasPelotas(bloq.getCoordX() + Ladrillo.BlqWidth / 2 - MasPelotas.BW / 2, bloq.getCoordY()));
-                                case 3 ->
-                                    premios.add(new Reductor(bloq.getCoordX() + Ladrillo.BlqWidth / 2 - MasPelotas.BW / 2, bloq.getCoordY()));
-                                case 4 ->
-                                    premios.add(new Acelerador(bloq.getCoordX() + Ladrillo.BlqWidth / 2 - MasPelotas.BW / 2, bloq.getCoordY()));
-                                case 5 ->
-                                    premios.add(new Freno(bloq.getCoordX() + Ladrillo.BlqWidth / 2 - MasPelotas.BW / 2, bloq.getCoordY()));
-                                default -> {
+                nextTime += WAIT_TIME;
+                // Actualización de las coordenadas e incrementos de la pelota
+                int cont = 0;
+                for (Pelota pel : pelotas) {
+                    pel.move(panelW, panelH);
+                    if (pel.isDown()) {
+                        if (pel.getCoordY() > (raqueta.getCoordY() + Raqueta.RACKET_H)) {
+                            pelotas.remove(cont);
+                            if (pelotas.isEmpty()) {
+                                this.lifes--;
+                            }
+                            if (lifes >= 0 && pelotas.isEmpty()) {
+                                pelotas.add(new Pelota(raqueta.getCoordX() + Raqueta.RACKET_W / 2 - Pelota.BW / 2, raqueta.getCoordY() - Raqueta.RACKET_H));
+                            }
+                            break;
+                        }
+                        if (((pel.getCoordX() + Pelota.BW) >= raqueta.getCoordX()) && (pel.getCoordX() <= raqueta.getCoordX() + Raqueta.RACKET_W) && ((pel.getCoordY() + Pelota.BH) >= raqueta.getCoordY()) && (pel.getCoordY() < (raqueta.getCoordY() + Raqueta.RACKET_H))) {
+                            pel.setDown(false);
+                            pel.rebota(raqueta.getCoordX(), raqueta.getCoordY(), Raqueta.RACKET_W, Raqueta.RACKET_H, null);
+                        }
+                    }
+                    int contBloq = 0;
+                    for (Ladrillo bloq : ladrillos) {
+                        if (bloq.destruido(pel)) {
+                            if (bloq.getLifes() == 0) {
+                                switch (bloq.getPremio()) {
+                                    case 1 ->
+                                        premios.add(new Expansor(bloq.getCoordX() + Ladrillo.BlqWidth / 2 - Expansor.PW / 2, bloq.getCoordY()));
+                                    case 2 ->
+                                        premios.add(new MasPelotas(bloq.getCoordX() + Ladrillo.BlqWidth / 2 - MasPelotas.BW / 2, bloq.getCoordY()));
+                                    case 3 ->
+                                        premios.add(new Reductor(bloq.getCoordX() + Ladrillo.BlqWidth / 2 - MasPelotas.BW / 2, bloq.getCoordY()));
+                                    case 4 ->
+                                        premios.add(new Acelerador(bloq.getCoordX() + Ladrillo.BlqWidth / 2 - MasPelotas.BW / 2, bloq.getCoordY()));
+                                    case 5 ->
+                                        premios.add(new Freno(bloq.getCoordX() + Ladrillo.BlqWidth / 2 - MasPelotas.BW / 2, bloq.getCoordY()));
+                                    default -> {
+                                    }
                                 }
+                                ladrillos.remove(contBloq);
                             }
-                            ladrillos.remove(contBloq);
+                            break;
                         }
-                        break;
-                    }
-                    contBloq++;
-                }
-                cont++;
-            }
-            cont = 0;
-            if (!ladrillos.isEmpty()) {
-                for (Premio prem : premios) {
-                    prem.move();
-                    if (prem.recivido(raqueta)) {
-                        if (prem instanceof Expansor) {
-                            raqueta.ampliar();
-                        } else if (prem instanceof MasPelotas) {
-                            this.pelotas.add(new Pelota(raqueta.getCoordX() + Raqueta.RACKET_W / 2 - Pelota.BW / 2, raqueta.getCoordY() - Raqueta.RACKET_H));
-                        } else if (prem instanceof Reductor) {
-                            raqueta.reduir();
-                        } else if (prem instanceof Acelerador) {
-                            for (Pelota pelota : pelotas) {
-                                pelota.acelera();
-                            }
-                        } else if (prem instanceof Freno) {
-                            for (Pelota pelota : pelotas) {
-                                pelota.frena();
-                            }
-                        }
-                        premios.remove(cont);
-                        break;
-                    } else if (prem.getPosY() + prem.getWidth() >= raqueta.getCoordY() + Raqueta.RACKET_H) {
-                        premios.remove(cont);
-                        break;
+                        contBloq++;
                     }
                     cont++;
                 }
-            }
-            // Repintado de la ventana para actualizar su contenido
-            repaint();
-            if (ladrillos.size() - Ladrillo.Immortales == 0 || this.lifes < 0) {
-                timeLevels.add(new Time(System.currentTimeMillis() - this.startTime));
-                this.startTime = 0;
-                break;
-            }
-        }
-        premios.clear();
-        Raqueta.RACKET_W = 50;
-        raqueta = new Raqueta(FRAME_W / 2 - Raqueta.RACKET_W / 2, 0);
-        jlPlayer.player.close();
-        if (this.level < this.numLevels && this.lifes >= 0) {
-            jlap.iniciar = false;
-            for (int y = 0; y < 5; y++) {
-                timeNextLevel = 5 - y;
+                cont = 0;
+                if (!ladrillos.isEmpty()) {
+                    for (Premio prem : premios) {
+                        prem.move();
+                        if (prem.recivido(raqueta)) {
+                            if (prem instanceof Expansor) {
+                                raqueta.ampliar();
+                            } else if (prem instanceof MasPelotas) {
+                                this.pelotas.add(new Pelota(raqueta.getCoordX() + Raqueta.RACKET_W / 2 - Pelota.BW / 2, raqueta.getCoordY() - Raqueta.RACKET_H));
+                            } else if (prem instanceof Reductor) {
+                                raqueta.reduir();
+                            } else if (prem instanceof Acelerador) {
+                                for (Pelota pelota : pelotas) {
+                                    pelota.acelera();
+                                }
+                            } else if (prem instanceof Freno) {
+                                for (Pelota pelota : pelotas) {
+                                    pelota.frena();
+                                }
+                            }
+                            premios.remove(cont);
+                            break;
+                        } else if (prem.getPosY() + prem.getWidth() >= raqueta.getCoordY() + Raqueta.RACKET_H) {
+                            premios.remove(cont);
+                            break;
+                        }
+                        cont++;
+                    }
+                }
+                // Repintado de la ventana para actualizar su contenido
                 repaint();
-                try {
-                    Thread.sleep(1000);
-                } catch (InterruptedException e) {
+                if (ladrillos.size() - Ladrillo.Immortales == 0 || this.lifes < 0) {
+                    timeLevels.add(new Time(System.currentTimeMillis() - this.startTime));
+                    this.startTime = 0;
+                    break;
                 }
             }
-            this.pelotas.clear();
-            this.pelotas.add(new Pelota(raqueta.getCoordX() + Raqueta.RACKET_W / 2 - Pelota.BW / 2, raqueta.getCoordY() - Raqueta.RACKET_H));
-            this.level += 1;
-            this.ladrillos = null;
-            this.playGame();
-        } else if (this.level == this.numLevels) {
-            this.level++;
-            repaint();
+            premios.clear();
+            Raqueta.RACKET_W = 50;
+            raqueta = new Raqueta(FRAME_W / 2 - Raqueta.RACKET_W / 2, 0);
+            jlPlayer.player.close();
+            if (this.level < this.numLevels && this.lifes >= 0) {
+                jlap.iniciar = false;
+                for (int y = 0; y < 5; y++) {
+                    timeNextLevel = 5 - y;
+                    repaint();
+                    try {
+                        Thread.sleep(1000);
+                    } catch (InterruptedException e) {
+                    }
+                }
+                this.pelotas.clear();
+                this.pelotas.add(new Pelota(raqueta.getCoordX() + Raqueta.RACKET_W / 2 - Pelota.BW / 2, raqueta.getCoordY() - Raqueta.RACKET_H));
+                this.level += 1;
+                this.ladrillos = null;
+                this.playGame();
+            } else if (this.level == this.numLevels) {
+                this.level++;
+                repaint();
+            }
         }
+        
     }
 
     @Override
@@ -597,6 +615,10 @@ public class Arkanoid extends JPanel implements KeyListener, MouseInputListener 
             if (this.startTime == 0) {
                 this.startTime = System.currentTimeMillis();
             }
+        }
+        
+        if (key == KeyEvent.VK_R && this.level == 0) {
+            this.level++;
         }
     }
 
