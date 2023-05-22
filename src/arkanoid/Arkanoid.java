@@ -89,10 +89,14 @@ public class Arkanoid extends JPanel implements KeyListener, MouseInputListener 
     private final int numLevels = 7;
 
     private int lifes = 3;
+    
+    private int lifesreset = 0;
 
     private int timeNextLevel = 0;
 
     public static int puntuacion = 0;
+    
+    public static int puntuacionreset = 0;
 
     private Image image = null;
 
@@ -107,6 +111,7 @@ public class Arkanoid extends JPanel implements KeyListener, MouseInputListener 
     private static boolean moverIzquierda = false;
     private static boolean moverDerecha = false;
     private static boolean inicializar = false;
+    private static boolean reset = false;
 
     public Arkanoid() {
         this.fondoVidas = new ImageIcon(this.getClass().getResource("/imagenes/red-mc.png")).getImage().getScaledInstance(15, 15, Image.SCALE_DEFAULT);
@@ -120,10 +125,12 @@ public class Arkanoid extends JPanel implements KeyListener, MouseInputListener 
 
     /**
      * * Programa principal.Se encarga de inicializar el juego, crear la
-     * ventana principal y mostrarla. Finalmente invoca a playGame, que se
-     * encarga de mover la pelota.
+     * ventana principal y mostrarla.Finalmente invoca a playGame, que se
+ encarga de mover la pelota.
      *
      * @param args
+     * @throws javazoom.jl.decoder.JavaLayerException
+     * @throws java.io.IOException
      */
     public static void main(String[] args) throws JavaLayerException, IOException {
         Arkanoid panel = null;
@@ -228,12 +235,17 @@ public class Arkanoid extends JPanel implements KeyListener, MouseInputListener 
             this.setImage("/imagenes/logo.png");
             gr.drawImage(image, (panelW - image.getWidth(null)) / 2, 50, null);
             Font alerta = new Font("Sans Serif", Font.BOLD, 30);
-            int heightFinal = 70 + image.getHeight(null) + 20;
+            int heightFinal = 50 + image.getHeight(null);
             gr.setFont(alerta);
-            gr.setColor(Color.WHITE);
+            gr.setColor(Color.GREEN);
             String frases = "Has Ganado";
             heightFinal += gr.getFontMetrics().getHeight();
             gr.drawString(frases, this.getWidth() / 2 - gr.getFontMetrics().stringWidth(frases) / 2, heightFinal);
+            heightFinal = panelH - 150;
+            alerta = new Font("Sans Serif", Font.BOLD, 25);
+            gr.setFont(alerta);
+            gr.setColor(Color.GREEN);
+            gr.drawString("Puntaje: " + puntuacion, this.getWidth() / 2 - gr.getFontMetrics().stringWidth(frases) / 2, heightFinal);
             heightFinal = panelH - 100;
             alerta = new Font("Sans Serif", Font.BOLD, 20);
             gr.setFont(alerta);
@@ -255,7 +267,7 @@ public class Arkanoid extends JPanel implements KeyListener, MouseInputListener 
             Font alerta = new Font("Sans Serif", Font.BOLD, 30);
             int heightFinal = 20 + image.getHeight(null) + 20;
             gr.setFont(alerta);
-            gr.setColor(Color.WHITE);
+            gr.setColor(Color.RED);
             String frases = "Fin del Juego!";
             heightFinal += gr.getFontMetrics().getHeight();
             gr.drawString(frases, this.getWidth() / 2 - gr.getFontMetrics().stringWidth(frases) / 2, heightFinal);
@@ -361,6 +373,8 @@ public class Arkanoid extends JPanel implements KeyListener, MouseInputListener 
 
     private void playGame() throws JavaLayerException, IOException {
         if(this.level != 0){
+            this.lifesreset = this.lifes;
+            this.puntuacionreset = this.puntuacion;
             setImage("/imagenes/fondo" + this.level + ".png");
             jlPlayer = new jlap("\\UDP\\Arkanoid\\sonidos\\fondo" + level + ".mp3");
             jlPlayer.play();
@@ -372,6 +386,20 @@ public class Arkanoid extends JPanel implements KeyListener, MouseInputListener 
             nextTime = System.currentTimeMillis();
             while (true) {
                 update();
+                
+                if(reset){
+                    jlPlayer.player.close();
+                    jlap.iniciar = false;
+                    premios.clear();
+                    this.pelotas.clear();
+                    this.ladrillos = null;
+                    this.reset = false;
+                    this.lifes = this.lifesreset;
+                    this.puntuacion = this.puntuacionreset - 1000;
+                    repaint();
+                    this.playGame();
+                }
+                
                 // Espera de un tiempo fijo
                 currTime = System.currentTimeMillis();
                 if (currTime < nextTime)
@@ -474,13 +502,22 @@ public class Arkanoid extends JPanel implements KeyListener, MouseInputListener 
                 for (int y = 0; y < 5; y++) {
                     timeNextLevel = 5 - y;
                     repaint();
-                    try {
-                        Thread.sleep(1000);
-                    } catch (InterruptedException e) {
+                    update();
+                    for (int x = 0; x < FPS; x++) {
+                        currTime = System.currentTimeMillis();
+                        if (currTime < nextTime)
+                                            try {
+                            Thread.sleep(nextTime - currTime);
+                        } catch (InterruptedException e) {
+                        } else {
+                            fpsOverflow++;
+                        }
+                        nextTime += WAIT_TIME;
+                        repaint();
+                        update();
                     }
                 }
                 this.pelotas.clear();
-                this.pelotas.add(new Pelota(raqueta.getCoordX() + Raqueta.RACKET_W / 2 - Pelota.BW / 2, raqueta.getCoordY() - Raqueta.RACKET_H));
                 this.level += 1;
                 this.ladrillos = null;
                 this.playGame();
@@ -545,14 +582,16 @@ public class Arkanoid extends JPanel implements KeyListener, MouseInputListener 
             jlPlayer.player.close();
             inicializar = true;
         }
-        for (Pelota pel : pelotas) {
-            if (pel.getMovX() == 0 && pel.getMovY() == 0) {
-                pel.setMovX(0.0);
-                pel.setMovY(-3.0);
+        if(inicializar){
+            for (Pelota pel : pelotas) {
+                if (pel.getMovX() == 0 && pel.getMovY() == 0) {
+                    pel.setMovX(0.0);
+                    pel.setMovY(-3.0);
+                    if (this.startTime == 0) {
+                        this.startTime = System.currentTimeMillis() + startTime;
+                    }
+                }
             }
-        }
-        if (this.startTime == 0) {
-            this.startTime = System.currentTimeMillis();
         }
     }
 
@@ -613,29 +652,34 @@ public class Arkanoid extends JPanel implements KeyListener, MouseInputListener 
     @Override
     public void keyPressed(KeyEvent e) {
         int key = e.getKeyCode();
-        if (key == KeyEvent.VK_A || key == KeyEvent.VK_LEFT) {
-            moverIzquierda = true;
-            moverDerecha = false;
-        }
-        if (key == KeyEvent.VK_D || key == KeyEvent.VK_RIGHT) {
-            moverDerecha = true;
-            moverIzquierda = false;
-        }
-        if (key == KeyEvent.VK_W || key == KeyEvent.VK_UP) {
-            for (Pelota pel : pelotas) {
-                if (pel.getMovX() == 0 && pel.getMovY() == 0) {
-                    pel.setMovX(0.0);
-                    pel.setMovY(-3.0);
-                }
-            }
-            if (this.startTime == 0) {
-                this.startTime = System.currentTimeMillis();
-            }
-        }
         if (this.level == 0) {
             this.level++;
             jlPlayer.player.close();
             inicializar = true;
+        }
+        if(inicializar){
+            if (key == KeyEvent.VK_A || key == KeyEvent.VK_LEFT) {
+                moverIzquierda = true;
+                moverDerecha = false;
+            }
+            if (key == KeyEvent.VK_D || key == KeyEvent.VK_RIGHT) {
+                moverDerecha = true;
+                moverIzquierda = false;
+            }
+            if (key == KeyEvent.VK_W || key == KeyEvent.VK_UP) {
+                for (Pelota pel : pelotas) {
+                    if (pel.getMovX() == 0 && pel.getMovY() == 0) {
+                        pel.setMovX(0.0);
+                        pel.setMovY(-3.0);
+                        if (this.startTime == 0) {
+                            this.startTime = System.currentTimeMillis() + startTime;
+                        }
+                    }
+                }
+            }
+            if (key == KeyEvent.VK_R) {
+                this.reset = true;
+            }
         }
     }
 
