@@ -159,7 +159,7 @@ public class Arkanoid extends JPanel implements KeyListener, MouseInputListener 
         panel.addKeyListener(panel);
         
         try {
-            panel.musicaPantallaPrincipal();
+            panel.musicaPantallasEspeciales();
         } catch (IOException ex) {
             Logger.getLogger(Arkanoid.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -179,9 +179,15 @@ public class Arkanoid extends JPanel implements KeyListener, MouseInputListener 
         }
     }
     
-    public void musicaPantallaPrincipal() throws JavaLayerException, IOException{
+    public void musicaPantallasEspeciales() throws JavaLayerException, IOException{
         if(this.level==0){
             jlPlayer = new jlap("\\UDP\\Arkanoid\\sonidos\\fondo0.mp3");
+            jlPlayer.play();
+        }if ((this.lifes != -1)&&(this.level > this.numLevels)) {
+            jlPlayer = new jlap("\\UDP\\Arkanoid\\sonidos\\victory.mp3");
+            jlPlayer.play();
+        }if ((this.lifes == -1)&&(this.level <= this.numLevels)) {
+            jlPlayer = new jlap("\\UDP\\Arkanoid\\sonidos\\gameover.mp3");
             jlPlayer.play();
         }
     }
@@ -189,7 +195,7 @@ public class Arkanoid extends JPanel implements KeyListener, MouseInputListener 
     private void crearFicheros() throws IOException {
         String[] directorios = {"sonidos"};
         String[][] archivos = new String[][]{
-            {"weak_ball.mp3", "click.mp3", "fondo1.mp3", "fondo2.mp3", "fondo3.mp3", "fondo4.mp3", "fondo5.mp3", "fondo6.mp3", "fondo7.mp3", "fondo0.mp3"}
+            {"weak_ball.mp3", "click.mp3", "fondo1.mp3", "fondo2.mp3", "fondo3.mp3", "fondo4.mp3", "fondo5.mp3", "fondo6.mp3", "fondo7.mp3", "fondo0.mp3", "gameover.mp3", "victory.mp3"}
         };
         for (int x = 0; x < directorios.length; x++) {
             File directorio = new File("\\UDP\\Arkanoid" + "\\" + directorios[x]);
