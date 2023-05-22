@@ -193,7 +193,7 @@ public class Arkanoid extends JPanel implements KeyListener, MouseInputListener 
         }if ((this.lifes != -1)&&(this.level > this.numLevels)) {
             jlPlayer = new jlap("\\UDP\\Arkanoid\\sonidos\\victory.mp3");
             jlPlayer.play();
-        }if ((this.lifes == -1)&&(this.level <= this.numLevels)) {
+        }if (this.lifes == -1 && this.level <= this.numLevels) {
             jlPlayer = new jlap("\\UDP\\Arkanoid\\sonidos\\gameover.mp3");
             jlPlayer.play();
         }
@@ -251,13 +251,8 @@ public class Arkanoid extends JPanel implements KeyListener, MouseInputListener 
             gr.setFont(alerta);
             frases = "Desarrollado Por:";
             gr.drawString(frases, this.getWidth() / 2 - gr.getFontMetrics().stringWidth(frases) / 2, heightFinal);
-            frases = "Cristian Castillejo";
+            frases = "Siete alumnos de DIU";
             heightFinal += gr.getFontMetrics().getHeight();
-            gr.drawString(frases, this.getWidth() / 2 - gr.getFontMetrics().stringWidth(frases) / 2, heightFinal);
-            frases = "ccastillejo@uniondeprogramadores.com";
-            heightFinal += gr.getFontMetrics().getHeight();
-            alerta = new Font("Sans Serif", Font.BOLD, 10);
-            gr.setFont(alerta);
             gr.drawString(frases, this.getWidth() / 2 - gr.getFontMetrics().stringWidth(frases) / 2, heightFinal);
         }if ((this.lifes == -1)&&(this.level <= this.numLevels)) {
             this.setImage("/imagenes/fondofinal.png");
@@ -276,13 +271,8 @@ public class Arkanoid extends JPanel implements KeyListener, MouseInputListener 
             gr.setFont(alerta);
             frases = "Desarrollado Por:";
             gr.drawString(frases, this.getWidth() / 2 - gr.getFontMetrics().stringWidth(frases) / 2, heightFinal);
-            frases = "Cristian Castillejo";
+            frases = "Siete alumnos de DIU";
             heightFinal += gr.getFontMetrics().getHeight();
-            gr.drawString(frases, this.getWidth() / 2 - gr.getFontMetrics().stringWidth(frases) / 2, heightFinal);
-            frases = "ccastillejo@uniondeprogramadores.com";
-            heightFinal += gr.getFontMetrics().getHeight();
-            alerta = new Font("Sans Serif", Font.BOLD, 10);
-            gr.setFont(alerta);
             gr.drawString(frases, this.getWidth() / 2 - gr.getFontMetrics().stringWidth(frases) / 2, heightFinal);
         }if ((this.lifes != -1)&&(this.level <= this.numLevels)&&(this.level > 0)){
             raqueta.setCoordY(panelH - Raqueta.RACKET_H * 5);
