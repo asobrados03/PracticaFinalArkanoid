@@ -97,8 +97,6 @@ public class Arkanoid extends JPanel implements KeyListener, MouseInputListener 
     private Image image = null;
 
     private Image fondoVidas = null;
-    
-    private Image fondoInicio = new ImageIcon(this.getClass().getResource("/imagenes/arkanoid_logo.png")).getImage();
 
     private Random random;
 
@@ -108,13 +106,14 @@ public class Arkanoid extends JPanel implements KeyListener, MouseInputListener 
 
     private static boolean moverIzquierda = false;
     private static boolean moverDerecha = false;
+    private static boolean inicializar = false;
 
     public Arkanoid() {
         this.fondoVidas = new ImageIcon(this.getClass().getResource("/imagenes/red-mc.png")).getImage().getScaledInstance(15, 15, Image.SCALE_DEFAULT);
     }
 
     public void setImage(String img) {
-        if(this.level != 0){
+        if(this.level >= 0){
             this.image = new ImageIcon(this.getClass().getResource(img)).getImage();
         }
     }
@@ -126,7 +125,7 @@ public class Arkanoid extends JPanel implements KeyListener, MouseInputListener 
      *
      * @param args
      */
-    public static void main(String[] args) throws JavaLayerException {
+    public static void main(String[] args) throws JavaLayerException, IOException {
         Arkanoid panel = null;
         JFrame frame;
 
@@ -171,6 +170,12 @@ public class Arkanoid extends JPanel implements KeyListener, MouseInputListener 
                 panel.playGame();
             } catch (JavaLayerException | IOException e) {
             }
+            while(inicializar = true){
+                try {
+                    panel.playGame();
+                } catch (JavaLayerException | IOException e) {
+                }
+            }
         }
     }
     
@@ -206,7 +211,7 @@ public class Arkanoid extends JPanel implements KeyListener, MouseInputListener 
 
     @SuppressWarnings("deprecation")
     @Override
-    public void paint(Graphics gr) {
+    public void paint(Graphics gr){
         // Borramos el interior de la ventana.
         Dimension d = getSize();
         panelW = d.width;
@@ -261,7 +266,7 @@ public class Arkanoid extends JPanel implements KeyListener, MouseInputListener 
             alerta = new Font("Sans Serif", Font.BOLD, 10);
             gr.setFont(alerta);
             gr.drawString(frases, this.getWidth() / 2 - gr.getFontMetrics().stringWidth(frases) / 2, heightFinal);
-        }if ((this.lifes != -1)&&(this.level <= this.numLevels)){
+        }if ((this.lifes != -1)&&(this.level <= this.numLevels)&&(this.level > 0)){
             raqueta.setCoordY(panelH - Raqueta.RACKET_H * 5);
             if (pelotas.isEmpty()) {
                 pelotas.add(new Pelota(FRAME_W / 2 - Pelota.BW / 2, raqueta.getCoordY() - Raqueta.RACKET_H));
@@ -332,19 +337,19 @@ public class Arkanoid extends JPanel implements KeyListener, MouseInputListener 
             }
         }
         if(this.level==0){
-            gr.drawImage(fondoInicio, 0, 0, null);
-            String iniciar="Presiona la tecla r ";
+            this.setImage("/imagenes/arkanoid_logo.png");
+            gr.drawImage(image, -10, 0, null);
+            String iniciar="Presiona cualquier tecla";
             
             gr.setColor(Color.LIGHT_GRAY);
             
-            Font inicio = new Font("Serif", Font.BOLD + Font.ITALIC, 25);
+            Font inicio = new Font("Serif", Font.BOLD + Font.ITALIC, 24);
             gr.setFont(inicio);
-            gr.drawString(iniciar, 35, (panelH - 60));
+            gr.drawString(iniciar, 10, (panelH - 58));
             
             iniciar="para iniciar el juego";
             gr.setFont(inicio);
-            gr.drawString(iniciar, 35, (panelH - 42));
-            //hacer que incremente el nivel del juego cuando se presione la tecla r y se inicie el juego consecuentemente
+            gr.drawString(iniciar, 30, (panelH - 30));
         }
     }
 
@@ -529,6 +534,11 @@ public class Arkanoid extends JPanel implements KeyListener, MouseInputListener 
 
     @Override
     public void mouseClicked(MouseEvent arg0) {
+        if (this.level == 0) {
+            this.level++;
+            jlPlayer.player.close();
+            inicializar = true;
+        }
         for (Pelota pel : pelotas) {
             if (pel.getMovX() == 0 && pel.getMovY() == 0) {
                 pel.setMovX(0.0);
@@ -616,9 +626,10 @@ public class Arkanoid extends JPanel implements KeyListener, MouseInputListener 
                 this.startTime = System.currentTimeMillis();
             }
         }
-        
-        if (key == KeyEvent.VK_R && this.level == 0) {
+        if (this.level == 0) {
             this.level++;
+            jlPlayer.player.close();
+            inicializar = true;
         }
     }
 
