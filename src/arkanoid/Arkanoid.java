@@ -186,6 +186,7 @@ public class Arkanoid extends JPanel implements KeyListener, MouseInputListener 
     }
     
     public void sonidoMuerte() throws JavaLayerException, IOException {
+        jlPlayer.player.close();
         while(!sound){
             jlPlayer = new jlap("\\UDP\\Arkanoid\\sonidos\\gameover.mp3");
             jlPlayer.play();
