@@ -112,6 +112,7 @@ public class Arkanoid extends JPanel implements KeyListener, MouseInputListener 
     private static boolean moverDerecha = false;
     private static boolean inicializar = false;
     private static boolean reset = false;
+    private static boolean sound = false;
 
     public Arkanoid() {
         this.fondoVidas = new ImageIcon(this.getClass().getResource("/imagenes/red-mc.png")).getImage().getScaledInstance(15, 15, Image.SCALE_DEFAULT);
@@ -164,19 +165,12 @@ public class Arkanoid extends JPanel implements KeyListener, MouseInputListener 
         panel.addMouseListener(panel);
         panel.setFocusable(true);
         panel.addKeyListener(panel);
-        
-        try {
-            panel.musicaPantallasEspeciales();
-        } catch (IOException ex) {
-            Logger.getLogger(Arkanoid.class.getName()).log(Level.SEVERE, null, ex);
-        }
 
-        frame.setVisible(true);	// Muestra la ventana principal
+        frame.setVisible(true);
+        // Muestra la ventana principal
+        
         if(panel != null){
-            try {
-                panel.playGame();
-            } catch (JavaLayerException | IOException e) {
-            }
+            panel.inicio();
             while(inicializar = true){
                 try {
                     panel.playGame();
@@ -185,20 +179,29 @@ public class Arkanoid extends JPanel implements KeyListener, MouseInputListener 
             }
         }
     }
+
+    public void sonidoInicio() throws JavaLayerException, IOException {
+        jlPlayer = new jlap("\\UDP\\Arkanoid\\sonidos\\fondo0.mp3");
+        jlPlayer.play();
+    }
     
-    public void musicaPantallasEspeciales() throws JavaLayerException, IOException{
-        if(this.level==0){
-            jlPlayer = new jlap("\\UDP\\Arkanoid\\sonidos\\fondo0.mp3");
-            jlPlayer.play();
-        }if ((this.lifes != -1)&&(this.level > this.numLevels)) {
-            jlPlayer = new jlap("\\UDP\\Arkanoid\\sonidos\\victory.mp3");
-            jlPlayer.play();
-        }if (this.lifes == -1 && this.level <= this.numLevels) {
+    public void sonidoMuerte() throws JavaLayerException, IOException {
+        while(!sound){
             jlPlayer = new jlap("\\UDP\\Arkanoid\\sonidos\\gameover.mp3");
             jlPlayer.play();
+            this.sound = true;
+            System.out.println("Código ejecutado una vez.1");
         }
     }
-
+    public void sonidoVictoria() throws JavaLayerException, IOException {
+        while(!sound){
+            jlPlayer = new jlap("\\UDP\\Arkanoid\\sonidos\\victory.mp3");
+            jlPlayer.play();
+            this.sound = true;
+            System.out.println("Código ejecutado una vez.2");
+        }
+    }
+    
     private void crearFicheros() throws IOException {
         String[] directorios = {"sonidos"};
         String[][] archivos = new String[][]{
@@ -221,7 +224,79 @@ public class Arkanoid extends JPanel implements KeyListener, MouseInputListener 
             }
         }
     }
+    
+    private void inicio() {
+        repaint();
+    }
+    
+    public void paintInicio(Graphics gr) throws JavaLayerException, IOException{
+        sonidoInicio();
+        this.setImage("/imagenes/arkanoid_logo.png");
+        gr.drawImage(image, -10, 0, null);
+        String iniciar="Presiona cualquier tecla";
 
+        gr.setColor(Color.LIGHT_GRAY);
+
+        Font inicio = new Font("Serif", Font.BOLD + Font.ITALIC, 24);
+        gr.setFont(inicio);
+        gr.drawString(iniciar, 10, (panelH - 58));
+
+        iniciar="para iniciar el juego";
+        gr.setFont(inicio);
+        gr.drawString(iniciar, 30, (panelH - 30));
+    }
+    
+    public void paintMuerte(Graphics gr) throws JavaLayerException, IOException{
+        sonidoMuerte();
+        this.setImage("/imagenes/fondofinal.png");
+        gr.drawImage(image, 0, 0, null);
+        this.setImage("/imagenes/red-bh.png");
+        gr.drawImage(image, (panelW - image.getWidth(null)) / 2, 20, null);
+        Font alerta = new Font("Sans Serif", Font.BOLD, 30);
+        int heightFinal = 20 + image.getHeight(null) + 20;
+        gr.setFont(alerta);
+        gr.setColor(Color.RED);
+        String frases = "Fin del Juego!";
+        heightFinal += gr.getFontMetrics().getHeight();
+        gr.drawString(frases, this.getWidth() / 2 - gr.getFontMetrics().stringWidth(frases) / 2, heightFinal);
+        heightFinal = panelH - 100;
+        alerta = new Font("Sans Serif", Font.BOLD, 20);
+        gr.setFont(alerta);
+        frases = "Desarrollado Por:";
+        gr.drawString(frases, this.getWidth() / 2 - gr.getFontMetrics().stringWidth(frases) / 2, heightFinal);
+        frases = "Siete alumnos de DIU";
+        heightFinal += gr.getFontMetrics().getHeight();
+        gr.drawString(frases, this.getWidth() / 2 - gr.getFontMetrics().stringWidth(frases) / 2, heightFinal);
+    }
+    
+    public void paintVictoria(Graphics gr) throws JavaLayerException, IOException{
+        sonidoVictoria();
+        this.setImage("/imagenes/fondofinal.png");
+        gr.drawImage(image, 0, 0, null);
+        this.setImage("/imagenes/logo.png");
+        gr.drawImage(image, (panelW - image.getWidth(null)) / 2, 50, null);
+        Font alerta = new Font("Sans Serif", Font.BOLD, 30);
+        int heightFinal = 50 + image.getHeight(null);
+        gr.setFont(alerta);
+        gr.setColor(Color.GREEN);
+        String frases = "Has Ganado";
+        heightFinal += gr.getFontMetrics().getHeight();
+        gr.drawString(frases, this.getWidth() / 2 - gr.getFontMetrics().stringWidth(frases) / 2, heightFinal);
+        heightFinal = panelH - 150;
+        alerta = new Font("Sans Serif", Font.BOLD, 25);
+        gr.setFont(alerta);
+        gr.setColor(Color.GREEN);
+        gr.drawString("Puntaje: " + puntuacion, this.getWidth() / 2 - gr.getFontMetrics().stringWidth(frases) / 2, heightFinal);
+        heightFinal = panelH - 100;
+        alerta = new Font("Sans Serif", Font.BOLD, 20);
+        gr.setFont(alerta);
+        frases = "Desarrollado Por:";
+        gr.drawString(frases, this.getWidth() / 2 - gr.getFontMetrics().stringWidth(frases) / 2, heightFinal);
+        frases = "Siete alumnos de DIU";
+        heightFinal += gr.getFontMetrics().getHeight();
+        gr.drawString(frases, this.getWidth() / 2 - gr.getFontMetrics().stringWidth(frases) / 2, heightFinal);
+    }
+    
     @SuppressWarnings("deprecation")
     @Override
     public void paint(Graphics gr){
@@ -229,52 +304,19 @@ public class Arkanoid extends JPanel implements KeyListener, MouseInputListener 
         Dimension d = getSize();
         panelW = d.width;
         panelH = d.height;
-        if ((this.lifes != -1)&&(this.level > this.numLevels)) {
-            this.setImage("/imagenes/fondofinal.png");
-            gr.drawImage(image, 0, 0, null);
-            this.setImage("/imagenes/logo.png");
-            gr.drawImage(image, (panelW - image.getWidth(null)) / 2, 50, null);
-            Font alerta = new Font("Sans Serif", Font.BOLD, 30);
-            int heightFinal = 50 + image.getHeight(null);
-            gr.setFont(alerta);
-            gr.setColor(Color.GREEN);
-            String frases = "Has Ganado";
-            heightFinal += gr.getFontMetrics().getHeight();
-            gr.drawString(frases, this.getWidth() / 2 - gr.getFontMetrics().stringWidth(frases) / 2, heightFinal);
-            heightFinal = panelH - 150;
-            alerta = new Font("Sans Serif", Font.BOLD, 25);
-            gr.setFont(alerta);
-            gr.setColor(Color.GREEN);
-            gr.drawString("Puntaje: " + puntuacion, this.getWidth() / 2 - gr.getFontMetrics().stringWidth(frases) / 2, heightFinal);
-            heightFinal = panelH - 100;
-            alerta = new Font("Sans Serif", Font.BOLD, 20);
-            gr.setFont(alerta);
-            frases = "Desarrollado Por:";
-            gr.drawString(frases, this.getWidth() / 2 - gr.getFontMetrics().stringWidth(frases) / 2, heightFinal);
-            frases = "Siete alumnos de DIU";
-            heightFinal += gr.getFontMetrics().getHeight();
-            gr.drawString(frases, this.getWidth() / 2 - gr.getFontMetrics().stringWidth(frases) / 2, heightFinal);
-        }if ((this.lifes == -1)&&(this.level <= this.numLevels)) {
-            this.setImage("/imagenes/fondofinal.png");
-            gr.drawImage(image, 0, 0, null);
-            this.setImage("/imagenes/red-bh.png");
-            gr.drawImage(image, (panelW - image.getWidth(null)) / 2, 20, null);
-            Font alerta = new Font("Sans Serif", Font.BOLD, 30);
-            int heightFinal = 20 + image.getHeight(null) + 20;
-            gr.setFont(alerta);
-            gr.setColor(Color.RED);
-            String frases = "Fin del Juego!";
-            heightFinal += gr.getFontMetrics().getHeight();
-            gr.drawString(frases, this.getWidth() / 2 - gr.getFontMetrics().stringWidth(frases) / 2, heightFinal);
-            heightFinal = panelH - 100;
-            alerta = new Font("Sans Serif", Font.BOLD, 20);
-            gr.setFont(alerta);
-            frases = "Desarrollado Por:";
-            gr.drawString(frases, this.getWidth() / 2 - gr.getFontMetrics().stringWidth(frases) / 2, heightFinal);
-            frases = "Siete alumnos de DIU";
-            heightFinal += gr.getFontMetrics().getHeight();
-            gr.drawString(frases, this.getWidth() / 2 - gr.getFontMetrics().stringWidth(frases) / 2, heightFinal);
-        }if ((this.lifes != -1)&&(this.level <= this.numLevels)&&(this.level > 0)){
+        if ((this.lifes != -1)&&(this.level > this.numLevels)&&(inicializar == true)) {
+            try {
+                paintVictoria(gr);
+            } catch (JavaLayerException | IOException ex) {
+                Logger.getLogger(Arkanoid.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }if ((this.lifes == -1)&&(this.level <= this.numLevels)&&(inicializar == true)) {
+            try {
+                paintMuerte(gr);
+            } catch (JavaLayerException | IOException ex) {
+                Logger.getLogger(Arkanoid.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }if ((this.lifes != -1)&&(this.level <= this.numLevels)&&(this.level > 0)&&(inicializar == true)){
             raqueta.setCoordY(panelH - Raqueta.RACKET_H * 5);
             if (pelotas.isEmpty()) {
                 pelotas.add(new Pelota(FRAME_W / 2 - Pelota.BW / 2, raqueta.getCoordY() - Raqueta.RACKET_H));
@@ -343,31 +385,26 @@ public class Arkanoid extends JPanel implements KeyListener, MouseInputListener 
                     gr.drawString(completado, this.getWidth() / 2 - gr.getFontMetrics().stringWidth(completado) / 2, nextLevelY);
                 }
             }
-        }
-        if(this.level==0){
-            this.setImage("/imagenes/arkanoid_logo.png");
-            gr.drawImage(image, -10, 0, null);
-            String iniciar="Presiona cualquier tecla";
-            
-            gr.setColor(Color.LIGHT_GRAY);
-            
-            Font inicio = new Font("Serif", Font.BOLD + Font.ITALIC, 24);
-            gr.setFont(inicio);
-            gr.drawString(iniciar, 10, (panelH - 58));
-            
-            iniciar="para iniciar el juego";
-            gr.setFont(inicio);
-            gr.drawString(iniciar, 30, (panelH - 30));
+        }if ((this.lifes != -1)&&(this.level == 0)) {
+            try {
+                paintInicio(gr);
+            } catch (JavaLayerException | IOException ex) {
+                Logger.getLogger(Arkanoid.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
     }
 
     private void playGame() throws JavaLayerException, IOException {
         if(this.level != 0){
+            jlPlayer.player.close();
+            jlap.iniciar = false;
             this.lifesreset = this.lifes;
             this.puntuacionreset = this.puntuacion;
             setImage("/imagenes/fondo" + this.level + ".png");
-            jlPlayer = new jlap("\\UDP\\Arkanoid\\sonidos\\fondo" + level + ".mp3");
-            jlPlayer.play();
+            if(this.lifes != -1){
+                jlPlayer = new jlap("\\UDP\\Arkanoid\\sonidos\\fondo" + level + ".mp3");
+                jlPlayer.play();
+            }
             this.generarBloques();
             long nextTime, currTime;
             int fpsOverflow;
@@ -570,6 +607,7 @@ public class Arkanoid extends JPanel implements KeyListener, MouseInputListener 
         if (this.level == 0) {
             this.level++;
             jlPlayer.player.close();
+            jlap.iniciar = false;
             inicializar = true;
         }
         if(inicializar){
@@ -645,6 +683,7 @@ public class Arkanoid extends JPanel implements KeyListener, MouseInputListener 
         if (this.level == 0) {
             this.level++;
             jlPlayer.player.close();
+            jlap.iniciar = false;
             inicializar = true;
         }
         if(inicializar){
