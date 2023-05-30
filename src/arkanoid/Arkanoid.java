@@ -181,8 +181,11 @@ public class Arkanoid extends JPanel implements KeyListener, MouseInputListener 
     }
 
     public void sonidoInicio() throws JavaLayerException, IOException {
-        jlPlayer = new jlap("\\UDP\\Arkanoid\\sonidos\\fondo0.mp3");
-        jlPlayer.play();
+        while(!sound){
+            jlPlayer = new jlap("\\UDP\\Arkanoid\\sonidos\\fondo0.mp3");
+            jlPlayer.play();
+            this.sound = true;
+        }
     }
     
     public void sonidoMuerte() throws JavaLayerException, IOException {
@@ -227,7 +230,28 @@ public class Arkanoid extends JPanel implements KeyListener, MouseInputListener 
     }
     
     private void inicio() {
-        repaint();
+        while(!inicializar){
+            repaint();
+
+            long nextTime, currTime;
+            int fpsOverflow;
+
+            fpsOverflow = 0;
+            nextTime = System.currentTimeMillis();
+
+            currTime = System.currentTimeMillis();
+            if (currTime < nextTime)
+                                try {
+                Thread.sleep(nextTime - currTime);
+            } catch (InterruptedException e) {
+            } else {
+                fpsOverflow++;
+            }
+            nextTime += WAIT_TIME;
+        }
+        if(inicializar){
+            this.sound = false;
+        }
     }
     
     public void paintInicio(Graphics gr) throws JavaLayerException, IOException{
