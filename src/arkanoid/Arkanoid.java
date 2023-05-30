@@ -113,6 +113,7 @@ public class Arkanoid extends JPanel implements KeyListener, MouseInputListener 
     private static boolean inicializar = false;
     private static boolean reset = false;
     private static boolean sound = false;
+    private static boolean mouseExited = false;
 
     public Arkanoid() {
         this.fondoVidas = new ImageIcon(this.getClass().getResource("/imagenes/red-mc.png")).getImage().getScaledInstance(15, 15, Image.SCALE_DEFAULT);
@@ -271,6 +272,21 @@ public class Arkanoid extends JPanel implements KeyListener, MouseInputListener 
         gr.drawString(iniciar, 30, (panelH - 30));
     }
     
+    public void paintPause(Graphics gr) throws JavaLayerException, IOException{
+        Font alerta = new Font("Sans Serif", Font.BOLD, 30);
+        gr.setFont(alerta);
+        gr.setColor(Color.RED);
+        String completado = "PAUSE";
+        gr.drawString(completado, this.getWidth() / 2 - gr.getFontMetrics().stringWidth(completado) / 2, 100);
+        String iniciar="Presiona cualquier tecla";
+        Font inicio = new Font("Sans Serif", Font.BOLD, 22);
+        gr.setFont(inicio);
+        gr.drawString(iniciar, 10, (panelH - 58));
+        iniciar="para iniciar el juego";
+        gr.setFont(inicio);
+        gr.drawString(iniciar, 30, (panelH - 30));
+    }
+    
     public void paintMuerte(Graphics gr) throws JavaLayerException, IOException{
         sonidoMuerte();
         this.setImage("/imagenes/fondofinal.png");
@@ -408,6 +424,12 @@ public class Arkanoid extends JPanel implements KeyListener, MouseInputListener 
                     nextLevelY += 10 + gr.getFontMetrics().getHeight();
                     completado = "" + timeNextLevel;
                     gr.drawString(completado, this.getWidth() / 2 - gr.getFontMetrics().stringWidth(completado) / 2, nextLevelY);
+                }
+            }if(mouseExited && this.lifes!=-1 && this.level <= this.numLevels){
+                try {
+                    paintPause(gr);
+                } catch (JavaLayerException | IOException ex) {
+                    Logger.getLogger(Arkanoid.class.getName()).log(Level.SEVERE, null, ex);
                 }
             }
         }if ((this.lifes != -1)&&(this.level == 0)) {
@@ -587,43 +609,45 @@ public class Arkanoid extends JPanel implements KeyListener, MouseInputListener 
 
     @Override
     public void mouseMoved(MouseEvent evt) {
-        raqueta.setCoordX(evt.getX() - Raqueta.RACKET_W / 2);
-        if (raqueta.getCoordX() < 0) {
-            raqueta.setCoordX(0);
-        }
-        if (raqueta.getCoordX() + Raqueta.RACKET_W >= panelW) {
-            raqueta.setCoordX(panelW - Raqueta.RACKET_W);
-        }
-        int cont = 0;
-        for (Pelota pel : pelotas) {
-            if (pel.getMovX() == 0 && pel.getMovY() == 0) {
-                pel.setCoordX(evt.getX() - Pelota.BW / 2);
-                if (raqueta.getCoordX() <= 0) {
-                    pel.setCoordX(Raqueta.RACKET_W / 2 - Pelota.BW / 2);
-                }
-                if (raqueta.getCoordX() + Raqueta.RACKET_W >= panelW) {
-                    pel.setCoordX(panelW - Raqueta.RACKET_W / 2 - Pelota.BW / 2);
-                }
-            } else if (pel.isDown()) {
-                if (pel.getCoordY() > (raqueta.getCoordY() + Raqueta.RACKET_H)) {
-                    pelotas.remove(cont);
-                    if (pelotas.isEmpty()) {
-                        this.lifes--;
-                    }
-                    if (lifes >= 0 && pelotas.isEmpty()) {
-                        pelotas.add(new Pelota(raqueta.getCoordX() + Raqueta.RACKET_W / 2 - Pelota.BW / 2, raqueta.getCoordY() - Raqueta.RACKET_H));
-                    }
-                    break;
-                }
-                if (((pel.getCoordX() + Pelota.BW) >= raqueta.getCoordX()) && (pel.getCoordX() <= raqueta.getCoordX() + Raqueta.RACKET_W) && ((pel.getCoordY() + Pelota.BH) >= raqueta.getCoordY()) && (pel.getCoordY() < (raqueta.getCoordY() + Raqueta.RACKET_H))) {
-                    pel.setDown(false);
-                    try {
-                        pel.rebota(raqueta.getCoordX(), raqueta.getCoordY(), Raqueta.RACKET_W, Raqueta.RACKET_H, null);
-                    } catch (JavaLayerException | IOException e) {
-                    }
-                }
+        if(!mouseExited && this.lifes!=-1 && this.level <= this.numLevels){
+            raqueta.setCoordX(evt.getX() - Raqueta.RACKET_W / 2);
+            if (raqueta.getCoordX() < 0) {
+                raqueta.setCoordX(0);
             }
-            cont++;
+            if (raqueta.getCoordX() + Raqueta.RACKET_W >= panelW) {
+                raqueta.setCoordX(panelW - Raqueta.RACKET_W);
+            }
+            int cont = 0;
+            for (Pelota pel : pelotas) {
+                if (pel.getMovX() == 0 && pel.getMovY() == 0) {
+                    pel.setCoordX(evt.getX() - Pelota.BW / 2);
+                    if (raqueta.getCoordX() <= 0) {
+                        pel.setCoordX(Raqueta.RACKET_W / 2 - Pelota.BW / 2);
+                    }
+                    if (raqueta.getCoordX() + Raqueta.RACKET_W >= panelW) {
+                        pel.setCoordX(panelW - Raqueta.RACKET_W / 2 - Pelota.BW / 2);
+                    }
+                } else if (pel.isDown()) {
+                    if (pel.getCoordY() > (raqueta.getCoordY() + Raqueta.RACKET_H)) {
+                        pelotas.remove(cont);
+                        if (pelotas.isEmpty()) {
+                            this.lifes--;
+                        }
+                        if (lifes >= 0 && pelotas.isEmpty()) {
+                            pelotas.add(new Pelota(raqueta.getCoordX() + Raqueta.RACKET_W / 2 - Pelota.BW / 2, raqueta.getCoordY() - Raqueta.RACKET_H));
+                        }
+                        break;
+                    }
+                    if (((pel.getCoordX() + Pelota.BW) >= raqueta.getCoordX()) && (pel.getCoordX() <= raqueta.getCoordX() + Raqueta.RACKET_W) && ((pel.getCoordY() + Pelota.BH) >= raqueta.getCoordY()) && (pel.getCoordY() < (raqueta.getCoordY() + Raqueta.RACKET_H))) {
+                        pel.setDown(false);
+                        try {
+                            pel.rebota(raqueta.getCoordX(), raqueta.getCoordY(), Raqueta.RACKET_W, Raqueta.RACKET_H, null);
+                        } catch (JavaLayerException | IOException e) {
+                        }
+                    }
+                }
+                cont++;
+            }
         }
     }
 
@@ -635,7 +659,7 @@ public class Arkanoid extends JPanel implements KeyListener, MouseInputListener 
             jlap.iniciar = false;
             inicializar = true;
         }
-        if(inicializar){
+        if(inicializar && !mouseExited && this.lifes!=-1 && this.level <= this.numLevels){
             for (Pelota pel : pelotas) {
                 if (pel.getMovX() == 0 && pel.getMovY() == 0) {
                     pel.setMovX(0.0);
@@ -650,25 +674,31 @@ public class Arkanoid extends JPanel implements KeyListener, MouseInputListener 
 
     @Override
     public void mouseEntered(MouseEvent arg0) {
-        if (!pauseX.isEmpty()) {
-            int cont = 0;
-            for (@SuppressWarnings("unused") Object pausX : pauseX) {
-                pelotas.get(cont).setMovX(Float.parseFloat(pauseX.get(cont).toString()));
-                pelotas.get(cont).setMovY(Float.parseFloat(pauseY.get(cont).toString()));
-                cont++;
+        if(mouseExited && this.lifes!=-1 && this.level <= this.numLevels){
+            this.mouseExited = false;
+            if (!pauseX.isEmpty()) {
+                int cont = 0;
+                for (@SuppressWarnings("unused") Object pausX : pauseX) {
+                    pelotas.get(cont).setMovX(Float.parseFloat(pauseX.get(cont).toString()));
+                    pelotas.get(cont).setMovY(Float.parseFloat(pauseY.get(cont).toString()));
+                    cont++;
+                }
             }
         }
     }
 
     @Override
     public void mouseExited(MouseEvent arg0) {
-        pauseX.removeAll(pauseX);
-        pauseY.removeAll(pauseY);
-        for (Pelota pelota : pelotas) {
-            pauseX.add(pelota.getMovX());
-            pauseY.add(pelota.getMovY());
-            pelota.setMovX(0);
-            pelota.setMovY(0);
+        if(!mouseExited && this.lifes!=-1 && this.level <= this.numLevels){
+            this.mouseExited = true;
+            pauseX.removeAll(pauseX);
+            pauseY.removeAll(pauseY);
+            for (Pelota pelota : pelotas) {
+                pauseX.add(pelota.getMovX());
+                pauseY.add(pelota.getMovY());
+                pelota.setMovX(0);
+                pelota.setMovY(0);
+            }
         }
     }
 
@@ -712,15 +742,37 @@ public class Arkanoid extends JPanel implements KeyListener, MouseInputListener 
             inicializar = true;
         }
         if(inicializar){
-            if (key == KeyEvent.VK_A || key == KeyEvent.VK_LEFT) {
+            if(mouseExited && this.lifes!=-1 && this.level <= this.numLevels){
+                this.mouseExited = false;
+                if (!pauseX.isEmpty()) {
+                    int cont = 0;
+                    for (@SuppressWarnings("unused") Object pausX : pauseX) {
+                        pelotas.get(cont).setMovX(Float.parseFloat(pauseX.get(cont).toString()));
+                        pelotas.get(cont).setMovY(Float.parseFloat(pauseY.get(cont).toString()));
+                        cont++;
+                    }
+                }
+            }
+            if (key == KeyEvent.VK_ESCAPE && !mouseExited && this.lifes!=-1 && this.level <= this.numLevels) {
+                this.mouseExited = true;
+                pauseX.removeAll(pauseX);
+                pauseY.removeAll(pauseY);
+                for (Pelota pelota : pelotas) {
+                    pauseX.add(pelota.getMovX());
+                    pauseY.add(pelota.getMovY());
+                    pelota.setMovX(0);
+                    pelota.setMovY(0);
+                }
+            }
+            if (key == KeyEvent.VK_A || key == KeyEvent.VK_LEFT && !mouseExited && this.lifes!=-1 && this.level <= this.numLevels) {
                 moverIzquierda = true;
                 moverDerecha = false;
             }
-            if (key == KeyEvent.VK_D || key == KeyEvent.VK_RIGHT) {
+            if (key == KeyEvent.VK_D || key == KeyEvent.VK_RIGHT && !mouseExited && this.lifes!=-1 && this.level <= this.numLevels) {
                 moverDerecha = true;
                 moverIzquierda = false;
             }
-            if (key == KeyEvent.VK_W || key == KeyEvent.VK_UP) {
+            if (key == KeyEvent.VK_W || key == KeyEvent.VK_UP && !mouseExited && this.lifes!=-1 && this.level <= this.numLevels) {
                 for (Pelota pel : pelotas) {
                     if (pel.getMovX() == 0 && pel.getMovY() == 0) {
                         pel.setMovX(0.0);
@@ -731,8 +783,10 @@ public class Arkanoid extends JPanel implements KeyListener, MouseInputListener 
                     }
                 }
             }
-            if (key == KeyEvent.VK_R) {
-                this.reset = true;
+            if (key == KeyEvent.VK_R && !mouseExited && this.lifes!=-1 && this.level <= this.numLevels) {
+                if(this.puntuacionreset >= 1000){
+                    this.reset = true;
+                }
             }
         }
     }
