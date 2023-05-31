@@ -263,7 +263,7 @@ public class Arkanoid extends JPanel implements KeyListener, MouseInputListener 
             Arkanoid.sound = true;
         }
     }
-    
+    // Se encarga de la musica en la ventana de selección de idiomas
     public void sonidoPantIdioma() throws JavaLayerException, IOException {
         while(!sound){
             jlPlayer = new jlap("\\UDP\\Arkanoid\\sonidos\\idioma.mp3");
@@ -328,7 +328,7 @@ public class Arkanoid extends JPanel implements KeyListener, MouseInputListener 
             Arkanoid.sound = false;
         }
     }
-    
+    //pintamos la pantalla de inicio
     public void paintInicio(Graphics gr) throws JavaLayerException, IOException{
         sonidoInicio();
         this.setImage("/imagenes/arkanoid_logo.png");
@@ -367,7 +367,7 @@ public class Arkanoid extends JPanel implements KeyListener, MouseInputListener 
         }
         
     }
-    
+    //pintamos la pantalla de pausa
     public void paintPause(Graphics gr) throws JavaLayerException, IOException{
         Font alerta = new Font("Sans Serif", Font.BOLD, 30);
         gr.setFont(alerta);
@@ -379,7 +379,7 @@ public class Arkanoid extends JPanel implements KeyListener, MouseInputListener 
         gr.setFont(inicio);
         gr.drawString(text[idioma-1][14], this.getWidth() / 2 - gr.getFontMetrics().stringWidth(text[idioma-1][14]) / 2, (panelH - 30));
     }
-    
+    //pintamos la pantalla de muerte
     public void paintMuerte(Graphics gr) throws JavaLayerException, IOException{
         sonidoMuerte();
         this.setImage("/imagenes/fondofinal.png");
@@ -399,7 +399,7 @@ public class Arkanoid extends JPanel implements KeyListener, MouseInputListener 
         heightFinal += gr.getFontMetrics().getHeight();
         gr.drawString(text[idioma-1][6], this.getWidth() / 2 - gr.getFontMetrics().stringWidth(text[idioma-1][6]) / 2, heightFinal);
     }
-    
+    //pintamos la pantalla de victoria
     public void paintVictoria(Graphics gr) throws JavaLayerException, IOException{
         sonidoVictoria();
         this.setImage("/imagenes/fondofinal.png");
