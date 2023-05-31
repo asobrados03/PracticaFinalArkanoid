@@ -211,23 +211,23 @@
 							
 							
 							
-							███████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████
+              ███████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████
               █                                                                                                                             █
-              █    Deutsch 																																																									█
+              █    Deutsch                                                                                                                  █
               █                                                                                                                             █
-              █    START:																																																									  █
-              █    Um die Sprache auszuwählen, drücken Sie die entsprechende numerische Taste mit der gewünschten Sprache. 									█
+              █    START:                                                                                                                   █
+              █    Um die Sprache auszuwählen, drücken Sie die entsprechende numerische Taste mit der gewünschten Sprache.                  █
               █                                                                                                                             █
-              █    STEUERUNG: (um den Ball mit dem Schläger zu bewegen und das Level neu zu starten) 																				█
+              █    STEUERUNG: (um den Ball mit dem Schläger zu bewegen und das Level neu zu starten)                                        █
               █    Um den Schläger von einer Seite zur anderen zu bewegen, können Sie die Maus von einer Seite zur anderen ziehen oder die  █
-              █    Pfeiltasten rechts und links oder die Tasten "a" und "d" verwenden. "a" oder die linke Pfeiltaste, um nach links zu		  █
+              █    Pfeiltasten rechts und links oder die Tasten "a" und "d" verwenden. "a" oder die linke Pfeiltaste, um nach links zu      █
               █    bewegen, und "d" oder die rechte Pfeiltaste, um nach rechts zu bewegen. Um den Ball zu Beginn in Bewegung zu setzen,     █
               █    können Sie mit der linken Maustaste klicken oder die Pfeiltaste nach oben oder die Taste "w" drücken. Um das Level, das  █
               █    Sie spielen, neu zu starten, drücken Sie "r". Diese Aktion kostet 1000 Punkte zusätzlich zu den Punkten, die Sie am      █
-              █    Anfang des Levels hatten. 																																																█
+              █    Anfang des Levels hatten.                                                                                                █
               █                                                                                                                             █
-              █    PAUSE: 																																																									█
+              █    PAUSE:                                                                                                                   █
               █    Drücken Sie die ESC-Taste oder bewegen Sie die Maus aus dem Fenster, um das Spiel anzuhalten. Um das Spiel fortzusetzen, █
-              █    drücken Sie eine beliebige Taste oder bewegen Sie die Maus innerhalb des Fensters. 																			█
+              █    drücken Sie eine beliebige Taste oder bewegen Sie die Maus innerhalb des Fensters.                                       █
               █                                                                                                                             █
               ███████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████
