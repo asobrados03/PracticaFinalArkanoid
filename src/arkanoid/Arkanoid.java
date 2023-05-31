@@ -1,17 +1,21 @@
 package arkanoid;
 
-import reproductor.jlap;
-import premios.Freno;
-import premios.Premio;
-import premios.Acelerador;
-import premios.MasPelotas;
-import premios.Reductor;
-import premios.Expansor;
-import javax.swing.*;
-import javax.swing.event.MouseInputListener;
-import javazoom.jl.decoder.JavaLayerException;
-import java.awt.*;
-import java.awt.event.*;
+import arkanoid.Ladrillo;
+import arkanoid.Pelota;
+import arkanoid.Raqueta;
+import java.awt.Color;
+import java.awt.Cursor;
+import java.awt.Dimension;
+import java.awt.Font;
+import java.awt.Graphics;
+import java.awt.Image;
+import java.awt.Point;
+import java.awt.Toolkit;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileOutputStream;
@@ -20,9 +24,20 @@ import java.io.InputStream;
 import java.sql.Time;
 import java.util.ArrayList;
 import java.util.Random;
-import java.awt.event.KeyEvent;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.ImageIcon;
+import javax.swing.JFrame;
+import javax.swing.JPanel;
+import javax.swing.event.MouseInputListener;
+import javazoom.jl.decoder.JavaLayerException;
+import premios.Acelerador;
+import premios.Expansor;
+import premios.Freno;
+import premios.MasPelotas;
+import premios.Premio;
+import premios.Reductor;
+import reproductor.jlap;
 
 public class Arkanoid extends JPanel implements KeyListener, MouseInputListener {
 
@@ -110,17 +125,35 @@ public class Arkanoid extends JPanel implements KeyListener, MouseInputListener 
 
     private static boolean moverIzquierda = false;
     private static boolean moverDerecha = false;
+    
     private static boolean inicializar = false;
+    
     private static boolean reset = false;
+    
     private static boolean sound = false;
+    
     private static boolean mouseExited = false;
     
-    private String[] spanish;
-    private String[] english;
+    private static int idioma = 0;
+    
+    private static boolean idiomaselected = false;
+    
+    private static String[][] text = {
+            {"Select language", "English", "Press any key", "to start the game", "Game Over!", "Developed By:", "Seven DIU students", "You Win", "Score: ", "Score: ", "Level: ", "Completed!", "Next level", "PAUSE", "to resume the game"},
+            {"选择语言", "奇诺", "按任意键", "开始游戏", "游戏结束!", "由开发:", "七名DIU学生", "你赢了", "分数: ", "分数: ", "等级: ", "完全的!", "下一级", "暂停", "恢复游戏"},
+            {"Selecciona idioma", "Español", "Presiona cualquier tecla", "para iniciar el juego", "Fin del Juego!", "Desarrollado Por:", "Siete alumnos de DIU", "Has Ganado", "Puntaje: ", "Puntuación: ", "Nivel: ", "Completado!", "Próximo nivel", "PAUSA", "para continuar el juego"},
+            {"Choisir la langue", "Français", "Appuyez sur une touche", "pour commencer le jeu", "Jeu terminé!", "Développé par:", "Sept étudiants du DIU", "Vous gagnez", "Score: ", "Score: ", "Niveau: ", "Complété!", "Niveau suivant", "PAUSE", "reprendre le jeu"},
+            {"اختار اللغة", "عرب", "اضغط أي زر", "لبدء اللعبة", "انتهت اللعبة!", "طورت بواسطة:", "سبعة طلاب DIU", "فزت", "نتيجة: ", "نتيجة: ", "مستوى: ", "مكتمل!", "المرحلة التالية", "يوقف", "لاستئناف اللعبة"},
+            {"Выберите язык", "Русо", "Нажмите любую кнопку", "начать игру", "Игра закончена!", "Разработан:", "Семь студентов ДИУ", "Ты победил", "Счет: ", "Счет: ", "Уровень: ", "Завершенный!", "Следующий уровень", "ПАУЗА", "возобновить игру"},
+            {"Selecione o idioma", "Português", "Pressione qualquer tecla", "para começar o jogo", "Game Over!", "Desenvolvido por:", "Sete alunos da DIU", "Você ganha", "Pontuação: ", "Pontuação: ", "Nível: ", "Concluído!", "Próximo nível", "PAUSA", "para retomar o jogo"},
+            {"Pilih bahasa", "Indonesia", "Tekan tombol apa saja", "untuk memulai permainan", "Permainan telah berakhir!", "Dikembangkan oleh:", "Tujuh mahasiswa DIU", "Kamu menang", "Skor: ", "Skor: ", "Tingkat: ", "Lengkap!", "Tingkat berikutnya", "BERHENTI SEBENTAR", "untuk melanjutkan permainan"},
+            {"زبان منتخب کریں۔", "اردو", "کوئی بھی بٹن دبائیے", "کھیل شروع کرنے کے لئے", "کھیل ختم!", "کی طرف سے تیار:", "DIU کے سات طلباء", "تم جیت گئے", "سکور: ", "سکور: ", "سطح: ", "مکمل!", "اگلا مرحلہ", "روکیں۔", "کھیل کو دوبارہ شروع کرنے کے لیے"},
+            {"Sprache auswählen", "Deutsch", "Drücke irgendeine Taste", "um das Spiel zu starten", "Spiel ist aus!", "Entwickelt von:", "Sieben DIU-Studenten", "Du gewinnst", "Punktzahl: ", "Punktzahl: ", "Eben: ", "Vollendet!", "Nächste Ebene", "PAUSE", "um das Spiel fortzusetzen"}
+        };
+    
+    private static final int idiomasmax = text.length;
 
     public Arkanoid() {
-        this.spanish = new String[]{"Presiona cualquier tecla", "para iniciar el juego", "Fin del Juego!", "Desarrollado Por:", "Siete alumnos de DIU", "Has Ganado", "Puntaje: ", "Puntuación: ", "Nivel: ", "Completado!", "Próximo nivel"};
-        this.english = new String[]{"Press any key", "for start the game", "Game Over!", "Developed For:", "Seven DIU students", "You Win", "Score: ", "Score: ", "Level: ", "Filled!", "Next level"};
         this.fondoVidas = new ImageIcon(this.getClass().getResource("/imagenes/red-mc.png")).getImage().getScaledInstance(15, 15, Image.SCALE_DEFAULT);
     }
 
@@ -177,7 +210,7 @@ public class Arkanoid extends JPanel implements KeyListener, MouseInputListener 
         
         if(panel != null){
             panel.inicio();
-            while(inicializar = true){
+            if(inicializar = true){
                 try {
                     panel.playGame();
                 } catch (JavaLayerException | IOException e) {
@@ -200,7 +233,6 @@ public class Arkanoid extends JPanel implements KeyListener, MouseInputListener 
             jlPlayer = new jlap("\\UDP\\Arkanoid\\sonidos\\gameover.mp3");
             jlPlayer.play();
             this.sound = true;
-            System.out.println("Código ejecutado una vez.1");
         }
     }
     public void sonidoVictoria() throws JavaLayerException, IOException {
@@ -208,7 +240,6 @@ public class Arkanoid extends JPanel implements KeyListener, MouseInputListener 
             jlPlayer = new jlap("\\UDP\\Arkanoid\\sonidos\\victory.mp3");
             jlPlayer.play();
             this.sound = true;
-            System.out.println("Código ejecutado una vez.2");
         }
     }
     
@@ -236,7 +267,11 @@ public class Arkanoid extends JPanel implements KeyListener, MouseInputListener 
     }
     
     private void inicio() {
-        while(!inicializar){
+        while(!inicializar && idioma==0){
+            repaint();
+        }
+        idiomaselected = true;
+        while(!inicializar && idioma!=0){
             repaint();
 
             long nextTime, currTime;
@@ -264,32 +299,49 @@ public class Arkanoid extends JPanel implements KeyListener, MouseInputListener 
         sonidoInicio();
         this.setImage("/imagenes/arkanoid_logo.png");
         gr.drawImage(image, -10, 0, null);
-        String iniciar="Presiona cualquier tecla";
 
         gr.setColor(Color.LIGHT_GRAY);
 
         Font inicio = new Font("Serif", Font.BOLD + Font.ITALIC, 24);
         gr.setFont(inicio);
-        gr.drawString(iniciar, 10, (panelH - 58));
+        gr.drawString(text[idioma-1][2], this.getWidth() / 2 - gr.getFontMetrics().stringWidth(text[idioma-1][2]) / 2, (panelH - 58));
 
-        iniciar="para iniciar el juego";
         gr.setFont(inicio);
-        gr.drawString(iniciar, 30, (panelH - 30));
+        gr.drawString(text[idioma-1][3], this.getWidth() / 2 - gr.getFontMetrics().stringWidth(text[idioma-1][3]) / 2, (panelH - 30));
+    }
+    
+    public void paintIdiomaSelect(Graphics gr) throws JavaLayerException, IOException{
+        int i=0;
+        this.setImage("/imagenes/fondoselect.png");
+        gr.drawImage(image, -10, 0, null);
+        this.setImage("/imagenes/arkanoid.png");
+        gr.drawImage(image, (panelW - image.getWidth(null)) / 2, 20, null);
+        Font inicio = new Font("Serif", Font.BOLD, 16);
+        
+        for(i=0; i<idiomasmax; i++){
+            gr.setFont(inicio);
+            gr.setColor(Color.WHITE);
+            gr.drawString(text[i][0], 15, (panelH - (250-25*i)));
+            if(i+1 != 10){
+                gr.drawString((i+1)+"->"+text[i][1], panelW/2+25, (panelH - (250-25*i)));
+            }
+            if(i+1 == 10){
+                gr.drawString("0->"+text[i][1], panelW/2+25, (panelH - (250-25*i)));
+            }
+        }
+        
     }
     
     public void paintPause(Graphics gr) throws JavaLayerException, IOException{
         Font alerta = new Font("Sans Serif", Font.BOLD, 30);
         gr.setFont(alerta);
         gr.setColor(Color.RED);
-        String completado = "PAUSE";
-        gr.drawString(completado, this.getWidth() / 2 - gr.getFontMetrics().stringWidth(completado) / 2, 100);
-        String iniciar="Presiona cualquier tecla";
+        gr.drawString(text[idioma-1][13], this.getWidth() / 2 - gr.getFontMetrics().stringWidth(text[idioma-1][13]) / 2, 100);
         Font inicio = new Font("Sans Serif", Font.BOLD, 22);
         gr.setFont(inicio);
-        gr.drawString(iniciar, 10, (panelH - 58));
-        iniciar="para iniciar el juego";
+        gr.drawString(text[idioma-1][2], this.getWidth() / 2 - gr.getFontMetrics().stringWidth(text[idioma-1][2]) / 2, (panelH - 58));
         gr.setFont(inicio);
-        gr.drawString(iniciar, 30, (panelH - 30));
+        gr.drawString(text[idioma-1][14], this.getWidth() / 2 - gr.getFontMetrics().stringWidth(text[idioma-1][14]) / 2, (panelH - 30));
     }
     
     public void paintMuerte(Graphics gr) throws JavaLayerException, IOException{
@@ -302,17 +354,14 @@ public class Arkanoid extends JPanel implements KeyListener, MouseInputListener 
         int heightFinal = 20 + image.getHeight(null) + 20;
         gr.setFont(alerta);
         gr.setColor(Color.RED);
-        String frases = "Fin del Juego!";
         heightFinal += gr.getFontMetrics().getHeight();
-        gr.drawString(frases, this.getWidth() / 2 - gr.getFontMetrics().stringWidth(frases) / 2, heightFinal);
+        gr.drawString(text[idioma-1][4], this.getWidth() / 2 - gr.getFontMetrics().stringWidth(text[idioma-1][4]) / 2, heightFinal);
         heightFinal = panelH - 100;
         alerta = new Font("Sans Serif", Font.BOLD, 20);
         gr.setFont(alerta);
-        frases = "Desarrollado Por:";
-        gr.drawString(frases, this.getWidth() / 2 - gr.getFontMetrics().stringWidth(frases) / 2, heightFinal);
-        frases = "Siete alumnos de DIU";
+        gr.drawString(text[idioma-1][5], this.getWidth() / 2 - gr.getFontMetrics().stringWidth(text[idioma-1][5]) / 2, heightFinal);
         heightFinal += gr.getFontMetrics().getHeight();
-        gr.drawString(frases, this.getWidth() / 2 - gr.getFontMetrics().stringWidth(frases) / 2, heightFinal);
+        gr.drawString(text[idioma-1][6], this.getWidth() / 2 - gr.getFontMetrics().stringWidth(text[idioma-1][6]) / 2, heightFinal);
     }
     
     public void paintVictoria(Graphics gr) throws JavaLayerException, IOException{
@@ -325,22 +374,19 @@ public class Arkanoid extends JPanel implements KeyListener, MouseInputListener 
         int heightFinal = 50 + image.getHeight(null);
         gr.setFont(alerta);
         gr.setColor(Color.GREEN);
-        String frases = "Has Ganado";
         heightFinal += gr.getFontMetrics().getHeight();
-        gr.drawString(frases, this.getWidth() / 2 - gr.getFontMetrics().stringWidth(frases) / 2, heightFinal);
+        gr.drawString(text[idioma-1][7], this.getWidth() / 2 - gr.getFontMetrics().stringWidth(text[idioma-1][7]) / 2, heightFinal);
         heightFinal = panelH - 150;
         alerta = new Font("Sans Serif", Font.BOLD, 25);
         gr.setFont(alerta);
         gr.setColor(Color.GREEN);
-        gr.drawString("Puntaje: " + puntuacion, this.getWidth() / 2 - gr.getFontMetrics().stringWidth(frases) / 2, heightFinal);
+        gr.drawString(text[idioma-1][8] + puntuacion, this.getWidth() / 2 - gr.getFontMetrics().stringWidth(text[idioma-1][8]) / 2, heightFinal);
         heightFinal = panelH - 100;
         alerta = new Font("Sans Serif", Font.BOLD, 20);
         gr.setFont(alerta);
-        frases = "Desarrollado Por:";
-        gr.drawString(frases, this.getWidth() / 2 - gr.getFontMetrics().stringWidth(frases) / 2, heightFinal);
-        frases = "Siete alumnos de DIU";
+        gr.drawString(text[idioma-1][5], this.getWidth() / 2 - gr.getFontMetrics().stringWidth(text[idioma-1][5]) / 2, heightFinal);
         heightFinal += gr.getFontMetrics().getHeight();
-        gr.drawString(frases, this.getWidth() / 2 - gr.getFontMetrics().stringWidth(frases) / 2, heightFinal);
+        gr.drawString(text[idioma-1][6], this.getWidth() / 2 - gr.getFontMetrics().stringWidth(text[idioma-1][6]) / 2, heightFinal);
     }
     
     @SuppressWarnings("deprecation")
@@ -399,8 +445,8 @@ public class Arkanoid extends JPanel implements KeyListener, MouseInputListener 
             gr.setColor(Color.white);
             Font contador = new Font("Sans Serif", Font.BOLD, 13);
             gr.setFont(contador);
-            gr.drawString("Puntuación: " + puntuacion, (panelW - (gr.getFontMetrics().stringWidth("Puntuación: " + puntuacion)) - 10), 30 - (gr.getFontMetrics().getHeight() / 2));
-            gr.drawString("Nivel: " + level, 10, (panelH - 10));
+            gr.drawString(text[idioma-1][9] + puntuacion, (panelW - (gr.getFontMetrics().stringWidth(text[idioma-1][9] + puntuacion)) - 10), 30 - (gr.getFontMetrics().getHeight() / 2));
+            gr.drawString(text[idioma-1][10] + level, 10, (panelH - 10));
             if (this.ladrillos != null) {
                 if (this.ladrillos.size() - Ladrillo.Immortales > 0) {
                     if (this.startTime > 0) {
@@ -421,13 +467,11 @@ public class Arkanoid extends JPanel implements KeyListener, MouseInputListener 
                     Font alerta = new Font("Sans Serif", Font.BOLD, 30);
                     gr.setFont(alerta);
                     gr.setColor(Color.RED);
-                    String completado = "Completado!";
-                    gr.drawString(completado, this.getWidth() / 2 - gr.getFontMetrics().stringWidth(completado) / 2, 100);
+                    gr.drawString(text[idioma-1][11], this.getWidth() / 2 - gr.getFontMetrics().stringWidth(text[idioma-1][11]) / 2, 100);
                     int nextLevelY = 110 + gr.getFontMetrics().getHeight();
-                    completado = "Próximo nivel";
-                    gr.drawString(completado, this.getWidth() / 2 - gr.getFontMetrics().stringWidth(completado) / 2, nextLevelY);
+                    gr.drawString(text[idioma-1][12], this.getWidth() / 2 - gr.getFontMetrics().stringWidth(text[idioma-1][12]) / 2, nextLevelY);
                     nextLevelY += 10 + gr.getFontMetrics().getHeight();
-                    completado = "" + timeNextLevel;
+                    String completado = "" + timeNextLevel;
                     gr.drawString(completado, this.getWidth() / 2 - gr.getFontMetrics().stringWidth(completado) / 2, nextLevelY);
                 }
             }if(mouseExited && this.lifes!=-1 && this.level <= this.numLevels){
@@ -437,7 +481,13 @@ public class Arkanoid extends JPanel implements KeyListener, MouseInputListener 
                     Logger.getLogger(Arkanoid.class.getName()).log(Level.SEVERE, null, ex);
                 }
             }
-        }if ((this.lifes != -1)&&(this.level == 0)) {
+        }if (this.level == 0 && idioma == 0 && !inicializar) {
+            try {
+                paintIdiomaSelect(gr);
+            } catch (JavaLayerException | IOException ex) {
+                Logger.getLogger(Arkanoid.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }if (this.level == 0 && idioma != 0 && !inicializar) {
             try {
                 paintInicio(gr);
             } catch (JavaLayerException | IOException ex) {
@@ -658,7 +708,7 @@ public class Arkanoid extends JPanel implements KeyListener, MouseInputListener 
 
     @Override
     public void mouseClicked(MouseEvent arg0) {
-        if (this.level == 0) {
+        if (this.level == 0 && !inicializar && idioma != 0 && idiomaselected) {
             this.level++;
             jlPlayer.player.close();
             jlap.iniciar = false;
@@ -740,7 +790,50 @@ public class Arkanoid extends JPanel implements KeyListener, MouseInputListener 
     @Override
     public void keyPressed(KeyEvent e) {
         int key = e.getKeyCode();
-        if (this.level == 0) {
+        if (this.level == 0 && !inicializar && idioma == 0) {
+            if(key == KeyEvent.VK_1){
+                if(idiomasmax >= 1){
+                    this.idioma = 1;
+                }
+            }if(key == KeyEvent.VK_2){
+                if(idiomasmax >= 2){
+                    this.idioma = 2;
+                }
+            }if(key == KeyEvent.VK_3){
+                if(idiomasmax >= 3){
+                    this.idioma = 3;
+                }
+            }if(key == KeyEvent.VK_4){
+                if(idiomasmax >= 4){
+                    this.idioma = 4;
+                }
+            }if(key == KeyEvent.VK_5){
+                if(idiomasmax >= 5){
+                    this.idioma = 5;
+                }
+            }if(key == KeyEvent.VK_6){
+                if(idiomasmax >= 6){
+                    this.idioma = 6;
+                }
+            }if(key == KeyEvent.VK_7){
+                if(idiomasmax >= 7){
+                    this.idioma = 7;
+                }
+            }if(key == KeyEvent.VK_8){
+                if(idiomasmax >= 8){
+                    this.idioma = 8;
+                }
+            }if(key == KeyEvent.VK_9){
+                if(idiomasmax >= 9){
+                    this.idioma = 9;
+                }
+            }if(key == KeyEvent.VK_0){
+                if(idiomasmax >= 10){
+                    this.idioma = 10;
+                }
+            }
+        }
+        if (this.level == 0 && !inicializar && idioma != 0 && idiomaselected) {
             this.level++;
             jlPlayer.player.close();
             jlap.iniciar = false;
@@ -936,7 +1029,8 @@ public class Arkanoid extends JPanel implements KeyListener, MouseInputListener 
                     {-1, 0, 0, 7, 6, 7, 0, 0, -1},
                     {6, 6, 6, 6, 7, 6, 6, 6, 6},
                     {0, 0, 0, 7, 6, 7, 0, 0, 0},
-                    {0, 0, 7, 0, 6, 0, 7, 0, 0},};
+                    {0, 0, 7, 0, 6, 0, 7, 0, 0}
+                };
             default -> {
             }
         }
@@ -964,5 +1058,4 @@ public class Arkanoid extends JPanel implements KeyListener, MouseInputListener 
             }
         }
     }
-
 }
