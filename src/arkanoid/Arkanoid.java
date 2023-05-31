@@ -235,8 +235,9 @@ public class Arkanoid extends JPanel implements KeyListener, MouseInputListener 
 
     // Se encarga de la musica en la ventana de inicio
     public void sonidoInicio() throws JavaLayerException, IOException {
-        jlPlayer.player.close();
         while(!sound){
+            jlPlayer.player.close();
+            jlap.iniciar = false;
             jlPlayer = new jlap("\\UDP\\Arkanoid\\sonidos\\fondo0.mp3");
             jlPlayer.play();
             Arkanoid.sound = true;
@@ -255,6 +256,7 @@ public class Arkanoid extends JPanel implements KeyListener, MouseInputListener 
     
     // Se encarga de la musica en la ventana de victoria
     public void sonidoVictoria() throws JavaLayerException, IOException {
+        jlPlayer.player.close();
         while(!sound){
             jlPlayer = new jlap("\\UDP\\Arkanoid\\sonidos\\victory.mp3");
             jlPlayer.play();
@@ -266,7 +268,7 @@ public class Arkanoid extends JPanel implements KeyListener, MouseInputListener 
         while(!sound){
             jlPlayer = new jlap("\\UDP\\Arkanoid\\sonidos\\idioma.mp3");
             jlPlayer.play();
-            this.sound = true;
+            Arkanoid.sound = true;
         }
     }
     
@@ -300,6 +302,7 @@ public class Arkanoid extends JPanel implements KeyListener, MouseInputListener 
             repaint();
         }
         idiomaselected = true;
+        Arkanoid.sound = false;
         this.setImage("/imagenes/"+text[idioma-1][15]);
         this.imagebandera = image;
         while(!inicializar && idioma!=0){
@@ -703,6 +706,7 @@ public class Arkanoid extends JPanel implements KeyListener, MouseInputListener 
     @Override
     public void mouseMoved(MouseEvent evt) {
         if(!mouseExited && this.lifes!=-1 && this.level <= this.numLevels){
+            // Encargado del manejo de los imputs por mouse durante el juego
             raqueta.setCoordX(evt.getX() - Raqueta.RACKET_W / 2);
             if (raqueta.getCoordX() < 0) {
                 raqueta.setCoordX(0);
