@@ -13,11 +13,13 @@ import javazoom.jl.player.advanced.PlaybackListener;
 public class jlap
 {
 	private String filename = "";
+        @SuppressWarnings("FieldMayBeFinal")
 	private boolean repetir = false;
 	private static Thread hilo; 
 	public static boolean iniciar = false;
 	public AdvancedPlayer player = null;
 
+        @SuppressWarnings("OverridableMethodCallInConstructor")
 	public jlap(String file) throws JavaLayerException, IOException{
 		this.filename = file;
 		play(false);
@@ -55,13 +57,14 @@ public class jlap
     if(jlap.iniciar){
 	    hilo = new Thread()
 	    {
+              @Override
 	      public void run()
 	      {
 	        try
 	        {
 	          player.play(start, end);
 	        }
-	        catch (Exception e)
+	        catch (JavaLayerException e)
 	        {
 	          throw new RuntimeException(e.getMessage());
 	        }
@@ -74,10 +77,21 @@ public class jlap
 
   public class InfoListener extends PlaybackListener
   {
+
+            /**
+             *
+             * @param evt
+             */
+            @Override
     public void playbackStarted(PlaybackEvent evt)
     {
     }
 
+            /**
+             *
+             * @param evt
+             */
+            @Override
     public void playbackFinished(PlaybackEvent evt)
     {
     	if(repetir){

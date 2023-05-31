@@ -16,6 +16,11 @@ public static final int BW = 15;
 		setFondo(new ImageIcon(this.getClass().getResource("/imagenes/bola_trans.png")).getImage());
 	}
 	
+    /**
+     *
+     * @param gr
+     */
+    @Override
 	public void pinta(Graphics gr){
 		gr.setColor(Color.GREEN);
 		gr.fillOval((int)getPosX(),(int)getPosY(),BW-1,BH-1);

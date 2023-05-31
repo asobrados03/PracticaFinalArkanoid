@@ -31,6 +31,7 @@ public class Ladrillo {
 	
 	private int premio = 0;
 		
+        @SuppressWarnings("OverridableMethodCallInConstructor")
 	public Ladrillo(int posX, int posY, int life){
 		this.setCoordX(posX);
 		this.setCoordY(posY);
@@ -39,10 +40,7 @@ public class Ladrillo {
 		this.setPoints(life * 100);
 		try {
 			mediaRebote = new jlap("\\UDP\\Arkanoid\\sonidos\\weak_ball.mp3");
-		} catch (JavaLayerException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
+		} catch (JavaLayerException | IOException e) {
 		}
 	}
 	
@@ -89,32 +87,16 @@ public class Ladrillo {
 	public void paint(Graphics gr){
 		if(this.getLifes()!=0){
 			switch (this.getLifes()) {
-				case -1:
-					gr.setColor(Color.BLACK);
-					break;
-				case 1:
-					gr.setColor(Color.GREEN);
-					break;
-				case 2:
-					gr.setColor(Color.YELLOW);
-					break;
-				case 3:
-					gr.setColor(Color.CYAN);
-					break;
-				case 4:
-					gr.setColor(Color.ORANGE);
-					break;
-				case 5:
-					gr.setColor(Color.MAGENTA);
-					break;
-                                case 6:
-					gr.setColor(Color.BLUE);
-					break;
-                                case 7:
-					gr.setColor(Color.RED);
-					break;
-				default:
-					break;
+				case -1 -> gr.setColor(Color.BLACK);
+				case 1 -> gr.setColor(Color.GREEN);
+				case 2 -> gr.setColor(Color.YELLOW);
+				case 3 -> gr.setColor(Color.CYAN);
+				case 4 -> gr.setColor(Color.ORANGE);
+				case 5 -> gr.setColor(Color.MAGENTA);
+                                case 6 -> gr.setColor(Color.BLUE);
+                                case 7 -> gr.setColor(Color.RED);
+				default -> {
+                        }
 			}
 			gr.fillRect(this.getCoordX(),this.getCoordY(),BlqWidth,BlqHeight);
 			gr.setColor(Color.GRAY);

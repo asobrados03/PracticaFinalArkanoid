@@ -51,10 +51,7 @@ public class Pelota {
 		this.fondo = new ImageIcon(this.getClass().getResource("/imagenes/bola_trans.png")).getImage();
 		try {
 			mediaRebote = new jlap("\\UDP\\Arkanoid\\sonidos\\click.mp3");
-		} catch (JavaLayerException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
+		} catch (JavaLayerException | IOException e) {
 		}
 	}
 	

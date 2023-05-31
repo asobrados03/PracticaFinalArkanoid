@@ -1,8 +1,5 @@
 package arkanoid;
 
-import arkanoid.Ladrillo;
-import arkanoid.Pelota;
-import arkanoid.Raqueta;
 import java.awt.Color;
 import java.awt.Cursor;
 import java.awt.Dimension;
@@ -79,18 +76,23 @@ public class Arkanoid extends JPanel implements KeyListener, MouseInputListener 
     /**
      * ArrayList contenedor de las pelotas
      */
+    @SuppressWarnings({"Convert2Diamond", "FieldMayBeFinal"})
     private ArrayList<Pelota> pelotas = new ArrayList<Pelota>();
 
+    @SuppressWarnings({"Convert2Diamond", "FieldMayBeFinal"})
     private ArrayList<Premio> premios = new ArrayList<Premio>();
 
     private Raqueta raqueta;
 
+    @SuppressWarnings({"Convert2Diamond", "FieldMayBeFinal"})
     private ArrayList<Object> pauseX = new ArrayList<Object>();
 
+    @SuppressWarnings({"Convert2Diamond", "FieldMayBeFinal"})
     private ArrayList<Object> pauseY = new ArrayList<Object>();
 
     private ArrayList<Ladrillo> ladrillos = null;
 
+    @SuppressWarnings({"Convert2Diamond", "FieldMayBeFinal", "MismatchedQueryAndUpdateOfCollection"})
     private ArrayList<Time> timeLevels = new ArrayList<Time>();
 
     private static jlap jlPlayer;
@@ -140,7 +142,7 @@ public class Arkanoid extends JPanel implements KeyListener, MouseInputListener 
     
     private static boolean idiomaselected = false;
     
-    private static String[][] text = {
+    private static final String[][] text = {
             {"Select language", "English", "Press any key", "to start the game", "Game Over!", "Developed By:", "Seven DIU students", "You Win", "Score: ", "Score: ", "Level: ", "Completed!", "Next level", "PAUSE", "to resume the game", "Ingles.png"},
             {"选择语言", "奇诺", "按任意键", "开始游戏", "游戏结束!", "由开发:", "七名DIU学生", "你赢了", "分数: ", "分数: ", "等级: ", "完全的!", "下一级", "暂停", "恢复游戏", "Chino.png"},
             {"Selecciona idioma", "Español", "Presiona cualquier tecla", "para iniciar el juego", "Fin del Juego!", "Desarrollado Por:", "Siete alumnos de DIU", "Has Ganado", "Puntaje: ", "Puntuación: ", "Nivel: ", "Completado!", "Próximo nivel", "PAUSA", "para continuar el juego", "Español.png"},
@@ -174,7 +176,9 @@ public class Arkanoid extends JPanel implements KeyListener, MouseInputListener 
      * @throws javazoom.jl.decoder.JavaLayerException
      * @throws java.io.IOException
      */
+    @SuppressWarnings("null")
     public static void main(String[] args) throws JavaLayerException, IOException {
+        @SuppressWarnings("UnusedAssignment")
         Arkanoid panel = null;
         JFrame frame;
 
@@ -229,7 +233,7 @@ public class Arkanoid extends JPanel implements KeyListener, MouseInputListener 
         while(!sound){
             jlPlayer = new jlap("\\UDP\\Arkanoid\\sonidos\\fondo0.mp3");
             jlPlayer.play();
-            this.sound = true;
+            Arkanoid.sound = true;
         }
     }
     
@@ -238,14 +242,14 @@ public class Arkanoid extends JPanel implements KeyListener, MouseInputListener 
         while(!sound){
             jlPlayer = new jlap("\\UDP\\Arkanoid\\sonidos\\gameover.mp3");
             jlPlayer.play();
-            this.sound = true;
+            Arkanoid.sound = true;
         }
     }
     public void sonidoVictoria() throws JavaLayerException, IOException {
         while(!sound){
             jlPlayer = new jlap("\\UDP\\Arkanoid\\sonidos\\victory.mp3");
             jlPlayer.play();
-            this.sound = true;
+            Arkanoid.sound = true;
         }
     }
     
@@ -272,6 +276,7 @@ public class Arkanoid extends JPanel implements KeyListener, MouseInputListener 
         }
     }
     
+    @SuppressWarnings({"UnusedAssignment", "SleepWhileInLoop"})
     private void inicio() {
         while(!inicializar && idioma==0){
             repaint();
@@ -299,7 +304,7 @@ public class Arkanoid extends JPanel implements KeyListener, MouseInputListener 
             nextTime += WAIT_TIME;
         }
         if(inicializar){
-            this.sound = false;
+            Arkanoid.sound = false;
         }
     }
     
@@ -319,7 +324,7 @@ public class Arkanoid extends JPanel implements KeyListener, MouseInputListener 
     }
     
     public void paintIdiomaSelect(Graphics gr) throws JavaLayerException, IOException{
-        int i=0;
+        int i;
         this.setImage("/imagenes/fondoselect.png");
         gr.drawImage(image, -10, 0, null);
         this.setImage("/imagenes/arkanoid.png");
@@ -505,12 +510,13 @@ public class Arkanoid extends JPanel implements KeyListener, MouseInputListener 
         }
     }
 
+    @SuppressWarnings("SleepWhileInLoop")
     private void playGame() throws JavaLayerException, IOException {
         if(this.level != 0){
             jlPlayer.player.close();
             jlap.iniciar = false;
             this.lifesreset = this.lifes;
-            this.puntuacionreset = this.puntuacion;
+            Arkanoid.puntuacionreset = Arkanoid.puntuacion;
             setImage("/imagenes/fondo" + this.level + ".png");
             if(this.lifes != -1){
                 jlPlayer = new jlap("\\UDP\\Arkanoid\\sonidos\\fondo" + level + ".mp3");
@@ -531,9 +537,9 @@ public class Arkanoid extends JPanel implements KeyListener, MouseInputListener 
                     premios.clear();
                     this.pelotas.clear();
                     this.ladrillos = null;
-                    this.reset = false;
+                    Arkanoid.reset = false;
                     this.lifes = this.lifesreset;
-                    this.puntuacion = this.puntuacionreset - 1000;
+                    Arkanoid.puntuacion = Arkanoid.puntuacionreset - 1000;
                     repaint();
                     this.playGame();
                 }
@@ -739,7 +745,7 @@ public class Arkanoid extends JPanel implements KeyListener, MouseInputListener 
     @Override
     public void mouseEntered(MouseEvent arg0) {
         if(mouseExited && this.lifes!=-1 && this.level <= this.numLevels){
-            this.mouseExited = false;
+            Arkanoid.mouseExited = false;
             if (!pauseX.isEmpty()) {
                 int cont = 0;
                 for (@SuppressWarnings("unused") Object pausX : pauseX) {
@@ -754,7 +760,7 @@ public class Arkanoid extends JPanel implements KeyListener, MouseInputListener 
     @Override
     public void mouseExited(MouseEvent arg0) {
         if(!mouseExited && this.lifes!=-1 && this.level <= this.numLevels){
-            this.mouseExited = true;
+            Arkanoid.mouseExited = true;
             pauseX.removeAll(pauseX);
             pauseY.removeAll(pauseY);
             for (Pelota pelota : pelotas) {
@@ -802,43 +808,43 @@ public class Arkanoid extends JPanel implements KeyListener, MouseInputListener 
         if (this.level == 0 && !inicializar && idioma == 0) {
             if(key == KeyEvent.VK_1){
                 if(idiomasmax >= 1){
-                    this.idioma = 1;
+                    Arkanoid.idioma = 1;
                 }
             }if(key == KeyEvent.VK_2){
                 if(idiomasmax >= 2){
-                    this.idioma = 2;
+                    Arkanoid.idioma = 2;
                 }
             }if(key == KeyEvent.VK_3){
                 if(idiomasmax >= 3){
-                    this.idioma = 3;
+                    Arkanoid.idioma = 3;
                 }
             }if(key == KeyEvent.VK_4){
                 if(idiomasmax >= 4){
-                    this.idioma = 4;
+                    Arkanoid.idioma = 4;
                 }
             }if(key == KeyEvent.VK_5){
                 if(idiomasmax >= 5){
-                    this.idioma = 5;
+                    Arkanoid.idioma = 5;
                 }
             }if(key == KeyEvent.VK_6){
                 if(idiomasmax >= 6){
-                    this.idioma = 6;
+                    Arkanoid.idioma = 6;
                 }
             }if(key == KeyEvent.VK_7){
                 if(idiomasmax >= 7){
-                    this.idioma = 7;
+                    Arkanoid.idioma = 7;
                 }
             }if(key == KeyEvent.VK_8){
                 if(idiomasmax >= 8){
-                    this.idioma = 8;
+                    Arkanoid.idioma = 8;
                 }
             }if(key == KeyEvent.VK_9){
                 if(idiomasmax >= 9){
-                    this.idioma = 9;
+                    Arkanoid.idioma = 9;
                 }
             }if(key == KeyEvent.VK_0){
                 if(idiomasmax >= 10){
-                    this.idioma = 10;
+                    Arkanoid.idioma = 10;
                 }
             }
         }
@@ -850,7 +856,7 @@ public class Arkanoid extends JPanel implements KeyListener, MouseInputListener 
         }
         if(inicializar){
             if(mouseExited && this.lifes!=-1 && this.level <= this.numLevels){
-                this.mouseExited = false;
+                Arkanoid.mouseExited = false;
                 if (!pauseX.isEmpty()) {
                     int cont = 0;
                     for (@SuppressWarnings("unused") Object pausX : pauseX) {
@@ -861,7 +867,7 @@ public class Arkanoid extends JPanel implements KeyListener, MouseInputListener 
                 }
             }
             if (key == KeyEvent.VK_ESCAPE && !mouseExited && this.lifes!=-1 && this.level <= this.numLevels) {
-                this.mouseExited = true;
+                Arkanoid.mouseExited = true;
                 pauseX.removeAll(pauseX);
                 pauseY.removeAll(pauseY);
                 for (Pelota pelota : pelotas) {
@@ -891,8 +897,8 @@ public class Arkanoid extends JPanel implements KeyListener, MouseInputListener 
                 }
             }
             if (key == KeyEvent.VK_R && !mouseExited && this.lifes!=-1 && this.level <= this.numLevels) {
-                if(this.puntuacionreset >= 1000){
-                    this.reset = true;
+                if(Arkanoid.puntuacionreset >= 1000){
+                    Arkanoid.reset = true;
                 }
             }
         }
@@ -1058,7 +1064,9 @@ public class Arkanoid extends JPanel implements KeyListener, MouseInputListener 
             }
             random = new Random();
             randomPremios = new Random();
+            @SuppressWarnings("UnusedAssignment")
             int number = 0;
+            @SuppressWarnings("UnusedAssignment")
             int premio = 0;
             for (int x = 0; x < ladrillos.size() / 3; x++) {
                 premio = Math.abs(randomPremios.nextInt() % 5) + 1;
