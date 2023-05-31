@@ -116,6 +116,8 @@ public class Arkanoid extends JPanel implements KeyListener, MouseInputListener 
     private Image image = null;
 
     private Image fondoVidas = null;
+    
+    private Image imagebandera = null;
 
     private Random random;
 
@@ -139,19 +141,19 @@ public class Arkanoid extends JPanel implements KeyListener, MouseInputListener 
     private static boolean idiomaselected = false;
     
     private static String[][] text = {
-            {"Select language", "English", "Press any key", "to start the game", "Game Over!", "Developed By:", "Seven DIU students", "You Win", "Score: ", "Score: ", "Level: ", "Completed!", "Next level", "PAUSE", "to resume the game"},
-            {"选择语言", "奇诺", "按任意键", "开始游戏", "游戏结束!", "由开发:", "七名DIU学生", "你赢了", "分数: ", "分数: ", "等级: ", "完全的!", "下一级", "暂停", "恢复游戏"},
-            {"Selecciona idioma", "Español", "Presiona cualquier tecla", "para iniciar el juego", "Fin del Juego!", "Desarrollado Por:", "Siete alumnos de DIU", "Has Ganado", "Puntaje: ", "Puntuación: ", "Nivel: ", "Completado!", "Próximo nivel", "PAUSA", "para continuar el juego"},
-            {"Choisir la langue", "Français", "Appuyez sur une touche", "pour commencer le jeu", "Jeu terminé!", "Développé par:", "Sept étudiants du DIU", "Vous gagnez", "Score: ", "Score: ", "Niveau: ", "Complété!", "Niveau suivant", "PAUSE", "reprendre le jeu"},
-            {"اختار اللغة", "عرب", "اضغط أي زر", "لبدء اللعبة", "انتهت اللعبة!", "طورت بواسطة:", "سبعة طلاب DIU", "فزت", "نتيجة: ", "نتيجة: ", "مستوى: ", "مكتمل!", "المرحلة التالية", "يوقف", "لاستئناف اللعبة"},
-            {"Выберите язык", "Русо", "Нажмите любую кнопку", "начать игру", "Игра закончена!", "Разработан:", "Семь студентов ДИУ", "Ты победил", "Счет: ", "Счет: ", "Уровень: ", "Завершенный!", "Следующий уровень", "ПАУЗА", "возобновить игру"},
-            {"Selecione o idioma", "Português", "Pressione qualquer tecla", "para começar o jogo", "Game Over!", "Desenvolvido por:", "Sete alunos da DIU", "Você ganha", "Pontuação: ", "Pontuação: ", "Nível: ", "Concluído!", "Próximo nível", "PAUSA", "para retomar o jogo"},
-            {"Pilih bahasa", "Indonesia", "Tekan tombol apa saja", "untuk memulai permainan", "Permainan telah berakhir!", "Dikembangkan oleh:", "Tujuh mahasiswa DIU", "Kamu menang", "Skor: ", "Skor: ", "Tingkat: ", "Lengkap!", "Tingkat berikutnya", "BERHENTI SEBENTAR", "untuk melanjutkan permainan"},
-            {"زبان منتخب کریں۔", "اردو", "کوئی بھی بٹن دبائیے", "کھیل شروع کرنے کے لئے", "کھیل ختم!", "کی طرف سے تیار:", "DIU کے سات طلباء", "تم جیت گئے", "سکور: ", "سکور: ", "سطح: ", "مکمل!", "اگلا مرحلہ", "روکیں۔", "کھیل کو دوبارہ شروع کرنے کے لیے"},
-            {"Sprache auswählen", "Deutsch", "Drücke irgendeine Taste", "um das Spiel zu starten", "Spiel ist aus!", "Entwickelt von:", "Sieben DIU-Studenten", "Du gewinnst", "Punktzahl: ", "Punktzahl: ", "Eben: ", "Vollendet!", "Nächste Ebene", "PAUSE", "um das Spiel fortzusetzen"}
+            {"Select language", "English", "Press any key", "to start the game", "Game Over!", "Developed By:", "Seven DIU students", "You Win", "Score: ", "Score: ", "Level: ", "Completed!", "Next level", "PAUSE", "to resume the game", "Ingles.png"},
+            {"选择语言", "奇诺", "按任意键", "开始游戏", "游戏结束!", "由开发:", "七名DIU学生", "你赢了", "分数: ", "分数: ", "等级: ", "完全的!", "下一级", "暂停", "恢复游戏", "Chino.png"},
+            {"Selecciona idioma", "Español", "Presiona cualquier tecla", "para iniciar el juego", "Fin del Juego!", "Desarrollado Por:", "Siete alumnos de DIU", "Has Ganado", "Puntaje: ", "Puntuación: ", "Nivel: ", "Completado!", "Próximo nivel", "PAUSA", "para continuar el juego", "Español.png"},
+            {"Choisir la langue", "Français", "Appuyez sur une touche", "pour commencer le jeu", "Jeu terminé!", "Développé par:", "Sept étudiants du DIU", "Vous gagnez", "Score: ", "Score: ", "Niveau: ", "Complété!", "Niveau suivant", "PAUSE", "reprendre le jeu", "Frances.png"},
+            {"اختار اللغة", "عرب", "اضغط أي زر", "لبدء اللعبة", "انتهت اللعبة!", "طورت بواسطة:", "سبعة طلاب DIU", "فزت", "نتيجة: ", "نتيجة: ", "مستوى: ", "مكتمل!", "المرحلة التالية", "يوقف", "لاستئناف اللعبة", "Árabe.png"},
+            {"Выберите язык", "Русо", "Нажмите любую кнопку", "начать игру", "Игра закончена!", "Разработан:", "Семь студентов ДИУ", "Ты победил", "Счет: ", "Счет: ", "Уровень: ", "Завершенный!", "Следующий уровень", "ПАУЗА", "возобновить игру", "Ruso.png"},
+            {"Selecione o idioma", "Português", "Pressione qualquer tecla", "para começar o jogo", "Game Over!", "Desenvolvido por:", "Sete alunos da DIU", "Você ganha", "Pontuação: ", "Pontuação: ", "Nível: ", "Concluído!", "Próximo nível", "PAUSA", "para retomar o jogo", "Portugues.png"},
+            {"Pilih bahasa", "Indonesia", "Tekan tombol apa saja", "untuk memulai permainan", "Permainan telah berakhir!", "Dikembangkan oleh:", "Tujuh mahasiswa DIU", "Kamu menang", "Skor: ", "Skor: ", "Tingkat: ", "Lengkap!", "Tingkat berikutnya", "BERHENTI SEBENTAR", "untuk melanjutkan permainan", "Indonesio.png"},
+            {"زبان منتخب کریں۔", "اردو", "کوئی بھی بٹن دبائیے", "کھیل شروع کرنے کے لئے", "کھیل ختم!", "کی طرف سے تیار:", "DIU کے سات طلباء", "تم جیت گئے", "سکور: ", "سکور: ", "سطح: ", "مکمل!", "اگلا مرحلہ", "روکیں۔", "کھیل کو دوبارہ شروع کرنے کے لیے", "Urdu.png"},
+            {"Sprache auswählen", "Deutsch", "Drücke irgendeine Taste", "um das Spiel zu starten", "Spiel ist aus!", "Entwickelt von:", "Sieben DIU-Studenten", "Du gewinnst", "Punktzahl: ", "Punktzahl: ", "Eben: ", "Vollendet!", "Nächste Ebene", "PAUSE", "um das Spiel fortzusetzen", "Aleman.png"}
         };
     
-    private static final int idiomasmax = text.length;
+    private static int idiomasmax = text.length;
 
     public Arkanoid() {
         this.fondoVidas = new ImageIcon(this.getClass().getResource("/imagenes/red-mc.png")).getImage().getScaledInstance(15, 15, Image.SCALE_DEFAULT);
@@ -207,6 +209,10 @@ public class Arkanoid extends JPanel implements KeyListener, MouseInputListener 
 
         frame.setVisible(true);
         // Muestra la ventana principal
+        
+        if(idiomasmax>10){
+            Arkanoid.idiomasmax=10;
+        }
         
         if(panel != null){
             panel.inicio();
@@ -271,6 +277,8 @@ public class Arkanoid extends JPanel implements KeyListener, MouseInputListener 
             repaint();
         }
         idiomaselected = true;
+        this.setImage("/imagenes/"+text[idioma-1][15]);
+        this.imagebandera = image;
         while(!inicializar && idioma!=0){
             repaint();
 
@@ -442,6 +450,7 @@ public class Arkanoid extends JPanel implements KeyListener, MouseInputListener 
                 gr.fillOval(10 + (x * (Pelota.BW + 2)), 15 - (Pelota.BH / 2), Pelota.BW - 1, Pelota.BH - 1);
                 gr.drawImage(fondoVidas, 10 + (x * (Pelota.BW + 2)), 15 - (Pelota.BH / 2), null);
             }
+            gr.drawImage(imagebandera, 75, 0, null);
             gr.setColor(Color.white);
             Font contador = new Font("Sans Serif", Font.BOLD, 13);
             gr.setFont(contador);
