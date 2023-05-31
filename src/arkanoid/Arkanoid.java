@@ -142,6 +142,7 @@ public class Arkanoid extends JPanel implements KeyListener, MouseInputListener 
     
     private static boolean idiomaselected = false;
     
+    // almacenamiento de los strings en diferentes idiomas
     private static final String[][] text = {
             {"Select language", "English", "Press any key", "to start the game", "Game Over!", "Developed By:", "Seven DIU students", "You Win", "Score: ", "Score: ", "Level: ", "Completed!", "Next level", "PAUSE", "to resume the game", "Ingles.png"},
             {"选择语言", "奇诺", "按任意键", "开始游戏", "游戏结束!", "由开发:", "七名DIU学生", "你赢了", "分数: ", "分数: ", "等级: ", "完全的!", "下一级", "暂停", "恢复游戏", "Chino.png"},
@@ -214,14 +215,17 @@ public class Arkanoid extends JPanel implements KeyListener, MouseInputListener 
         frame.setVisible(true);
         // Muestra la ventana principal
         
+        // Impide el uso de mas idiomas de los que el usuario es capaz de elegir
         if(idiomasmax>10){
             Arkanoid.idiomasmax=10;
         }
         
         if(panel != null){
+            // Inicia la ejecucion de las ventanas previas al juego en si
             panel.inicio();
             if(inicializar = true){
                 try {
+                    // Inicia el juego
                     panel.playGame();
                 } catch (JavaLayerException | IOException e) {
                 }
@@ -229,6 +233,7 @@ public class Arkanoid extends JPanel implements KeyListener, MouseInputListener 
         }
     }
 
+    // Se encarga de la musica en la ventana de inicio
     public void sonidoInicio() throws JavaLayerException, IOException {
         while(!sound){
             jlPlayer = new jlap("\\UDP\\Arkanoid\\sonidos\\fondo0.mp3");
@@ -237,6 +242,7 @@ public class Arkanoid extends JPanel implements KeyListener, MouseInputListener 
         }
     }
     
+    // Se encarga de la musica en la ventana de muerte
     public void sonidoMuerte() throws JavaLayerException, IOException {
         jlPlayer.player.close();
         while(!sound){
@@ -245,6 +251,8 @@ public class Arkanoid extends JPanel implements KeyListener, MouseInputListener 
             Arkanoid.sound = true;
         }
     }
+    
+    // Se encarga de la musica en la ventana de victoria
     public void sonidoVictoria() throws JavaLayerException, IOException {
         while(!sound){
             jlPlayer = new jlap("\\UDP\\Arkanoid\\sonidos\\victory.mp3");
@@ -276,6 +284,7 @@ public class Arkanoid extends JPanel implements KeyListener, MouseInputListener 
         }
     }
     
+    // Inicia la ejecucion de las ventanas previas al juego en si
     @SuppressWarnings({"UnusedAssignment", "SleepWhileInLoop"})
     private void inicio() {
         while(!inicializar && idioma==0){
@@ -323,6 +332,7 @@ public class Arkanoid extends JPanel implements KeyListener, MouseInputListener 
         gr.drawString(text[idioma-1][3], this.getWidth() / 2 - gr.getFontMetrics().stringWidth(text[idioma-1][3]) / 2, (panelH - 30));
     }
     
+    // Pantalla encargada de la seleccion de idioma
     public void paintIdiomaSelect(Graphics gr) throws JavaLayerException, IOException{
         int i;
         this.setImage("/imagenes/fondoselect.png");
@@ -532,6 +542,7 @@ public class Arkanoid extends JPanel implements KeyListener, MouseInputListener 
                 update();
                 
                 if(reset){
+                    // Mecanismo de reset de nivel
                     jlPlayer.player.close();
                     jlap.iniciar = false;
                     premios.clear();
@@ -579,6 +590,7 @@ public class Arkanoid extends JPanel implements KeyListener, MouseInputListener 
                         if (bloq.destruido(pel)) {
                             if (bloq.getLifes() == 0) {
                                 switch (bloq.getPremio()) {
+                                    // Asignador de premios
                                     case 1 ->
                                         premios.add(new Expansor(bloq.getCoordX() + Ladrillo.BlqWidth / 2 - Expansor.PW / 2, bloq.getCoordY()));
                                     case 2 ->
@@ -647,6 +659,7 @@ public class Arkanoid extends JPanel implements KeyListener, MouseInputListener 
                     timeNextLevel = 5 - y;
                     repaint();
                     update();
+                    // Espera de 5 segundos entre nivel y nivel
                     for (int x = 0; x < FPS; x++) {
                         currTime = System.currentTimeMillis();
                         if (currTime < nextTime)
@@ -724,12 +737,14 @@ public class Arkanoid extends JPanel implements KeyListener, MouseInputListener 
     @Override
     public void mouseClicked(MouseEvent arg0) {
         if (this.level == 0 && !inicializar && idioma != 0 && idiomaselected) {
+            // Encargado del manejo de los imputs por mouse durante la ventana de inicio
             this.level++;
             jlPlayer.player.close();
             jlap.iniciar = false;
             inicializar = true;
         }
         if(inicializar && !mouseExited && this.lifes!=-1 && this.level <= this.numLevels){
+            // Encargado del manejo de los imputs por mouse durante el juego
             for (Pelota pel : pelotas) {
                 if (pel.getMovX() == 0 && pel.getMovY() == 0) {
                     pel.setMovX(0.0);
@@ -745,6 +760,7 @@ public class Arkanoid extends JPanel implements KeyListener, MouseInputListener 
     @Override
     public void mouseEntered(MouseEvent arg0) {
         if(mouseExited && this.lifes!=-1 && this.level <= this.numLevels){
+            // Finaliza el estado de pausa
             Arkanoid.mouseExited = false;
             if (!pauseX.isEmpty()) {
                 int cont = 0;
@@ -760,6 +776,7 @@ public class Arkanoid extends JPanel implements KeyListener, MouseInputListener 
     @Override
     public void mouseExited(MouseEvent arg0) {
         if(!mouseExited && this.lifes!=-1 && this.level <= this.numLevels){
+            // Inicia el estado de pausa
             Arkanoid.mouseExited = true;
             pauseX.removeAll(pauseX);
             pauseY.removeAll(pauseY);
@@ -806,6 +823,7 @@ public class Arkanoid extends JPanel implements KeyListener, MouseInputListener 
     public void keyPressed(KeyEvent e) {
         int key = e.getKeyCode();
         if (this.level == 0 && !inicializar && idioma == 0) {
+            // Imputs encargados de la seleccion de idioma
             if(key == KeyEvent.VK_1){
                 if(idiomasmax >= 1){
                     Arkanoid.idioma = 1;
@@ -849,13 +867,16 @@ public class Arkanoid extends JPanel implements KeyListener, MouseInputListener 
             }
         }
         if (this.level == 0 && !inicializar && idioma != 0 && idiomaselected) {
+            // Imputs de la ventana de inicio
             this.level++;
             jlPlayer.player.close();
             jlap.iniciar = false;
             inicializar = true;
         }
         if(inicializar){
+            // Imputs de la fase de juego
             if(mouseExited && this.lifes!=-1 && this.level <= this.numLevels){
+                // Finaliza el estado de pausa
                 Arkanoid.mouseExited = false;
                 if (!pauseX.isEmpty()) {
                     int cont = 0;
@@ -867,6 +888,7 @@ public class Arkanoid extends JPanel implements KeyListener, MouseInputListener 
                 }
             }
             if (key == KeyEvent.VK_ESCAPE && !mouseExited && this.lifes!=-1 && this.level <= this.numLevels) {
+                // Inicia el estado de pausa
                 Arkanoid.mouseExited = true;
                 pauseX.removeAll(pauseX);
                 pauseY.removeAll(pauseY);
@@ -921,6 +943,7 @@ public class Arkanoid extends JPanel implements KeyListener, MouseInputListener 
     }
 
     public void update() {
+        // Encargado del manejo de los imputs por teclado durante el juego
         if (moverIzquierda) {
             moverIzquierda();
         }
@@ -941,6 +964,7 @@ public class Arkanoid extends JPanel implements KeyListener, MouseInputListener 
     }
 
     private void generarBloques() {
+        // Almacenamiento de los arrays con los diseños de los bloques de cada nivel
         int constBloques[][] = null;
         switch (level) {
             case 1 ->
