@@ -101,12 +101,12 @@
 							
 							
 							
-							███████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████
+	      ███████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████
               █                                                                                                                             █
               █    عرب                                                                                                                      █
               █                                                                                                                             █
-              █    البدء:                                                                    																									 █
-              █    لتحديد اللغة، اضغط على المفتاح الرقمي المقابل للغة التي ترغب في استخدامها.																																		   █
+              █    البدء:                                                                    				                       █
+              █    لتحديد اللغة، اضغط على المفتاح الرقمي المقابل للغة التي ترغب في استخدامها.					                                   █
               █                                                                                                                             █
               █    التحكم: (للتحكم بالكرة باستخدام المضرب وإعادة تشغيل المستوى)                                                                               █
               █    يمكنك تحريك المضرب من جانب لآخر عن طريق سحب الماوس من جانب إلى آخر أو استخدام مفاتيح الأسهم اليمنى واليسرى أو                                     █
@@ -114,7 +114,7 @@
               █    لبدء تحريك الكرة في البداية، يمكنك النقر بالزر الأيسر للماوس أو الضغط على مفتاح الأسهم للأعلى أو مفتاح "w". لإعادة                                         █
               █    تشغيل المستوى الذي تلعبه، اضغط على "r"، وتكلفة هذا الإجراء 1000 نقطة بالإضافة إلى تلك التي كان لديك في بداية المستوى.                                   █
               █                                                                                                                             █
-              █    الإيقاف:                    																																														     █
+              █    الإيقاف:                    								                                       █
               █    اضغط على مفتاح ESC أو انقل الماوس خارج النافذة في أي نقطة من اللعبة لإيقاف اللعبة. لاستئناف اللعبة، اضغط على أي مفتاح                                    █
               █    أو انقل الماوس داخل النافذة.                                                                                                      █
               █                                                                                                                             █
@@ -122,90 +122,90 @@
 							
 							
 							
-							███████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████
+	      ███████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████
               █                                                                                                                             █
               █    Русо                                                                                                                     █
               █                                                                                                                             █
-              █    СТАРТ:																																																									  █
-              █    Чтобы выбрать язык, нажмите соответствующую цифровую клавишу с выбранным языком. 																				█
+              █    СТАРТ:										                                    █
+              █    Чтобы выбрать язык, нажмите соответствующую цифровую клавишу с выбранным языком. 	                                    █
               █                                                                                                                             █
-              █    УПРАВЛЕНИЕ: (для управления мячом с помощью ракетки и перезапуска уровня) 																								█
+              █    УПРАВЛЕНИЕ: (для управления мячом с помощью ракетки и перезапуска уровня) 		                                    █
               █    Чтобы перемещать ракетку с одной стороны на другую, вы можете перетащить мышь с одной стороны на другую или использовать █
               █    клавиши со стрелками вправо и влево, или клавиши "a" и "d". "a" или клавишу со стрелкой влево для перемещения влево и    █
               █    "d" или клавишу со стрелкой вправо для перемещения вправо. Чтобы начать движение мяча в начале, вы можете щелкнуть левой █
               █    кнопкой мыши или нажать клавишу со стрелкой вверх или клавишу "w". Чтобы перезапустить текущий уровень, нажмите "r".     █
               █    Это действие стоит 1000 очков, в дополнение к тем, которые у вас были в начале уровня.                                   █
               █                                                                                                                             █
-              █    ПАУЗА: 																																																									█
-              █    Чтобы поставить игру на паузу, нажмите клавишу ESC или выведите мышь за пределы окна в любой момент игры. Чтобы 					█
-              █    продолжить игру, нажмите любую клавишу или введите мышь в окно.																												  █
+              █    ПАУЗА: 											                            █
+              █    Чтобы поставить игру на паузу, нажмите клавишу ESC или выведите мышь за пределы окна в любой момент игры. Чтобы          █
+              █    продолжить игру, нажмите любую клавишу или введите мышь в окно.		                                            █
               █                                                                                                                             █
               ███████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████
 							
 							
 							
-							███████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████
+              ███████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████
               █                                                                                                                             █
-              █    Português																																																						    █
+              █    Português												                    █
               █                                                                                                                             █
-              █    INÍCIO: 																																																								  █
-              █    Para selecionar o idioma, pressione a tecla numérica correspondente ao idioma que deseja usar.													  █
+              █    INÍCIO: 										                                    █
+              █    Para selecionar o idioma, pressione a tecla numérica correspondente ao idioma que deseja usar.	                    █
               █                                                                                                                             █
-              █    CONTROLES: (para controlar a bola com a raquete e reiniciar o nível)																										  █
+              █    CONTROLES: (para controlar a bola com a raquete e reiniciar o nível)					                    █
               █    Para mover a raquete de um lado para o outro, você pode arrastar o mouse de um lado para o outro ou usar as teclas de    █
               █    seta direita e esquerda ou as teclas "a" e "d", "a" ou a seta esquerda para mover para a esquerda e "d" ou a seta        █
-              █    direita para mover para a direita. Para começar a mover a bola no início, você pode clicar com o botão esquerdo do  			█
-              █    mouse ou pressionar a tecla de seta para cima ou a tecla "w". Para reiniciar o nível em que você está jogando,  		      █
-              █    pressione "r", essa ação custa 1000 pontos a mais do que você tinha no início do nível. 																	█
+              █    direita para mover para a direita. Para começar a mover a bola no início, você pode clicar com o botão esquerdo do       █
+              █    mouse ou pressionar a tecla de seta para cima ou a tecla "w". Para reiniciar o nível em que você está jogando,           █
+              █    pressione "r", essa ação custa 1000 pontos a mais do que você tinha no início do nível.                                  █
               █                                                                                                                             █
-              █    PAUSA: 																																																									█
-              █    Pressione a tecla ESC ou mova o mouse para fora da janela a qualquer momento do jogo para pausar o jogo. Para 						█
-              █    retomar o jogo, pressione qualquer tecla ou mova o mouse dentro da janela. 																							█
+              █    PAUSA:                                                                                                                   █
+              █    Pressione a tecla ESC ou mova o mouse para fora da janela a qualquer momento do jogo para pausar o jogo. Para            █
+              █    retomar o jogo, pressione qualquer tecla ou mova o mouse dentro da janela.                                               █
               █                                                                                                                             █
               ███████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████
 							
 							
 							
-							███████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████
+              ███████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████
               █                                                                                                                             █
-              █    Bahasa Inggris 																																																					█
+              █    Bahasa Inggris                                                                                                           █
               █                                                                                                                             █
-              █    MULAI: 																																																								  █
-              █    Untuk memilih bahasa, tekan tombol numerik yang sesuai dengan bahasa yang ingin Anda gunakan.													  █
+              █    MULAI:                                                                                                                   █
+              █    Untuk memilih bahasa, tekan tombol numerik yang sesuai dengan bahasa yang ingin Anda gunakan.                            █
               █                                                                                                                             █
-              █    KONTROL: (untuk mengendalikan bola dengan raket dan mengulang level) 																										█
+              █    KONTROL: (untuk mengendalikan bola dengan raket dan mengulang level)                                                     █
               █    Untuk bergerak dari satu sisi ke sisi lain dengan raket, Anda dapat menggeser mouse dari satu sisi ke sisi lain atau	    █
-              █    menggunakan tombol panah kanan dan kiri atau tombol "a" dan "d", "a" atau tombol panah kiri untuk bergerak ke kiri dan 	█
-              █    "d" atau tombol panah kanan untuk bergerak ke kanan. Untuk memulai pergerakan bola di awal, Anda dapat mengklik kiri 	  █
+              █    menggunakan tombol panah kanan dan kiri atau tombol "a" dan "d", "a" atau tombol panah kiri untuk bergerak ke kiri dan   █
+              █    "d" atau tombol panah kanan untuk bergerak ke kanan. Untuk memulai pergerakan bola di awal, Anda dapat mengklik kiri     █
               █    dengan mouse atau menekan tombol panah atas atau tombol "w". Untuk mengulang level yang sedang Anda mainkan, tekan 	    █
-              █    "r", tindakan ini akan mengurangi 1000 poin dari jumlah poin yang Anda miliki pada awal level. 													█
+              █    "r", tindakan ini akan mengurangi 1000 poin dari jumlah poin yang Anda miliki pada awal level.                           █
               █                                                                                                                             █
-              █    JEDA:																																																									  █
+              █    JEDA:                                                                                                                    █
               █    Tekan tombol ESC atau geser mouse keluar dari jendela kapan saja dalam permainan untuk menjeda permainan. Untuk          █
-              █    melanjutkan permainan, tekan tombol apa saja atau geser mouse ke dalam jendela.																				  █
+              █    melanjutkan permainan, tekan tombol apa saja atau geser mouse ke dalam jendela.                                          █
               █                                                                                                                             █
-							███████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████
+              ███████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████
 							
 							
 							
-							███████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████
+              ███████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████
               █                                                                                                                             █
-              █    اردو 																																																										 █
+              █    اردو                                                                                                                      █
               █                                                                                                                             █
-              █    شروع کریں:  																																																							 █
-              █    زبان منتخب کرنے کے لئے، مطابقتی عددی کلید دبائیں جو زبان آپ استعمال کرنا چاہتے ہیں۔																												  █
+              █    شروع کریں:                                                                                                                █
+              █    زبان منتخب کرنے کے لئے، مطابقتی عددی کلید دبائیں جو زبان آپ استعمال کرنا چاہتے ہیں۔                                                          █
               █                                                                                                                             █
-              █    کنٹرول: (ریکٹ سے بال کو حاوی کرنے اور مرحلہ دوبارہ شروع کرنے کے لئے)																															  █
-              █    ریکٹ کے ساتھ ایک جانب سے دوسری جانب حرکت کرنے کے لئے، آپ ماؤس کو ایک جانب سے دوسری جانب کھینچ سکتے ہیں یا                             █
-              █    راست اور بائیں تیر کے کلیدوں یا "اے" اور "ڈی" کلیدوں کا استعمال کریں، "اے" یا بائیں تیر کی کلید کو بائیں جانب                                      █
-              █    حرکت کرنے کے لئے اور "ڈی" یا دائیں تیر کی کلید کو دائیں جانب حرکت کرنے کے لئے۔ مبدا پر بال کو حرکت کرنا شروع کرنے کے                      	 	█
-              █    لئے آپ ماؤس کے ساتھ بائیں کلک کر سکتے ہیں یا اوپر کی تیر کی کلید یا "و" کلید دبا سکتے ہیں۔ مرحلہ جس پر آپ کھیل رہے 														 █
-              █    ہیں اسے دوبارہ شروع کرنے کے لئے "آر" دبائیں، یہ کارروائی آپ کے پاس ابتدائی مرحلے پر موجود پوائنٹس پر 1000 پوائنٹس 																█
-              █    کی قیمت کا اثر ڈالتی ہے۔ 																																																			█
+              █    کنٹرول: (ریکٹ سے بال کو حاوی کرنے اور مرحلہ دوبارہ شروع کرنے کے لئے)                                                                █
+              █    ریکٹ کے ساتھ ایک جانب سے دوسری جانب حرکت کرنے کے لئے، آپ ماؤس کو ایک جانب سے دوسری جانب کھینچ سکتے ہیں یا                              █
+              █    راست اور بائیں تیر کے کلیدوں یا "اے" اور "ڈی" کلیدوں کا استعمال کریں، "اے" یا بائیں تیر کی کلید کو بائیں جانب                                       █
+              █    حرکت کرنے کے لئے اور "ڈی" یا دائیں تیر کی کلید کو دائیں جانب حرکت کرنے کے لئے۔ مبدا پر بال کو حرکت کرنا شروع کرنے کے                          █
+              █    لئے آپ ماؤس کے ساتھ بائیں کلک کر سکتے ہیں یا اوپر کی تیر کی کلید یا "و" کلید دبا سکتے ہیں۔ مرحلہ جس پر آپ کھیل رہے                              █
+              █    ہیں اسے دوبارہ شروع کرنے کے لئے "آر" دبائیں، یہ کارروائی آپ کے پاس ابتدائی مرحلے پر موجود پوائنٹس پر 1000 پوائنٹس                                █
+              █    کی قیمت کا اثر ڈالتی ہے۔                                                                                                       █
               █                                                                                                                             █
-              █    وقفہ:																																																										 █
+              █    وقفہ:                                                                                                                     █
               █    کسی بھی وقت میں کھیل کو وقفہ کرنے کے لئے ESC کلید دبائیں یا ماؤس کو ونڈو سے باہر منتقل کریں۔ کھیل کو دوبارہ شروع کرنے                            █
-              █    کے لئے کوئی بھی کلید دبائیں یا ماؤس کو ونڈو کے اندر منتقل کریں۔ 																																				 █
+              █    کے لئے کوئی بھی کلید دبائیں یا ماؤس کو ونڈو کے اندر منتقل کریں۔                                                                         █
               █                                                                                                                             █
               ███████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████
 							
