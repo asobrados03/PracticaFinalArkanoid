@@ -235,6 +235,7 @@ public class Arkanoid extends JPanel implements KeyListener, MouseInputListener 
 
     // Se encarga de la musica en la ventana de inicio
     public void sonidoInicio() throws JavaLayerException, IOException {
+        jlPlayer.player.close();
         while(!sound){
             jlPlayer = new jlap("\\UDP\\Arkanoid\\sonidos\\fondo0.mp3");
             jlPlayer.play();
@@ -261,10 +262,18 @@ public class Arkanoid extends JPanel implements KeyListener, MouseInputListener 
         }
     }
     
+    public void sonidoPantIdioma() throws JavaLayerException, IOException {
+        while(!sound){
+            jlPlayer = new jlap("\\UDP\\Arkanoid\\sonidos\\idioma.mp3");
+            jlPlayer.play();
+            this.sound = true;
+        }
+    }
+    
     private void crearFicheros() throws IOException {
         String[] directorios = {"sonidos"};
         String[][] archivos = new String[][]{
-            {"weak_ball.mp3", "click.mp3", "fondo1.mp3", "fondo2.mp3", "fondo3.mp3", "fondo4.mp3", "fondo5.mp3", "fondo6.mp3", "fondo7.mp3", "fondo0.mp3", "gameover.mp3", "victory.mp3"}
+            {"weak_ball.mp3", "click.mp3", "fondo1.mp3", "fondo2.mp3", "fondo3.mp3", "fondo4.mp3", "fondo5.mp3", "fondo6.mp3", "fondo7.mp3", "fondo0.mp3", "gameover.mp3", "victory.mp3", "idioma.mp3"}
         };
         for (int x = 0; x < directorios.length; x++) {
             File directorio = new File("\\UDP\\Arkanoid" + "\\" + directorios[x]);
@@ -334,6 +343,7 @@ public class Arkanoid extends JPanel implements KeyListener, MouseInputListener 
     
     // Pantalla encargada de la seleccion de idioma
     public void paintIdiomaSelect(Graphics gr) throws JavaLayerException, IOException{
+        sonidoPantIdioma();
         int i;
         this.setImage("/imagenes/fondoselect.png");
         gr.drawImage(image, -10, 0, null);
