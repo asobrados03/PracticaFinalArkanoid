@@ -114,8 +114,13 @@ public class Arkanoid extends JPanel implements KeyListener, MouseInputListener 
     private static boolean reset = false;
     private static boolean sound = false;
     private static boolean mouseExited = false;
+    
+    private String[] english;
+    private String[] spanish;
 
     public Arkanoid() {
+        this.english = new String[]{"Press any key", "para iniciar el juego", "Fin del Juego!", "Desarrollado Por:", "Siete alumnos de DIU", "Has Ganado", "Puntaje: ", "Puntuación: ", "Nivel: ", "Completado!", "Próximo nivel"};
+        this.spanish = new String[]{"Presiona cualquier tecla", "for start the game", "Game Over!", "Developed For:", "Seven DIU students", "You Win", "Score: ", "Score: ", "Level: ", "Filled!", "Next level"};
         this.fondoVidas = new ImageIcon(this.getClass().getResource("/imagenes/red-mc.png")).getImage().getScaledInstance(15, 15, Image.SCALE_DEFAULT);
     }
 
