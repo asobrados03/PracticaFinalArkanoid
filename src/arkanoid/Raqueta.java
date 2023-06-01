@@ -6,6 +6,10 @@ import java.awt.Image;
 
 import javax.swing.ImageIcon;
 
+/**
+ * Clase encargada de la raqueta
+ * @author Grupo5DIU
+ */
 public class Raqueta {
 
 	//--------------- Valores constantes ---------------
@@ -24,11 +28,17 @@ public class Raqueta {
 	/** Coordenada Y de la raqueta */
 	private int racketY;
 	
-	private Image fondo_der = null;
+	/** Imagenes de la raqueta */
+        private Image fondo_der = null;
 	private Image fondo_cen = null;
 	private Image fondo_izq = null;
 	
-	public Raqueta(int coordX, int coordY){
+        /**
+         * Posicionamiento y asignacion de imagenes de la raqueta
+         * @param coordX
+         * @param coordY
+         */
+        public Raqueta(int coordX, int coordY){
 		this.racketX = coordX;
 		this.racketY = coordY;
 		this.fondo_der = new ImageIcon(this.getClass().getResource("/imagenes/raq_r.png")).getImage();
@@ -36,37 +46,63 @@ public class Raqueta {
 		this.fondo_izq = new ImageIcon(this.getClass().getResource("/imagenes/raq_l.png")).getImage();
 	}
 	
-	public int getCoordX(){
+        /**
+         * Metodo de devolucion del posicionamiento en la coordenada x
+         * @return
+         */
+        public int getCoordX(){
 		return this.racketX;
 	}
 	
-	public int getCoordY(){
+        /**
+         * Metodo de devolucion del posicionamiento en la coordenada y
+         * @return
+         */
+        public int getCoordY(){
 		return this.racketY;
 	}
 	
-	public void setCoordX(int coordX){
+        /**
+         * Metodo asignador del posicionamiento en la coordenada x
+         * @param coordX
+         */
+        public void setCoordX(int coordX){
 		this.racketX = coordX;
 	}
 	
-	public void setCoordY(int coordY){
+        /**
+         * Metodo asignador del posicionamiento en la coordenada y
+         * @param coordY
+         */
+        public void setCoordY(int coordY){
 		this.racketY = coordY;
 	}
 	
-	public void ampliar(){
+        /**
+         * Metodo encargado del efecto de ampliado
+         */
+        public void ampliar(){
 		RACKET_W += 10;
 		if(RACKET_W > 150){
 			RACKET_W = 150;
 		}
 	}
 	
-	public void reduir(){
+        /**
+         * Metodo encargado del efecto de reduccion
+         */
+        public void reduir(){
 		RACKET_W -= 10;
 		if(RACKET_W < 12){
 			RACKET_W = 12;
 		}
 	}
 	
-	public void paint(Graphics gr){
+        /**
+         * Metodo encargado del pintado de la raqueta
+         * @param gr
+         */
+        public void paint(Graphics gr){
 		gr.setColor(Color.blue);
 		int tamanyLaterals = Raqueta.RACKET_W - fondo_izq.getWidth(null) - fondo_der.getWidth(null);
 		gr.drawImage(fondo_izq, this.getCoordX(), this.getCoordY(), null);

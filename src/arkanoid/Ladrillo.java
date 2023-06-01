@@ -8,29 +8,55 @@ import javax.swing.ImageIcon;
 import reproductor.jlap;
 import javazoom.jl.decoder.JavaLayerException;
 
+/**
+ * Clase encargada de los ladrillos
+ * @author Grupo5DIU
+ */
 public class Ladrillo {
-	public static int BlqWidth = 30;
 	
+        //--------------- Valores constantes ---------------
+	
+	/** La anchura del ladrillo */
+        public static int BlqWidth = 30;
+	
+        /** La altura del ladrillo */
 	public static int BlqHeight = 15;
 	
-	public static int posYinicial = 50;
+	/** La posicion inicial del ladrillo */
+        public static int posYinicial = 50;
 	
-	public static int Immortales = 0;
+	//--------------- Atributos ---------------
+        
+        /** Numero de ladrillos inmortales */
+        public static int Immortales = 0;
 	
-	private int posX;
+	/** Coordenada X de los ladrillos */
+        private int posX;
 	
-	private int posY;
+	/** Coordenada X de los ladrillos */
+        private int posY;
 	
-	private int lifes;
+	/** Vidas de los ladrillos */
+        private int lifes;
 	
-	private int points;
+	/** Puntaje de los ladrillos */
+        private int points;
 	
-	private Image fondo = null;
+	/** Imagen de los ladrillos */
+        private Image fondo = null;
 	
-	private jlap mediaRebote = null;
+	/** Audio del rebote con los ladrillos */
+        private jlap mediaRebote = null;
 	
-	private int premio = 0;
+	/** Premios asignados a los ladrillos */
+        private int premio = 0;
 		
+        /**
+         * Posicionamiento, asignacion de vidas e imagenes de los ladrillos
+         * @param posX
+         * @param posY
+         * @param life
+         */
         @SuppressWarnings("OverridableMethodCallInConstructor")
 	public Ladrillo(int posX, int posY, int life){
 		this.setCoordX(posX);
@@ -44,47 +70,91 @@ public class Ladrillo {
 		}
 	}
 	
-	public void setLifes(int life){
+        /**
+         * Metodo asignador de las vidas de los ladrillos
+         * @param life
+         */
+        public void setLifes(int life){
 		this.lifes = life;
 	}
 	
-	public int getLifes(){
+        /**
+         * Metodo de devolución de las vidas de los ladrillos
+         * @return
+         */
+        public int getLifes(){
 		return this.lifes;
 	}
 	
-	public void setCoordX(int pos){
+        /**
+         * Metodo asignador del posicionamiento en la coordenada x
+         * @param pos
+         */
+        public void setCoordX(int pos){
 		this.posX = pos;
 	}
 	
-	public int getCoordX(){
+        /**
+         * Metodo de devolucion del posicionamiento en la coordenada x
+         * @return
+         */
+        public int getCoordX(){
 		return this.posX;
 	}
 	
-	public void setCoordY(int pos){
+        /**
+         * Metodo asignador del posicionamiento en la coordenada y
+         * @param pos
+         */
+        public void setCoordY(int pos){
 		this.posY = pos;
 	}
 	
-	public int getCoordY(){
+        /**
+         * Metodo de devolucion del posicionamiento en la coordenada y
+         * @return
+         */
+        public int getCoordY(){
 		return this.posY;
 	}
 	
-	public void setPoints(int puntos){
+        /**
+         * Metodo asignador del puntaje
+         * @param puntos
+         */
+        public void setPoints(int puntos){
 		this.points = puntos;
 	}
 	
-	public int getPoints(){
+        /**
+         * Metodo de devolucion del puntaje
+         * @return
+         */
+        public int getPoints(){
 		return this.points;
 	}
 	
-	public void setPremio(int prem){
+        /**
+         * Metodo asignador de los premios
+         * @param prem
+         */
+        public void setPremio(int prem){
 		this.premio = prem;
 	}
 
-	public int getPremio() {
+        /**
+         * Metodo de devolucion de los premios
+         * @return
+         */
+        public int getPremio() {
 		return this.premio;
 	}
 	
-	public void paint(Graphics gr){
+        /**
+         * Metodo encargado del pintado de los ladrillos
+         * @param gr
+         */
+        public void paint(Graphics gr){
 		if(this.getLifes()!=0){
 			switch (this.getLifes()) {
 				case -1 -> gr.setColor(Color.BLACK);
@@ -105,7 +175,15 @@ public class Ladrillo {
 		}
 	}
 	
-	public boolean destruido(Pelota pelota) throws JavaLayerException, IOException{
+        /**
+         * Metodo encargado del rebote de las pelotas y del estado de
+         * destruccion del ladrillo
+         * @param pelota
+         * @return
+         * @throws JavaLayerException
+         * @throws IOException
+         */
+        public boolean destruido(Pelota pelota) throws JavaLayerException, IOException{
 		if(pelota.rebota(this.getCoordX(), this.getCoordY(), Ladrillo.BlqWidth, Ladrillo.BlqHeight, this)){
 			mediaRebote.play();
 			return true;

@@ -36,6 +36,10 @@ import premios.Premio;
 import premios.Reductor;
 import reproductor.jlap;
 
+/**
+ * Clase pincipal
+ * @author Grupo5DIU
+ */
 public class Arkanoid extends JPanel implements KeyListener, MouseInputListener {
 
     private static final long serialVersionUID = 1L;
@@ -79,70 +83,78 @@ public class Arkanoid extends JPanel implements KeyListener, MouseInputListener 
     @SuppressWarnings({"Convert2Diamond", "FieldMayBeFinal"})
     private ArrayList<Pelota> pelotas = new ArrayList<Pelota>();
 
+    // Almacen de premios
     @SuppressWarnings({"Convert2Diamond", "FieldMayBeFinal"})
     private ArrayList<Premio> premios = new ArrayList<Premio>();
 
+    // Raqueta
     private Raqueta raqueta;
 
+    // Sistema de pausa
     @SuppressWarnings({"Convert2Diamond", "FieldMayBeFinal"})
     private ArrayList<Object> pauseX = new ArrayList<Object>();
-
     @SuppressWarnings({"Convert2Diamond", "FieldMayBeFinal"})
     private ArrayList<Object> pauseY = new ArrayList<Object>();
 
+    // Ladrillos
     private ArrayList<Ladrillo> ladrillos = null;
 
+    // Almacen de tiempos
     @SuppressWarnings({"Convert2Diamond", "FieldMayBeFinal", "MismatchedQueryAndUpdateOfCollection"})
     private ArrayList<Time> timeLevels = new ArrayList<Time>();
 
+    // Audio
     private static jlap jlPlayer;
 
+    // Timer
     private long startTime = 0;
-
     private long finalTime = 0;
 
+    // Nieveles
     private int level = 0;
-
     private final int numLevels = 7;
 
+    // Vidas
     private int lifes = 3;
-    
     private int lifesreset = 0;
 
     private int timeNextLevel = 0;
 
+    // Puntuaciones
     public static int puntuacion = 0;
-    
     public static int puntuacionreset = 0;
 
+    // Sistema de imagenes
     private Image image = null;
-
     private Image fondoVidas = null;
-    
     private Image imagebandera = null;
 
+    // Sistema de premios
     private Random random;
-
     private Random randomPremios;
 
     private static final int MOVEMENT_SPEED = 5; // velocidad de movimiento con las teclas
 
+    // Actuadores de movimiento por las teclas
     private static boolean moverIzquierda = false;
     private static boolean moverDerecha = false;
     
+    // Detector del inicio del juego en si
     private static boolean inicializar = false;
     
+    // Detector del sistema de reinicio de nivel
     private static boolean reset = false;
     
     private static boolean sound = false;
     
+    // Detector del sistema de pausa
     private static boolean mouseExited = false;
     
+    // Sistema de idiomas
     private static int idioma = 0;
-    
     private static boolean idiomaselected = false;
     
-    // almacenamiento de los strings en diferentes idiomas
+    // Almacenamiento de los strings en diferentes idiomas
     private static final String[][] text = {
             {"Select language", "English", "Press any key", "to start the game", "Game Over!", "Developed By:", "Seven DIU students", "You Win", "Score: ", "Score: ", "Level: ", "Completed!", "Next level", "PAUSE", "to resume the game", "Ingles.png"},
             {"选择语言", "奇诺", "按任意键", "开始游戏", "游戏结束!", "由开发:", "七名DIU学生", "你赢了", "分数: ", "分数: ", "等级: ", "完全的!", "下一级", "暂停", "恢复游戏", "Chino.png"},
@@ -158,10 +170,12 @@ public class Arkanoid extends JPanel implements KeyListener, MouseInputListener 
     
     private static int idiomasmax = text.length;
 
+    // Declaracion de la imagen de las vidas
     public Arkanoid() {
         this.fondoVidas = new ImageIcon(this.getClass().getResource("/imagenes/red-mc.png")).getImage().getScaledInstance(15, 15, Image.SCALE_DEFAULT);
     }
 
+    // Sistema de declaracion de imagenes
     public void setImage(String img) {
         if(this.level >= 0){
             this.image = new ImageIcon(this.getClass().getResource(img)).getImage();
@@ -169,9 +183,9 @@ public class Arkanoid extends JPanel implements KeyListener, MouseInputListener 
     }
 
     /**
-     * * Programa principal.Se encarga de inicializar el juego, crear la
+     * Programa principal.Se encarga de inicializar el juego, crear la
      * ventana principal y mostrarla.Finalmente invoca a playGame, que se
- encarga de mover la pelota.
+     * encarga de mover la pelota.
      *
      * @param args
      * @throws javazoom.jl.decoder.JavaLayerException
@@ -233,7 +247,11 @@ public class Arkanoid extends JPanel implements KeyListener, MouseInputListener 
         }
     }
 
-    // Se encarga de la musica en la ventana de inicio
+    /**
+     * Se encarga de la musica en la ventana de inicio
+     * @throws JavaLayerException
+     * @throws IOException
+     */
     public void sonidoInicio() throws JavaLayerException, IOException {
         while(!sound){
             jlPlayer.player.close();
@@ -244,7 +262,11 @@ public class Arkanoid extends JPanel implements KeyListener, MouseInputListener 
         }
     }
     
-    // Se encarga de la musica en la ventana de muerte
+    /**
+     * Se encarga de la musica en la ventana de muerte
+     * @throws JavaLayerException
+     * @throws IOException
+     */
     public void sonidoMuerte() throws JavaLayerException, IOException {
         jlPlayer.player.close();
         while(!sound){
@@ -254,7 +276,11 @@ public class Arkanoid extends JPanel implements KeyListener, MouseInputListener 
         }
     }
     
-    // Se encarga de la musica en la ventana de victoria
+    /**
+     * Se encarga de la musica en la ventana de victoria
+     * @throws JavaLayerException
+     * @throws IOException
+     */
     public void sonidoVictoria() throws JavaLayerException, IOException {
         jlPlayer.player.close();
         while(!sound){
@@ -263,7 +289,12 @@ public class Arkanoid extends JPanel implements KeyListener, MouseInputListener 
             Arkanoid.sound = true;
         }
     }
-    // Se encarga de la musica en la ventana de selección de idiomas
+
+    /**
+     * Se encarga de la musica en la ventana de selección de idiomas
+     * @throws JavaLayerException
+     * @throws IOException
+     */
     public void sonidoPantIdioma() throws JavaLayerException, IOException {
         while(!sound){
             jlPlayer = new jlap("\\UDP\\Arkanoid\\sonidos\\idioma.mp3");
@@ -272,6 +303,10 @@ public class Arkanoid extends JPanel implements KeyListener, MouseInputListener 
         }
     }
     
+    /**
+     * Se encarga de crear un fichero con todos los audios
+     * @throws IOException
+     */
     private void crearFicheros() throws IOException {
         String[] directorios = {"sonidos"};
         String[][] archivos = new String[][]{
@@ -295,7 +330,9 @@ public class Arkanoid extends JPanel implements KeyListener, MouseInputListener 
         }
     }
     
-    // Inicia la ejecucion de las ventanas previas al juego en si
+    /**
+     * Se encarga de las ventanas y ejecuciones previas al juego en si
+     */
     @SuppressWarnings({"UnusedAssignment", "SleepWhileInLoop"})
     private void inicio() {
         while(!inicializar && idioma==0){
@@ -328,7 +365,13 @@ public class Arkanoid extends JPanel implements KeyListener, MouseInputListener 
             Arkanoid.sound = false;
         }
     }
-    //pintamos la pantalla de inicio
+
+    /**
+     * Pantalla de inicio
+     * @param gr
+     * @throws JavaLayerException
+     * @throws IOException
+     */
     public void paintInicio(Graphics gr) throws JavaLayerException, IOException{
         sonidoInicio();
         this.setImage("/imagenes/arkanoid_logo.png");
@@ -344,7 +387,12 @@ public class Arkanoid extends JPanel implements KeyListener, MouseInputListener 
         gr.drawString(text[idioma-1][3], this.getWidth() / 2 - gr.getFontMetrics().stringWidth(text[idioma-1][3]) / 2, (panelH - 30));
     }
     
-    // Pantalla encargada de la seleccion de idioma
+    /**
+     * Pantalla encargada de la seleccion de idioma
+     * @param gr
+     * @throws JavaLayerException
+     * @throws IOException
+     */
     public void paintIdiomaSelect(Graphics gr) throws JavaLayerException, IOException{
         sonidoPantIdioma();
         int i;
@@ -365,9 +413,14 @@ public class Arkanoid extends JPanel implements KeyListener, MouseInputListener 
                 gr.drawString("0->"+text[i][1], panelW/2+25, (panelH - (250-25*i)));
             }
         }
-        
     }
-    //pintamos la pantalla de pausa
+
+    /**
+     * Pantalla del sistema de pausa
+     * @param gr
+     * @throws JavaLayerException
+     * @throws IOException
+     */
     public void paintPause(Graphics gr) throws JavaLayerException, IOException{
         Font alerta = new Font("Sans Serif", Font.BOLD, 30);
         gr.setFont(alerta);
@@ -379,7 +432,13 @@ public class Arkanoid extends JPanel implements KeyListener, MouseInputListener 
         gr.setFont(inicio);
         gr.drawString(text[idioma-1][14], this.getWidth() / 2 - gr.getFontMetrics().stringWidth(text[idioma-1][14]) / 2, (panelH - 30));
     }
-    //pintamos la pantalla de muerte
+
+    /**
+     * Pantalla de muerte
+     * @param gr
+     * @throws JavaLayerException
+     * @throws IOException
+     */
     public void paintMuerte(Graphics gr) throws JavaLayerException, IOException{
         sonidoMuerte();
         this.setImage("/imagenes/fondofinal.png");
@@ -399,7 +458,13 @@ public class Arkanoid extends JPanel implements KeyListener, MouseInputListener 
         heightFinal += gr.getFontMetrics().getHeight();
         gr.drawString(text[idioma-1][6], this.getWidth() / 2 - gr.getFontMetrics().stringWidth(text[idioma-1][6]) / 2, heightFinal);
     }
-    //pintamos la pantalla de victoria
+
+    /**
+     * Pantalla de victoria
+     * @param gr
+     * @throws JavaLayerException
+     * @throws IOException
+     */
     public void paintVictoria(Graphics gr) throws JavaLayerException, IOException{
         sonidoVictoria();
         this.setImage("/imagenes/fondofinal.png");
@@ -425,6 +490,11 @@ public class Arkanoid extends JPanel implements KeyListener, MouseInputListener 
         gr.drawString(text[idioma-1][6], this.getWidth() / 2 - gr.getFontMetrics().stringWidth(text[idioma-1][6]) / 2, heightFinal);
     }
     
+    /**
+     * Metodo encargado de decidir que se ha de pintar segun ciertos parametros
+     * y tambien encargado de pintar la ventana durante el juego en si
+     * @param gr
+     */
     @SuppressWarnings("deprecation")
     @Override
     public void paint(Graphics gr){
@@ -533,6 +603,11 @@ public class Arkanoid extends JPanel implements KeyListener, MouseInputListener 
         }
     }
 
+    /**
+     * Metodo encargado de la ejecucion del juego en si
+     * @throws JavaLayerException
+     * @throws IOException
+     */
     @SuppressWarnings("SleepWhileInLoop")
     private void playGame() throws JavaLayerException, IOException {
         if(this.level != 0){
@@ -666,6 +741,7 @@ public class Arkanoid extends JPanel implements KeyListener, MouseInputListener 
             Raqueta.RACKET_W = 50;
             raqueta = new Raqueta(FRAME_W / 2 - Raqueta.RACKET_W / 2, 0);
             jlPlayer.player.close();
+            // Sistema de paso de nivel
             if (this.level < this.numLevels && this.lifes >= 0) {
                 jlap.iniciar = false;
                 for (int y = 0; y < 5; y++) {
@@ -699,10 +775,18 @@ public class Arkanoid extends JPanel implements KeyListener, MouseInputListener 
         
     }
 
+    /**
+     * No se usa en este programa
+     * @param evt
+     */
     @Override
     public void mouseDragged(MouseEvent evt) {
     }
 
+    /**
+     * Metodo encargado de controlar los imputs del movimiento del mouse
+     * @param evt
+     */
     @Override
     public void mouseMoved(MouseEvent evt) {
         if(!mouseExited && this.lifes!=-1 && this.level <= this.numLevels){
@@ -748,6 +832,10 @@ public class Arkanoid extends JPanel implements KeyListener, MouseInputListener 
         }
     }
 
+    /**
+     * Metodo encargado de controlar los imputs de los pulsadores del mouse
+     * @param arg0
+     */
     @Override
     public void mouseClicked(MouseEvent arg0) {
         if (this.level == 0 && !inicializar && idioma != 0 && idiomaselected) {
@@ -759,6 +847,7 @@ public class Arkanoid extends JPanel implements KeyListener, MouseInputListener 
         }
         if(inicializar && !mouseExited && this.lifes!=-1 && this.level <= this.numLevels){
             // Encargado del manejo de los imputs por mouse durante el juego
+            // Inicia el movimiento de la pelota
             for (Pelota pel : pelotas) {
                 if (pel.getMovX() == 0 && pel.getMovY() == 0) {
                     pel.setMovX(0.0);
@@ -771,6 +860,11 @@ public class Arkanoid extends JPanel implements KeyListener, MouseInputListener 
         }
     }
 
+    /**
+     * Metodo encargado de controlar si el mouse se encuentra dentro de la
+     * ventana
+     * @param arg0
+     */
     @Override
     public void mouseEntered(MouseEvent arg0) {
         if(mouseExited && this.lifes!=-1 && this.level <= this.numLevels){
@@ -787,6 +881,11 @@ public class Arkanoid extends JPanel implements KeyListener, MouseInputListener 
         }
     }
 
+    /**
+     * Metodo encargado de controlar si el mouse se encuentra fuera de la
+     * ventana
+     * @param arg0
+     */
     @Override
     public void mouseExited(MouseEvent arg0) {
         if(!mouseExited && this.lifes!=-1 && this.level <= this.numLevels){
@@ -803,14 +902,26 @@ public class Arkanoid extends JPanel implements KeyListener, MouseInputListener 
         }
     }
 
+    /**
+     * No se usa en este programa
+     * @param arg0
+     */
     @Override
     public void mousePressed(MouseEvent arg0) {
     }
 
+    /**
+     * No se usa en este programa
+     * @param arg0
+     */
     @Override
     public void mouseReleased(MouseEvent arg0) {
     }
 
+    /**
+     * Metodo encargado de ocultar el mouse
+     * @param frame
+     */
     private static void hideMouse(JFrame frame) {
         BufferedImage emptyImg = new BufferedImage(1, 1, BufferedImage.TYPE_INT_ARGB);
         emptyImg.setRGB(0, 0, 0xFFFFFF);
@@ -819,6 +930,9 @@ public class Arkanoid extends JPanel implements KeyListener, MouseInputListener 
         frame.setCursor(myCursor);
     }
 
+    /**
+     *  Metodo encargado de mover la raqueta hacia la izquiera con las teclas
+     */
     public void moverIzquierda() {
         raqueta.setCoordX(raqueta.getCoordX() - MOVEMENT_SPEED);
         if (raqueta.getCoordX() < 0) {
@@ -826,6 +940,9 @@ public class Arkanoid extends JPanel implements KeyListener, MouseInputListener 
         }
     }
 
+    /**
+     * Metodo encargado de mover la raqueta hacia la izquiera con las teclas
+     */
     public void moverDerecha() {
         raqueta.setCoordX(raqueta.getCoordX() + MOVEMENT_SPEED);
         if (raqueta.getCoordX() + Raqueta.RACKET_W >= panelW) {
@@ -833,6 +950,10 @@ public class Arkanoid extends JPanel implements KeyListener, MouseInputListener 
         }
     }
 
+    /**
+     * Metodo encargado de controlar los imputs de las teclas
+     * @param e
+     */
     @Override
     public void keyPressed(KeyEvent e) {
         int key = e.getKeyCode();
@@ -922,6 +1043,7 @@ public class Arkanoid extends JPanel implements KeyListener, MouseInputListener 
                 moverIzquierda = false;
             }
             if (key == KeyEvent.VK_W || key == KeyEvent.VK_UP && !mouseExited && this.lifes!=-1 && this.level <= this.numLevels) {
+                // Inicia el movimiento de la pelota
                 for (Pelota pel : pelotas) {
                     if (pel.getMovX() == 0 && pel.getMovY() == 0) {
                         pel.setMovX(0.0);
@@ -933,6 +1055,7 @@ public class Arkanoid extends JPanel implements KeyListener, MouseInputListener 
                 }
             }
             if (key == KeyEvent.VK_R && !mouseExited && this.lifes!=-1 && this.level <= this.numLevels) {
+                // Inicia el sistema de reset de nivel
                 if(Arkanoid.puntuacionreset >= 1000){
                     Arkanoid.reset = true;
                 }
@@ -940,6 +1063,10 @@ public class Arkanoid extends JPanel implements KeyListener, MouseInputListener 
         }
     }
 
+    /**
+     * Metodo encargado de controlar los imputs de las teclas
+     * @param e
+     */
     @Override
     public void keyReleased(KeyEvent e) {
         int key = e.getKeyCode();
@@ -951,11 +1078,18 @@ public class Arkanoid extends JPanel implements KeyListener, MouseInputListener 
         }
     }
 
+    /**
+     * No se usa en este programa
+     * @param e
+     */
     @Override
     public void keyTyped(KeyEvent e) {
 
     }
 
+    /**
+     * Metodo encargado de actualizar el movimiento de la raqueta con las teclas
+     */
     public void update() {
         // Encargado del manejo de los imputs por teclado durante el juego
         if (moverIzquierda) {
@@ -977,6 +1111,9 @@ public class Arkanoid extends JPanel implements KeyListener, MouseInputListener 
         }
     }
 
+    /**
+     * Metodo encargado del posicionamiento y nivel de los ladrillos
+     */
     private void generarBloques() {
         // Almacenamiento de los arrays con los diseños de los bloques de cada nivel
         int constBloques[][] = null;

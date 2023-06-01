@@ -11,6 +11,10 @@ import javazoom.jl.decoder.JavaLayerException;
 
 import reproductor.jlap;
 
+/**
+ * Clase encargada de las pelotas
+ * @author Grupo5DIU
+ */
 public class Pelota {
 	
 	//--------------- Valores constantes ---------------
@@ -35,15 +39,24 @@ public class Pelota {
 	/** Incremento en Y de la pelota, tras cada cambio de posici�n */
 	private double bdy;
 	
-	private boolean baixant = false;
+	/** Estado de la pelota */
+        private boolean baixant = false;
 	
-	private Image fondo = null;
+	/** Imagen de la pelota */
+        private Image fondo = null;
 	
-	private jlap mediaRebote = null;
+	/** Audio del rebote de la pelota */
+        private jlap mediaRebote = null;
 	
-	private double defaultBdx = 2;
+	/** Velocidad de la pelota */
+        private double defaultBdx = 2;
 	
-	public Pelota(double posX, double posY){
+        /**
+         * Posicionamiento y asignacion de imagenes de las pelotas
+         * @param posX
+         * @param posY
+         */
+        public Pelota(double posX, double posY){
 		this.bx = posX;
 		this.by = posY;
 		this.bdx = 0;
@@ -55,49 +68,91 @@ public class Pelota {
 		}
 	}
 	
-	public double getCoordX(){
+        /**
+         * Metodo de devolucion del posicionamiento en la coordenada x
+         * @return
+         */
+        public double getCoordX(){
 		return this.bx;
 	}
 	
-	public void setCoordX(double posX){
+        /**
+         * Metodo asignador del posicionamiento en la coordenada x
+         * @param posX
+         */
+        public void setCoordX(double posX){
 		this.bx = posX;
 	}
 	
-	public double getCoordY(){
+        /**
+         * Metodo de devolucion del posicionamiento en la coordenada y
+         * @return
+         */
+        public double getCoordY(){
 		return this.by;
 	}
 	
-	public double getMovX(){
+        /**
+         * Metodo de devolucion del movimiento en la coordenada x
+         * @return
+         */
+        public double getMovX(){
 		return this.bdx;
 	}
 	
-	public double getMovY(){
+        /**
+         * Metodo de devolucion del movimiento en la coordenada y
+         * @return
+         */
+        public double getMovY(){
 		return this.bdy;
 	}
 	
-	public void setMovX(double movX){
+        /**
+         * Metodo asignador del movimiento en la coordenada x
+         * @param movX
+         */
+        public void setMovX(double movX){
 		this.bdx = movX;
 	}
 	
-	public void setMovY(double movY){
+        /**
+         * Metodo asignador del movimiento en la coordenada y
+         * @param movY
+         */
+        public void setMovY(double movY){
 		this.bdy = movY;
 	}
 	
-	public boolean isDown(){
+        /**
+         * Metodo de devolucion del estado de la pelota
+         * @return
+         */
+        public boolean isDown(){
 		return this.baixant;
 	}
 	
-	public void setDown(boolean down){
+        /**
+         * Metodo asignador del estado de la pelota
+         * @param down
+         */
+        public void setDown(boolean down){
 		this.baixant = down;
 	}
 	
-	public void acelera(){
+        /**
+         * Metodo encargado del efecto de aceleracion
+         */
+        public void acelera(){
 		this.setMovX(this.getMovX()*1.5);
 		this.setMovY(this.getMovY()*1.5);
 		this.defaultBdx = defaultBdx * 1.5;
 	}
 	
-	public void frena(){
+        /**
+         * Metodo encargado del efecto de frenado
+         */
+        public void frena(){
 		if(this.getMovY() > 1){
 			this.setMovX(this.getMovX()/1.5);
 			this.setMovY(this.getMovY()/1.5);
@@ -105,7 +160,14 @@ public class Pelota {
 		}
 	}
 	
-	public void move(int width, int height) throws JavaLayerException, IOException{
+        /**
+         * Metodo encargado del movimiento de la pelota
+         * @param width
+         * @param height
+         * @throws JavaLayerException
+         * @throws IOException
+         */
+        public void move(int width, int height) throws JavaLayerException, IOException{
 		this.bx += this.bdx;
 		this.by += this.bdy;
 		if ((this.bx+BW>width && this.bdx > 0)||(this.bx<0 && this.bdx < 0)){
@@ -122,13 +184,28 @@ public class Pelota {
 		}
 	}
 	
-	public void paint(Graphics gr){
+        /**
+         * Metodo encargado del pintado de las pelotas
+         * @param gr
+         */
+        public void paint(Graphics gr){
 		gr.setColor(Color.red);
 		gr.fillOval((int)this.getCoordX(),(int)this.getCoordY(),BW-1,BH-1);
 		gr.drawImage(fondo,(int)this.getCoordX(),(int)this.getCoordY(),null);
 	}
 	
-	public boolean rebota(int posX, int posY , int width, int height, Ladrillo ladrillo) throws JavaLayerException, IOException{
+        /**
+         * Metodo encargado del rebote de las pelotas
+         * @param posX
+         * @param posY
+         * @param width
+         * @param height
+         * @param ladrillo
+         * @return
+         * @throws JavaLayerException
+         * @throws IOException
+         */
+        public boolean rebota(int posX, int posY , int width, int height, Ladrillo ladrillo) throws JavaLayerException, IOException{
 		if(ladrillo == null){
 			if((this.getCoordX() + Pelota.BW/2 >= posX + 2*width/5)&&(this.getCoordX() + Pelota.BW/2 <= posX + 3*width/5)){
 				if(this.getMovX() > 0){

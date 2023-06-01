@@ -5,71 +5,141 @@ import java.awt.Image;
 
 import arkanoid.Raqueta;
 
+/**
+ * Clase encargada de la definicion de las clases de los premios
+ * @author Grupo5DIU
+ */
 public abstract class Premio {
-	private static final double MOVY = 2.0;
 	
-	private int width;
+        //--------------- Valores constantes ---------------
 	
-	private int height;
+	/** Movimiento sobre la coordenada y del premio */
+        private static final double MOVY = 2.0;
 	
-	private int posX;
+	//--------------- Atributos ---------------
+        
+        /** Anchura del premio */
+        private int width;
 	
-	private int posY;
+	/** Anchura de la altura */
+        private int height;
 	
-	private Image fondo;
+	/** Posicionamiento en la coordenada x */
+        private int posX;
 	
-	public Premio(int posx, int posy, int wd, int hg){
+	/** Posicionamiento en la coordenada y */
+        private int posY;
+	
+	/** Imagen del premio */
+        private Image fondo;
+	
+        /**
+         * Posicionamiento del efecto
+         * @param posx
+         * @param posy
+         * @param wd
+         * @param hg
+         */
+        public Premio(int posx, int posy, int wd, int hg){
 		this.posX = posx;
 		this.posY = posy;
 		this.width = wd;
 		this.height = hg;
 	}
 
-	public void pinta(Graphics gr){
+        /**
+         * Metodo encargado del pintado del efecto
+         * @param gr
+         */
+        public void pinta(Graphics gr){
 		gr.drawImage(fondo, getPosX(), getPosY(), null);
 	}
 	
-	public void setFondo(Image image){
+        /**
+         * Metodo asignador de imagenes del efecto
+         * @param image
+         */
+        public void setFondo(Image image){
 		this.fondo = image;
 	}
 	
-	public int getWidth(){
+        /**
+         * Metodo de devolucion del ancho
+         * @return
+         */
+        public int getWidth(){
 		return width;
 	}
 
-	public void setWidth(int width){
+        /**
+         * Metodo asignador del ancho
+         * @param width
+         */
+        public void setWidth(int width){
 		this.width = width;
 	}
 
-	public int getHeight(){
+        /**
+         * Metodo de devolucion del alto
+         * @return
+         */
+        public int getHeight(){
 		return height;
 	}
 
-	public void setHeight(int height){
+        /**
+         * Metodo asignador del alto
+         * @param height
+         */
+        public void setHeight(int height){
 		this.height = height;
 	}
 
-	public int getPosX(){
+        /**
+         * Metodo de devolucion del posicionamiento en la coordenada x
+         * @return
+         */
+        public int getPosX(){
 		return posX;
 	}
 
-	public void setPosX(int posX){
+        /**
+         * Metodo asignador del posicionamiento en la coordenada x
+         * @param posX
+         */
+        public void setPosX(int posX){
 		this.posX = posX;
 	}
 
-	public int getPosY(){
+        /**
+         * Metodo de devolucion del posicionamiento en la coordenada y
+         * @return
+         */
+        public int getPosY(){
 		return posY;
 	}
 
-	public void setPosY(int posY){
+        /**
+         * Metodo asignador del posicionamiento en la coordenada y
+         * @param posY
+         */
+        public void setPosY(int posY){
 		this.posY = posY;
 	}
 	
-	public void move(){
+        /**
+         * Metodo encargado del movimiento del premio sobre la coordenada y
+         */
+        public void move(){
 		setPosY((int)(getPosY() + MOVY));
 	}
 	
-	public boolean recivido(Raqueta raqueta){
+        /**
+         * Metodo encargado de la recepcion del premio por la raqueta
+         * @param raqueta
+         * @return
+         */
+        public boolean recivido(Raqueta raqueta){
 		if(this.getPosX() >= raqueta.getCoordX() - this.getWidth() && this.getPosX() + this.getWidth() <= raqueta.getCoordX() + Raqueta.RACKET_W){
 			if((this.getPosY() + this.getHeight() >= raqueta.getCoordY())&&(this.getPosY() <= raqueta.getCoordY()+Raqueta.RACKET_H)){
 				return true;
