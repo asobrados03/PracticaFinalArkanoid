@@ -110,9 +110,9 @@ public class Arkanoid extends JPanel implements KeyListener, MouseInputListener 
     private long startTime = 0;
     private long finalTime = 0;
 
-    // Nieveles
+    // Niveles
     private int level = 0;
-    private final int numLevels = 7;
+    private final int numLevels = 10;
 
     // Vidas
     private int lifes = 3;
@@ -310,7 +310,7 @@ public class Arkanoid extends JPanel implements KeyListener, MouseInputListener 
     private void crearFicheros() throws IOException {
         String[] directorios = {"sonidos"};
         String[][] archivos = new String[][]{
-            {"weak_ball.mp3", "click.mp3", "fondo1.mp3", "fondo2.mp3", "fondo3.mp3", "fondo4.mp3", "fondo5.mp3", "fondo6.mp3", "fondo7.mp3", "fondo0.mp3", "gameover.mp3", "victory.mp3", "idioma.mp3"}
+            {"weak_ball.mp3", "click.mp3", "fondo1.mp3", "fondo2.mp3", "fondo3.mp3", "fondo4.mp3", "fondo5.mp3", "fondo6.mp3", "fondo7.mp3", "fondo8.mp3", "fondo9.mp3", "fondo10.mp3", "fondo0.mp3", "gameover.mp3", "victory.mp3", "idioma.mp3"}
         };
         for (int x = 0; x < directorios.length; x++) {
             File directorio = new File("\\UDP\\Arkanoid" + "\\" + directorios[x]);
@@ -421,17 +421,31 @@ public class Arkanoid extends JPanel implements KeyListener, MouseInputListener 
      * @throws JavaLayerException
      * @throws IOException
      */
-    public void paintPause(Graphics gr) throws JavaLayerException, IOException{
+    public void paintPause(Graphics gr) throws JavaLayerException, IOException {
         Font alerta = new Font("Sans Serif", Font.BOLD, 30);
         gr.setFont(alerta);
         gr.setColor(Color.RED);
-        gr.drawString(text[idioma-1][13], this.getWidth() / 2 - gr.getFontMetrics().stringWidth(text[idioma-1][13]) / 2, 100);
+        String alertMessage = text[idioma-1][13];
+        int alertMessageWidth = gr.getFontMetrics().stringWidth(alertMessage);
+        int alertMessageX = this.getWidth() / 2 - alertMessageWidth / 2;
+        int alertMessageY = 150;
+        gr.drawString(alertMessage, alertMessageX, alertMessageY);
+
         Font inicio = new Font("Sans Serif", Font.BOLD, 22);
         gr.setFont(inicio);
-        gr.drawString(text[idioma-1][2], this.getWidth() / 2 - gr.getFontMetrics().stringWidth(text[idioma-1][2]) / 2, (panelH - 58));
-        gr.setFont(inicio);
-        gr.drawString(text[idioma-1][14], this.getWidth() / 2 - gr.getFontMetrics().stringWidth(text[idioma-1][14]) / 2, (panelH - 30));
+        String option1 = text[idioma-1][2];
+        int option1Width = gr.getFontMetrics().stringWidth(option1);
+        int option1X = this.getWidth() / 2 - option1Width / 2;
+        int option1Y = panelH - 150;
+        gr.drawString(option1, option1X, option1Y);
+
+        String option2 = text[idioma-1][14];
+        int option2Width = gr.getFontMetrics().stringWidth(option2);
+        int option2X = this.getWidth() / 2 - option2Width / 2;
+        int option2Y = panelH - 128;
+        gr.drawString(option2, option2X, option2Y);
     }
+
 
     /**
      * Pantalla de muerte
@@ -1221,6 +1235,42 @@ public class Arkanoid extends JPanel implements KeyListener, MouseInputListener 
                     {0, 0, 0, 7, 6, 7, 0, 0, 0},
                     {0, 0, 7, 0, 6, 0, 7, 0, 0}
                 };
+	   case 8 ->
+                constBloques = new int[][]{
+                    {0, 0, 0, 0, 0, 0, 0, 0, 0},
+                    {0, 1, 6, 7, 1, 7, 6, 1, 0},
+                    {0, 0, 5, -1, 1, -1, 5, 0, 0},
+                    {0, 1, 6, 1, 1, 1, 6, 1, 0},
+                    {0, 0, 7, -1, -1, -1, 7, 0, 0},
+                    {0, 0, 0, 7, -1, 7, 0, 0, 0},
+                    {0, 0, 0, 0, 7, 0, 0, 0, 0},
+                    {0, 0, 0, 0, 0, 0, 0, 0, 0}
+                };
+            case 9 ->
+                constBloques = new int[][]{
+                    {0, 0, 0, -1, 1, -1, 0, 0, 0},
+                    {0, 0, 0, 1, 1, 1, 0, 0, 0},
+                    {0, 0, 6, 3, 1, 3, 6, 0, 0},
+                    {0, 1, 1, 2, 7, 2, 4, 1, 0},
+                    {1, 1, 1, 7, 7, 7, 4, 1, 1},
+                    {0, 1, 1, 5, 7, 5, 1, 1, 0},
+                    {0, 0, 6, 1, 1, 1, 6, 0, 0},
+                    {0, 0, -1, 1, 1, 1, -1, 0, 0},
+                    {0, 0, 0, -1, 1, -1, 0, 0, 0}
+                };
+            case 10 ->
+                constBloques = new int[][]{
+                    {-1, 7, 7, -1, -1, 7, 7, -1},
+                    {-1, 7, 7, 7, 7, 7, 7, -1},
+                    {-1, 7, 7, 7, 7, 7, 7, -1},
+                    {-1, 7, 7, 7, 7, 7, 7, -1},
+                    {0, -1, 7, 7, 7, 7, -1, 0},
+                    {0, -1, 5, 7, 7, 5, -1, 0},
+                    {0, 0, 5, 6, 6, 5, 0, 0},
+                    {0, 0, 5, 6, 6, 5, 0, 0},
+                    {0, 0, 5, 6, 6, 5, 0, 0}
+                };
+
             default -> {
             }
         }
